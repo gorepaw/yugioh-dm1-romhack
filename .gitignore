@@ -1,0 +1,30 @@
+# --- Never commit copyrighted ROMs, patched ROMs, or save files ---
+roms/
+build/
+*.gb
+*.gbc
+*.sav
+*.sgm
+*.state
+
+# --- Large / re-downloadable tools (RGBDS, BGB, flips, mgbdis, etc.) ---
+tools/
+
+# --- External repos we depend on but don't own (re-clonable) ---
+reference/
+
+# --- Build artifacts ---
+*.o
+*.gbo
+*.map
+*.sym.tmp
+
+# --- Python cache ---
+__pycache__/
+*.pyc
+
+# --- OS / editor cruft ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
