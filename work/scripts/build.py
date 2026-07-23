@@ -57,6 +57,17 @@ def main():
             print(f"  card #{e['card']} {e.get('name', '')}: {summary}")
             card_edit_count += 1
 
+    # --- card description text edits (work/desc_edits.json) ---
+    desc_edits_path = os.path.join(ROOT, "work", "desc_edits.json")
+    desc_edit_count = 0
+    if os.path.exists(desc_edits_path):
+        import descriptions
+        for e in json.load(open(desc_edits_path)):
+            summary = descriptions.apply_desc(rom, e["card"] - 1,
+                                              e.get("line1", ""), e.get("line2", ""))
+            print(f"  desc #{e['card']} {e.get('name', '')}: {summary}")
+            desc_edit_count += 1
+
     rom[0x14D] = header_checksum(rom)
     gc = global_checksum(rom)
     rom[0x14E], rom[0x14F] = (gc >> 8) & 0xFF, gc & 0xFF
@@ -64,7 +75,8 @@ def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     open(OUT, "wb").write(rom)
     print(f"wrote: {OUT}")
-    print(f"  applied {len(EDITS)} byte edit(s) + {card_edit_count} card edit(s)")
+    print(f"  applied {len(EDITS)} byte + {card_edit_count} card + "
+          f"{desc_edit_count} desc edit(s)")
     print(f"  MD5:  {hashlib.md5(bytes(rom)).hexdigest()}")
     return 0
 

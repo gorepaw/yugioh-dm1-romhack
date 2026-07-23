@@ -75,14 +75,19 @@ than guessing values.
 The loader (0x24000 region) fills RAM `$CD0F–$CD17`: `$CD0F/$CD10` & `$CD11/$CD12`
 = card id (two copies), `$CD13/$CD14` = ATK, `$CD15/$CD16` = DEF, `$CD17` = type.
 
-### Remaining fields (guardian stars / deck cost / level) — NOT YET FOUND
-- Not in the RAM block above; not found by static value/idiom/signature scans
-  (`card_arrays*.py`, `card_cd_stores.py`). Drawn by a separate card-info routine,
-  likely via computed pointers — and deck cost/level may even be *derived* in code,
-  not stored in a table.
-- Reliable way to find them: **BGB access-breakpoint on the live card-info screen**
-  (open a card, break on the ROM read, trace back to the table) — the technique the
-  original documenters used. Alternative: full `mgbdis` disassembly pass.
+### No guardian-star / deck-cost / level system in DM1 (confirmed by the player)
+This first game has **no points (deck cost) system and no Guardian Star system** —
+those were introduced in later titles (Dark Duel Stories onward). There are no such
+tables to find; the earlier hunt came up empty because the data doesn't exist.
+A DM1 card = **name + ATK + DEF + type/species + description text**. The editor
+covers ATK/DEF/type (`cards.py`) and description text (`descriptions.py`), so it is
+complete for this game's card model.
+
+### Card description / lore text — EDITABLE (`descriptions.py`)
+- Fixed **36-byte records** (2 lines × 18 tiles), consecutive from ROM `0xF033A`
+  (card #N at `0xF033A + 36*N`). Pointer table at `0xF0060` (pointer value + `0xEC000`
+  = file offset), but fixed width means edits are in-place — pointers never change.
+- Ligature squashes (`il li ll l! 's 't`) auto-applied to fit more per line.
 
 ### Card lore / description text (bonus find)
 - Bank `0x3C`: description pointer table at `$F0060`, strings from `$F033A`
@@ -95,14 +100,9 @@ The loader (0x24000 region) fills RAM `$CD0F–$CD17`: `$CD0F/$CD10` & `$CD11/$C
   Pyro, Rock, Plant, Magic`. (Confirms the type enum independently.)
 - Type-name draw routine @ `0x5366`: reads the type byte, `hl = $538E + type*8`,
   copies 8 chars to the RAM display buffer.
-- Nibble->tile table @ `0x535D` = `[01..10]`; routine @ `0x532C` renders a byte's
-  hi/lo nibbles as paired icons — the shape guardian stars (2 per card, packed) take.
-- The display reads from a **RAM block around `$CAB6`**; the ROM source for
-  stars/cost/level is written there via RAM indirection that static analysis can't
-  resolve without risking mislabeling.
-- **To finish in BGB:** open a card's info screen, set an ACCESS (write) breakpoint on
-  `$CAB6`..`$CABF`; when it breaks, the instruction's source `hl`/`bc` is the ROM
-  table + card index. That directly reveals the star/cost/level table addresses.
+- Nibble->tile table @ `0x535D` = `[01..10]`; routine @ `0x532C` splits a **BCD byte
+  into its two decimal digits** and maps each to a digit tile — this is the **ATK/DEF
+  number renderer** (BCD -> on-screen digits), NOT guardian stars (which don't exist here).
 
 ### Text encoding
 - English text uses a custom byte→tile map: `reference/DM1Translation/Insertion/text.tbl`.

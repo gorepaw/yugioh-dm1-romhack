@@ -57,3 +57,35 @@ roms/dm1-english.gb  --our edits-->  build/dm1-hack.gb   (our romhack)
 ```
 
 `roms/dm1-english.gb` stays pristine; we always build our hack into `build/`.
+
+## Editing
+
+Edits are queued as data (JSON / the `EDITS` list) and applied by `build.py`.
+Scripts are in `work/scripts/` (run with your Python 3).
+
+**Card stats & type** — `cards.py` → `work/card_edits.json`:
+```
+python cards.py find dragon                          # search by name
+python cards.py show 1 22                             # decode ATK/DEF/type
+python cards.py types                                 # list the 21-type enum
+python cards.py set 1 --atk 3000 --def 2500 --type Dragon
+```
+
+**Card descriptions** — `descriptions.py` → `work/desc_edits.json` (2 lines × 18 tiles):
+```
+python descriptions.py show 1
+python descriptions.py set 1 "line one (<=18)" "line two (<=18)"
+```
+
+**Text / names / dialogue** — `text_tool.py` (search) + the `EDITS` list in `build.py`:
+```
+python text_tool.py reference/DM1Translation/Insertion/text.tbl roms/dm1-english.gb search "your turn."
+```
+
+Then build, and undo by removing the relevant JSON entry / `EDITS` line:
+```
+python build.py                                       # -> build/dm1-hack.gb
+```
+
+DM1 cards have no deck cost, Guardian Stars, or levels (those are later-game systems),
+so name + ATK + DEF + type + description is the complete, editable card model.
