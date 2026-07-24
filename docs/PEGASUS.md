@@ -1,9 +1,11 @@
 # Pegasus — deck, drops, rewards (proposal, kaizo)
 
-Duelist 14 / pool 15. **Nothing here is in the ROM yet.** Same additive kaizo treatment
-as Yami: old cards kept as the beatable body, new Toon monsters layered on.
+Duelist 14 / pool 15. **Nothing here is in the ROM yet.**
 
-Identity: **Toons.** DM1 has zero Toon cards (verified), so all 18 are new.
+Identity: **all Toons.** Unlike Yami (additive), Pegasus's entire old deck is cut — his
+deck is purely the 18 new Toon monsters, with the weak Toons as the beatable body. His
+*drop* table is still additive/expansive (every non-God card). DM1 has zero Toon cards
+(verified), so all 18 are new.
 
 ## Opponent AI cannot use magic cards (engine fact — verify into NOTES.md later)
 
