@@ -21,6 +21,10 @@ reference/
 work/*/cards.json
 work/*/fusions.json
 
+# docs/DECKLISTS.md — a bulk dump of every opponent's decklist (most of the
+# translated card names). Working file for manual pruning, regenerable. Local only.
+docs/DECKLISTS.md
+
 # --- Build artifacts ---
 *.o
 *.gbo
