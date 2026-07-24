@@ -64,6 +64,26 @@ roms/dm1-english.gb  --our edits-->  build/dm1-hack.gb   (our romhack)
 
 `roms/dm1-english.gb` stays pristine; we always build our hack into `build/`.
 
+### Hard build invariants (target hardware: Miyoo Mini Plus / OnionOS)
+
+Builds must stay drop-in replaceable for the base ROM, because handhelds are fussy
+about romhacks. `build.py` preserves all of these, and they should not be broken
+without a very good reason:
+
+| Invariant | Value | Why |
+|---|---|---|
+| File size | **1,048,576 bytes** (64 banks) | growing the ROM is the #1 cause of hacks failing on handhelds |
+| Cart type `0x147` | `0x03` MBC1+RAM+BATTERY | changing the mapper breaks core compatibility |
+| ROM-size byte `0x148` | `0x05` | must agree with the real file size |
+| RAM-size byte `0x149` | `0x02` (8 KB) | keeps existing `.sav` files compatible |
+| Header checksum `0x14D` | recomputed each build | **real hardware refuses to boot on a mismatch** |
+| Global checksum `0x14E–F` | recomputed each build | cosmetic, but cheap to keep correct |
+
+Everything is patched **in place inside existing banks**. Relocations (e.g. the verb
+jump table, or the card-name pool if it ever overflows) move data into free space
+*within* the existing 64 banks — they never append. Adding a bank would require
+changing `0x148`, which is exactly the change that breaks handheld compatibility.
+
 ## Editing
 
 Edits are queued as data (JSON / the `EDITS` list) and applied by `build.py`.
