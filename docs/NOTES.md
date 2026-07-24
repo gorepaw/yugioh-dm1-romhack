@@ -161,8 +161,8 @@ flow**, not a table. That is why the `0x15162` data edit only moved the text.
 **Feasible fix — insert a table-driven indirection** (classic romhack technique):
 every effect handler is already uniformly callable as `rst $08 <routine_idx> <bank 5>`
 (indices 5..20 via bank 5's routine table at `0x14002`). So:
-1. Put a new **50-byte table** (magic slot → bank-5 routine index) in free ROM
-   (e.g. the zero-filled `0x34094`–`0x340F3` region in bank D).
+1. Put a new **50-byte table** (magic slot → bank-5 routine index) in genuinely free
+   ROM — see the free-space section below (**do not** use bank-13 zero runs).
 2. Add a ~20–40 byte stub: read slot → index, issue the `rst $08`.
 3. Patch the magic-effect decision point to call the stub.
 Result: spell verbs become **freely assignable per magic slot** — what Project 2 wants.
@@ -210,9 +210,40 @@ Beating a duelist 10/20/…/100 times awards a specific card.
 - **To ease the grind: edit the ten BCD values at `0x036F02`** (e.g. 3,6,9,…,30).
   Reward *cards* can be re-chosen by editing the 17 × 10 id blocks.
 
-## TODO — remaining grind goal
-- **Cards per win** — award ~3 instead of 1: find the award-count value/loop
-  (drop-award routine is in bank D around `0x34008`–`0x34070`).
+## Free space — and a TRAP to avoid
+Use `work/scripts/find_freespace.py`. **Zero runs are not automatically free.**
+
+> ⚠️ The zero runs inside bank 13 (`0x034922`, `0x0362CC`, `0x34094`…) are **live
+> drop-pool weight data** — cards with 0% drop chance. Writing a patch there would
+> silently corrupt the drop tables. Verify a run isn't inside a known table first.
+
+Genuinely free (`0xFF`/`0x00` padding at bank ends), e.g.:
+`0x017C00`/`0x017E00` (bank 5), `0x01FC00`–`0x01FE00` (bank 7),
+`0x033283` (208 B) and `0x03390C` (332 B) in bank 12.
+**Bank 13 is completely full** — packed to `0x37FFF`, no padding at all.
+
+## Cards per win — analysis (NOT yet patched)
+Award routine is bank D routine 0 at `$400C` (file `0x3400C`):
+```
+call $23F7 ; cp 0 ; jr z,skip
+call $4027        ; pick the card: PRNG ($2112) x2, then scan the pool's
+                  ; cumulative weights until the roll is covered -> card index
+rst08 x3          ; add to collection / display
+call $6E8E
+```
+`$4027` (file `0x34027`) is the picker. Awarding 3 cards means running that body
+three times — i.e. redirect `$400C` to a looping stub.
+
+**Blockers to solve first:**
+1. Bank 13 has **no free space** for the stub, so it must live in another bank
+   (fine — `rst $08` switches banks) or replace dead code in bank 13.
+2. The caller of `$400C` is **not confirmed**: the only `CF 00 0D` match
+   (`0x09F92A`, bank 39) sits in high-entropy data and is very likely a false
+   positive. So the invocation path needs verifying.
+
+**Recommended next step:** BGB breakpoint on `0x3400C` (bank 13 `$400C`), win a duel,
+and read the call stack / return address. That confirms the caller and the banking
+context in minutes, versus guessing statically.
 
 ### Card lore / description text (bonus find)
 - Bank `0x3C`: description pointer table at `$F0060`, strings from `$F033A`
