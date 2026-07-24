@@ -27,11 +27,14 @@ Spells live at #301–350.
 
 Tile counts below are measured with the real encoder, not estimated.
 
-**Removed (owner decision):** three earlier entries were exact stat-clones of the
-existing Dark Magician (2500/2100 Spellcaster) — *Dark Eradicator Warlock*, *Dark
-Magician the Magician of Black Magic*, and *Magician of Chaos*. Being effect-less,
-they *were* Dark Magician, so they're cut. The other "…of Chaos" cards have distinct
-stats and remain.
+**Removed (owner decisions).** First cull — three exact stat-clones of the existing
+Dark Magician (2500/2100 Spellcaster): *Dark Eradicator Warlock*, *Magician of Black
+Magic*, *Magician of Chaos*. Second cull — six redundant within-set duplicates:
+*Apprentice Illusion Magician*, *DMG the Magician's Apprentice*, *Dark Magician of
+Destruction*, *Magician of Dark Chaos*, *Magician of Dark Illusion*, and *Timaeus the
+United Magical Dragon* (its fusion-result role passed to Timaeus the United Dragon).
+Two cards were **retyped to Warrior** to break their remaining collisions: Dark
+Cavalry and Red-Eyes Dark Dragoon.
 
 ---
 
@@ -51,20 +54,6 @@ to allow, i.e. Dark Magician + each chosen Dragon. That is cheap: there are 736 
 rows currently pointing at Flame Swordsman and Zombie Warrior.
 
 *Not representable:* Level 8, DARK, Fusion/Effect subtype, the effect text.
-
----
-
-## Apprentice Illusion Magician
-
-| | |
-|---|---|
-| **In-game name** | `AprnticeIlusnMagc` — 17 tiles |
-| **ATK / DEF** | 2000 / 1700 |
-| **Type** | Spellcaster |
-| **Flavour** | `Novice of the dark` (18) / `magician's craft.` (16) |
-| **Slot zone** | either — no fusion involvement yet |
-
-*Not representable:* Level 6, DARK.
 
 ---
 
@@ -88,7 +77,7 @@ rows currently pointing at Flame Swordsman and Zombie Warrior.
 |---|---|
 | **In-game name** | `Dark Cavalry` — 12 tiles |
 | **ATK / DEF** | 2800 / 2300 |
-| **Type** | Spellcaster |
+| **Type** | **Warrior** (retyped from Spellcaster to break its collision with The Dark Magicians) |
 | **Flavour** | `The magician rides` (18) / `armed for war.` (14) |
 | **Slot zone** | **#1–#300 required** — it is a Fusion result |
 
@@ -133,22 +122,6 @@ stock `Gaia:DrgnChampion`. Alternative: `MagGirlDrgnKnight` (17).
 
 ---
 
-## Dark Magician Girl the Magician's Apprentice
-
-| | |
-|---|---|
-| **In-game name** | `DMGirl:Aprentice` — 16 tiles |
-| **ATK / DEF** | 2000 / 1700 |
-| **Type** | Spellcaster |
-| **Flavour** | `Still learning the` (17) / `dark master's art.` (17) |
-| **Slot zone** | either — no fusion involvement yet |
-
-Name note: full name is 44 characters. Alternative: `DMGirlMagAprntce` (16).
-
-*Not representable:* Level 6, DARK.
-
----
-
 ## Dark Magician of Chaos
 
 | | |
@@ -160,24 +133,6 @@ Name note: full name is 44 characters. Alternative: `DMGirlMagAprntce` (16).
 | **Slot zone** | either |
 
 *Not representable:* Level 8, DARK.
-
----
-
-## Dark Magician of Destruction
-
-| | |
-|---|---|
-| **In-game name** | `DarkMagcnDestructn` — 18 tiles |
-| **ATK / DEF** | 2800 / 2600 |
-| **Type** | Spellcaster |
-| **Flavour** | `Magic turned only` (17) / `toward ruin.` (12) |
-| **Slot zone** | **#1–#300 required** — Fusion result |
-
-Fusion: *Dark Magician + 1 LIGHT or DARK monster*. There are no attributes in this
-engine, so "LIGHT or DARK" has no meaning — this becomes an explicit list of allowed
-partners, chosen by hand.
-
-*Not representable:* Level 8, DARK, Fusion/Effect subtype, attribute condition.
 
 ---
 
@@ -247,34 +202,6 @@ by a wide margin — it will play very differently from the rest of the Spellcas
 
 ---
 
-## Magician of Dark Chaos - Black Chaos
-
-| | |
-|---|---|
-| **In-game name** | `MagicnDarkChaos` — 15 tiles |
-| **ATK / DEF** | 2800 / 2600 |
-| **Type** | Spellcaster |
-| **Flavour** | `Reborn in the dark` (18) / `chaos ritual.` (13) |
-| **Slot zone** | either |
-
-*Not representable:* Level 8, DARK.
-
----
-
-## Magician of Dark Illusion
-
-| | |
-|---|---|
-| **In-game name** | `MagicnDarkIllusion` — 17 tiles |
-| **ATK / DEF** | 2100 / 2500 |
-| **Type** | Spellcaster |
-| **Flavour** | `Weaves shadow into` (18) / `waking dreams.` (14) |
-| **Slot zone** | either |
-
-*Not representable:* Level 7, DARK.
-
----
-
 ## Magician's Robe
 
 | | |
@@ -328,13 +255,18 @@ using it as a material means moving it into #1–#300.
 |---|---|
 | **In-game name** | `RedEyesDarkDragoon` — 18 tiles |
 | **ATK / DEF** | 3000 / 2500 |
-| **Type** | Spellcaster |
+| **Type** | **Warrior** (retyped from Spellcaster to break its collision with Master of Chaos) |
 | **Flavour** | `Mage astride the` (16) / `black dragon.` (13) |
 | **Slot zone** | **#1–#300 required** — Fusion result |
 
 Fusion: *Dark Magician + Red-Eyes Black Dragon* (or any Dragon effect monster).
 Red-Eyes already exists as **#82**, comfortably inside the fusion zone, so the
 headline recipe maps directly with no relocation.
+
+> ⚠ **New collision from the retype.** As a Warrior 3000/2500 it now exactly matches
+> the existing **Black Luster Soldier (#364)**. Since BLS is already flagged for
+> relocation/retirement (it sits outside the fusion zone), this may be moot — but if
+> both survive, nudge one stat (e.g. Dragoon to 3000/2400) to keep them distinct.
 
 *Not representable:* Level 8, DARK, Fusion/Effect subtype.
 
@@ -429,6 +361,24 @@ Fusion: *a Warrior + a Dragon*. A defensive body (2800 DEF), unusual in this set
 
 ---
 
+## Legendary Knight Timaeus
+
+| | |
+|---|---|
+| **In-game name** | `LegndKnghtTimaeus` — 17 tiles |
+| **ATK / DEF** | 2800 / 1800 |
+| **Type** | Warrior |
+| **Flavour** | `Sworn knight of` (15) / `the eye of time.` (16) |
+| **Slot zone** | either |
+
+Name alternatives: `Knight Timaeus` (14), `Timaeus the Knight` (18). Warrior 2800/1800,
+so it shares stats with Timaeus the United Dragon (Dragon 2800/1800) but the type
+differs — they play differently on terrain, not a hard collision.
+
+*Not representable:* Level 8, LIGHT.
+
+---
+
 ## Timaeus the United Dragon
 
 | | |
@@ -437,28 +387,16 @@ Fusion: *a Warrior + a Dragon*. A defensive body (2800 DEF), unusual in this set
 | **ATK / DEF** | 2800 / 1800 |
 | **Type** | Dragon |
 | **Flavour** | `The knight who` (14) / `sealed the dragon.` (18) |
-| **Slot zone** | **#1–#300 required** — Fusion *material* |
-
-Material for Timaeus the United Magical Dragon. Name alternatives:
-`Timaeus the Dragon` (18), `TimaeusUnitdDragon` (18).
-
-*Not representable:* Level 8, LIGHT.
-
----
-
-## Timaeus the United Magical Dragon
-
-| | |
-|---|---|
-| **In-game name** | `TimaeusMagicDragon` — 18 tiles |
-| **ATK / DEF** | 2800 / 1800 |
-| **Type** | Dragon |
-| **Flavour** | `Dragon and mage` (15) / `sworn together.` (15) |
 | **Slot zone** | **#1–#300 required** — Fusion result |
 
-Fusion: *Timaeus the United Dragon + Dark Magician*. A clean two-card pair — one row.
+Now the Timaeus fusion **result** (inherited from the cut *Timaeus the United Magical
+Dragon*). Its former recipe *Timaeus the United Dragon + Dark Magician* was
+self-referential once the Magical form was cut, so the recipe is **open** — the
+natural fit is *Legendary Knight Timaeus + Dark Magician* (knight unites with the
+mage's power), a clean two-card pair. Flag if you'd prefer a different pairing.
+Name alternatives: `Timaeus the Dragon` (18), `TimaeusUnitdDragon` (18).
 
-*Not representable:* Level 10, LIGHT, Fusion subtype.
+*Not representable:* Level 8, LIGHT, Fusion subtype.
 
 ---
 
@@ -524,26 +462,21 @@ treated as a fusion of two Spellcasters — a hand-picked partner list.
 ## ⚠ Stat collisions
 
 DM1 has no effects, so **two cards with the same type and the same ATK/DEF are
-mechanically identical** — only name, art and flavour differ. After cutting the three
-Dark Magician clones, the remaining collision groups are:
+mechanically identical** — only name, art and flavour differ. After the second cull
+(6 cards) and two retypes (Dark Cavalry → Warrior, Red-Eyes Dark Dragoon → Warrior),
+**every within-set hard collision is resolved.** The remaining near-collisions differ
+only by type, which the terrain tables (±30%) make matter:
 
-| Type | Stats | Cards |
-|---|---|---|
-| Spellcaster | 2000/1700 | AprnticeIlusnMagc, Dark Magician Girl, DMGirl:Aprentice |
-| Spellcaster | 2800/2600 | DarkMagicianChaos, DarkMagcnDestructn, MagicnDarkChaos |
-| Spellcaster | 2800/2300 | Dark Cavalry, The Dark Magicians |
-| Spellcaster | 2100/2500 | Illusion of Chaos, MagicnDarkIllusion |
-| Spellcaster | 3000/2500 | Master of Chaos, RedEyesDarkDragoon |
-| Dragon | 2800/1800 | TimaeusUnitedDragn, TimaeusMagicDragon |
+| Stats | Cards (differ by type) |
+|---|---|
+| 2900/2400 | DarkMagicianKnight [Dragon] · Dark Paladin [Spellcaster] |
+| 2800/1800 | TimaeusUnitedDragn [Dragon] · LegndKnghtTimaeus [Warrior] |
+| 4000/4000 | Obelisk [Fiend] · Slifer [Dragon] · Ra [Winged Beast] — intentional |
 
-No entry now duplicates a card already in the ROM.
-
-This is faithful to the real cards and fine where they're meant as
-same-card-different-art (the two Timaeus forms, the DMG variants). The engine offers
-two levers to separate any that should feel distinct: nudging ATK/DEF apart, or
-assigning different types — and type is the stronger lever, because the terrain tables
-give ±30% by type, so a Spellcaster and a Fiend with identical stats genuinely play
-differently on Yami.
+One collision now exists **against an existing ROM card**: retyping Red-Eyes Dark
+Dragoon to Warrior 3000/2500 makes it match **Black Luster Soldier (#364)**. BLS is
+already flagged for relocation/retirement (it's outside the fusion zone), so this is
+likely moot — but noted on the Dragoon entry.
 
 ---
 
@@ -551,41 +484,35 @@ differently on Yami.
 
 | | |
 |---|---|
-| Cards recorded | **32** |
-| Name tiles required | **504** |
-| Fusion-zone (#1–#300) slots required | **16** |
-| Free-zone (#351–365) eligible | 16 (only 15 slots exist) |
+| Cards recorded | **27** |
+| Name tiles required | **420** |
+| Fusion-zone (#1–#300) slots required | **14** |
+| Free-zone (#351–365) eligible | 13 (15 slots exist) |
 
 ### ⚠ The name pool does not balance
 
-The pool is 4480 tiles with **zero free**, stock average 12.3 tiles/card. Adding 32
-cards by overwriting 32 existing ones does **not** pay for itself:
+The pool is 4480 tiles with **zero free**, stock average 12.3 tiles/card. Adding 27
+cards by overwriting 27 existing ones does **not** pay for itself:
 
 | | Tiles |
 |---|---|
-| Cost of the 32 new names | 504 |
-| Freed by retiring 32 *average* cards | 393 |
-| Freed by retiring the 32 *longest-named* cards | 565 |
+| Cost of the 27 new names | 420 |
+| Freed by retiring 27 *average* cards | 332 |
 
-To break even purely by name length you'd retire **at least 29 cards from the
+To break even purely by name length you'd retire **at least 24 cards from the
 longest-named end** — and the real retirement list is chosen for weakness, not name
-length, so it will free less than that and fall short. This is now the binding
-constraint, and it points at the pending **name-pool relocation** task: bank 1's pool
-ends exactly at `$7FFF`, so growing it means finding 4480+ contiguous free bytes in
-another bank and re-pointing the reader.
+length, so it will free less and fall short. This remains the binding constraint and
+points at the pending **name-pool relocation** task: bank 1's pool ends exactly at
+`$7FFF`, so growing it means finding 4480+ contiguous free bytes in another bank and
+re-pointing the reader.
 
-### ⚠ Fusion-zone pressure is the harder limit
+### Fusion-zone pressure
 
-**16 of 32 cards must live in #1–#300** because fusion cannot reach above #300. That
-is 16 existing monsters displaced from the fusion-capable range — the free tail
-#351–365 cannot absorb a single one of them. Related: **Black Luster Soldier (#364)
-sits outside the fusion zone**, so using it as a Master of Chaos material means
-relocating it into #1–#300 too.
+**14 of 27 cards must live in #1–#300** (fusion can't reach above #300), displacing 14
+existing monsters from the fusion range; the free tail #351–365 can't hold any of
+them. The 13 non-fusion cards fit the 15-slot tail with 2 to spare — so this batch no
+longer forces an extra displacement beyond the 14. **Net: at least 14 existing
+monsters retired to seat this roster.** Related: Black Luster Soldier (#364) is outside
+the fusion zone, so using it as a Master of Chaos material means relocating it too.
 
-The 16 non-fusion cards (the Skilled trio, the God cards, the collision-group
-Spellcasters, Dark Sage, the Robe/Rod, etc.) *can* use the free tail, but there are
-only 15 slots there — so at least one of them also displaces a #1–#300 monster.
-
-**Net: at least 17 existing monsters must be retired to seat this roster**, before the
-name-pool arithmetic is even satisfied. The retirement list is the next thing to
-build.
+The retirement list is the next thing to build.
