@@ -260,6 +260,49 @@ Stock content: 2159 recipes, **0 duplicate pairs**, 52 distinct results, 263 dis
 materials. Most-produced: Flame Swordsman (418), Zombie Warrior (318),
 CharubinFireKnight (168) — so a handful of results absorb most of the table.
 
+## The opponent roster — 16 duelists, FULLY MAPPED
+Tool: `work/scripts/duelists.py` (`list` / `deck <n>` / `rewards <n>`).
+
+Everything about an opponent hangs off one **pool id** from the 16-byte map at `0xB734`,
+which selects their deck, drop table and reward list together.
+
+| Structure | Address | Format |
+|---|---|---|
+| Duelist names | `0x5457` | 16 × **fixed 8 bytes**, space-padded (followed by UI strings `LinkDuel`, `Duelled`, `Name`) |
+| Duelist → pool | `0xB734` | 16 bytes |
+| Deck pointers | `0x2006C` (bank 8) | 17 × 16-bit → 365 × cumulative weights, total 2048 |
+| Drop pointers | `0x34072` (bank 13) | 17 × 16-bit, same shape |
+| Reward pointers | `0x036F18` (bank 13) | 17 × 16-bit → 10 card ids |
+
+| # | Duelist | Pool | Deck cards | Drop cards | Deck file |
+|---|---|---|---|---|---|
+| 0 | Weevil | 0 | 13 | 17 | `0x02008E` |
+| 1 | Mai | 1 | 39 | 36 | `0x020368` |
+| 2 | Rex | 2 | 18 | 16 | `0x020642` |
+| 3 | Mako | 3 | 29 | 32 | `0x02091C` |
+| 4 | Kaiba | 8 | 61 | 33 | `0x0214B0` |
+| 5 | Mokuba | 9 | 101 | 100 | `0x02178A` |
+| 6 | Puppeter | 12 | 66 | 36 | `0x022018` |
+| 7 | PaniK | 13 | 38 | 31 | `0x0222F2` |
+| 8 | Keith | 14 | 56 | 28 | `0x0225CC` |
+| 9 | Yugi | 5 | 33 | 46 | `0x020ED0` |
+| 10 | Tristan | 10 | **3** | 29 | `0x021A64` |
+| 11 | Joey | 7 | 28 | 40 | `0x0211D6` |
+| 12 | Bakura | 11 | 10 | 49 | `0x021D3E` |
+| 13 | Simon | 16 | 19 | 24 | `0x022B80` |
+| 14 | Pegasus | 15 | 49 | 29 | `0x0228A6` |
+| 15 | YamiYugi | 4 | 27 | 22 | `0x020BF6` |
+
+- **17 pool slots, 16 duelists — pool 6 is referenced by nobody.** Its deck pointer is a
+  44-byte stub (real decks are 730 bytes) and drop pools 6 and 7 share one pointer, so
+  slot 6 is a free deck + drop table. The *roster size* is still fixed at 16 by the name
+  table and `0xB734`.
+- Duelist index is **not** pool index: Kaiba is duelist 4 / pool 8, YamiYugi is 15 / 4.
+- Deck sizes vary enormously — Tristan is 3 cards (Kuriboh, Skull Servant, Dark Plant,
+  33% each), Mokuba is 101. "Deck size" means distinct cards with a non-zero share.
+- Names are **fixed 8 bytes**, so renaming an opponent is in-place and free — unlike
+  card names there is no shared pool to repack.
+
 ## Opponent decks (bank 8) — SAME FORMAT AS DROP POOLS
 - Deck tables are **monotonic cumulative weight arrays** (values run past 365, so they
   are weights, not card ids). Opponent decks are **probability distributions the game
