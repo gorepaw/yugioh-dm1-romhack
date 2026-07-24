@@ -18,7 +18,13 @@ card is recorded below under *Not representable* purely for reference.
 | ATK / DEF | BCD, 0–9999 |
 
 Ligatures `il li ll l! 's 't` each cost **one tile**, so some names are cheaper than
-their letter count — `IllusionMagician` is 16 characters but 15 tiles.
+their letter count.
+
+**Naming convention (owner decision):** on every card *except* the base Dark Magician,
+any magic-word longer than 4 letters — `Magician`, `Magical`, `Magic`, and abbreviated
+forms like `Magicin`/`Magicn` — is written **`Magn`**. `Mage` (4 letters) is left
+alone. This saved 40 name tiles across 11 cards. The base **Dark Magician** (#35, in
+ROM) keeps its full name.
 
 **Slot zoning matters.** Fusion only reaches cards **#1–#300**, so any card that is a
 fusion result *or* a fusion material must occupy that range, which means overwriting
@@ -61,7 +67,7 @@ rows currently pointing at Flame Swordsman and Zombie Warrior.
 
 | | |
 |---|---|
-| **In-game name** | `Chronicle Magician` — 18 tiles (at the ceiling) |
+| **In-game name** | `Chronicle Magn` — 14 tiles |
 | **ATK / DEF** | 2500 / 2500 |
 | **Type** | Spellcaster |
 | **Flavour** | `Keeper of the ages` (18) / `and their secrets.` (18) |
@@ -92,7 +98,7 @@ of type X" rule exists, so this becomes one explicit row per Warrior we allow.
 
 | | |
 |---|---|
-| **In-game name** | `Dark Magician Girl` — 18 tiles (at the ceiling) |
+| **In-game name** | `Dark Magn Girl` — 14 tiles |
 | **ATK / DEF** | 2000 / 1700 |
 | **Type** | Spellcaster |
 | **Flavour** | `The magician's own` (17) / `bright pupil.` (12) |
@@ -126,7 +132,7 @@ stock `Gaia:DrgnChampion`. Alternative: `MagGirlDrgnKnight` (17).
 
 | | |
 |---|---|
-| **In-game name** | `DarkMagicianChaos` — 17 tiles |
+| **In-game name** | `DarkMagnChaos` — 13 tiles |
 | **ATK / DEF** | 2800 / 2600 |
 | **Type** | Spellcaster |
 | **Flavour** | `Chaos remade the` (16) / `master magician.` (16) |
@@ -140,7 +146,7 @@ stock `Gaia:DrgnChampion`. Alternative: `MagGirlDrgnKnight` (17).
 
 | | |
 |---|---|
-| **In-game name** | `DarkMagicianKnight` — 18 tiles |
+| **In-game name** | `DarkMagnKnight` — 14 tiles |
 | **ATK / DEF** | 2900 / 2400 |
 | **Type** | Dragon |
 | **Flavour** | `Dragon and mage` (15) / `joined as one.` (14) |
@@ -206,7 +212,7 @@ by a wide margin — it will play very differently from the rest of the Spellcas
 
 | | |
 |---|---|
-| **In-game name** | `Magician's Robe` — 14 tiles |
+| **In-game name** | `Magn's Robe` — 10 tiles |
 | **ATK / DEF** | 700 / 2000 |
 | **Type** | Spellcaster |
 | **Flavour** | `Cloth that guards` (17) / `its wearer well.` (15) |
@@ -220,7 +226,7 @@ by a wide margin — it will play very differently from the rest of the Spellcas
 
 | | |
 |---|---|
-| **In-game name** | `Magician's Rod` — 13 tiles |
+| **In-game name** | `Magn's Rod` — 9 tiles |
 | **ATK / DEF** | 1600 / 100 |
 | **Type** | Spellcaster |
 | **Flavour** | `A rod that strikes` (18) / `but cannot shield.` (18) |
@@ -276,7 +282,7 @@ headline recipe maps directly with no relocation.
 
 | | |
 |---|---|
-| **In-game name** | `The Dark Magicians` — 18 tiles |
+| **In-game name** | `The Dark Magns` — 14 tiles |
 | **ATK / DEF** | 2800 / 2300 |
 | **Type** | Spellcaster |
 | **Flavour** | `Master and pupil` (15) / `cast as one.` (12) |
@@ -404,7 +410,7 @@ Name alternatives: `Timaeus the Dragon` (18), `TimaeusUnitdDragon` (18).
 
 | | |
 |---|---|
-| **In-game name** | `Timestar Magician` — 17 tiles |
+| **In-game name** | `Timestar Magn` — 13 tiles |
 | **ATK / DEF** | 2400 / 1200 |
 | **Type** | Spellcaster |
 | **Flavour** | `Turns back the` (14) / `duel's very clock.` (17) |
@@ -421,7 +427,7 @@ treated as a fusion of two Spellcasters — a hand-picked partner list.
 
 | | |
 |---|---|
-| **In-game name** | `SkilledBlueMagicin` — 17 tiles |
+| **In-game name** | `SkilledBlueMagn` — 14 tiles |
 | **ATK / DEF** | 1800 / 1800 |
 | **Type** | Spellcaster |
 | **Flavour** | `Adept in the art` (16) / `of blue magic.` (14) |
@@ -435,7 +441,7 @@ treated as a fusion of two Spellcasters — a hand-picked partner list.
 
 | | |
 |---|---|
-| **In-game name** | `SkilledDarkMagicin` — 17 tiles |
+| **In-game name** | `SkilledDarkMagn` — 14 tiles |
 | **ATK / DEF** | 1900 / 1700 |
 | **Type** | Spellcaster |
 | **Flavour** | `Adept in the art` (16) / `of dark magic.` (14) |
@@ -449,7 +455,7 @@ treated as a fusion of two Spellcasters — a hand-picked partner list.
 
 | | |
 |---|---|
-| **In-game name** | `SkilledWhiteMagicn` — 17 tiles |
+| **In-game name** | `SkilledWhiteMagn` — 15 tiles |
 | **ATK / DEF** | 1700 / 1900 |
 | **Type** | Spellcaster |
 | **Flavour** | `Adept in the art` (16) / `of white magic.` (15) |
@@ -485,26 +491,27 @@ likely moot — but noted on the Dragoon entry.
 | | |
 |---|---|
 | Cards recorded | **27** |
-| Name tiles required | **420** |
+| Name tiles required | **380** (was 420 before the `Magn` convention) |
 | Fusion-zone (#1–#300) slots required | **14** |
 | Free-zone (#351–365) eligible | 13 (15 slots exist) |
 
-### ⚠ The name pool does not balance
+### ⚠ The name pool still does not balance
 
-The pool is 4480 tiles with **zero free**, stock average 12.3 tiles/card. Adding 27
-cards by overwriting 27 existing ones does **not** pay for itself:
+The pool is 4480 tiles with **zero free**, stock average 12.3 tiles/card. The `Magn`
+convention saved 40 tiles (420 → 380), but adding 27 cards by overwriting 27 existing
+ones still does **not** pay for itself:
 
 | | Tiles |
 |---|---|
-| Cost of the 27 new names | 420 |
+| Cost of the 27 new names | 380 |
 | Freed by retiring 27 *average* cards | 332 |
 
-To break even purely by name length you'd retire **at least 24 cards from the
-longest-named end** — and the real retirement list is chosen for weakness, not name
-length, so it will free less and fall short. This remains the binding constraint and
-points at the pending **name-pool relocation** task: bank 1's pool ends exactly at
-`$7FFF`, so growing it means finding 4480+ contiguous free bytes in another bank and
-re-pointing the reader.
+To break even purely by name length you'd retire **at least 22 cards from the
+longest-named end** (was 24) — and the real retirement list is chosen for weakness,
+not name length, so it will free less and fall short. The abbreviation helped at the
+margin but did not remove the constraint; the pending **name-pool relocation** task
+still looms (bank 1's pool ends exactly at `$7FFF`, so growing it means finding 4480+
+contiguous free bytes in another bank and re-pointing the reader).
 
 ### Fusion-zone pressure
 
