@@ -27,6 +27,12 @@ Spells live at #301–350.
 
 Tile counts below are measured with the real encoder, not estimated.
 
+**Removed (owner decision):** three earlier entries were exact stat-clones of the
+existing Dark Magician (2500/2100 Spellcaster) — *Dark Eradicator Warlock*, *Dark
+Magician the Magician of Black Magic*, and *Magician of Chaos*. Being effect-less,
+they *were* Dark Magician, so they're cut. The other "…of Chaos" cards have distinct
+stats and remain.
+
 ---
 
 ## Amulet Dragon
@@ -90,23 +96,6 @@ Fusion: *Dark Magician + 1 Warrior monster*. Same as Amulet Dragon — no "any m
 of type X" rule exists, so this becomes one explicit row per Warrior we allow.
 
 *Not representable:* Level 8, DARK, Fusion/Effect subtype, the effect text.
-
----
-
-## Dark Eradicator Warlock
-
-| | |
-|---|---|
-| **In-game name** | `EradicatorWarlock` — 17 tiles |
-| **ATK / DEF** | 2500 / 2100 |
-| **Type** | Spellcaster |
-| **Flavour** | `Burns all it finds` (17) / `to bitter ash.` (14) |
-| **Slot zone** | either — no fusion involvement yet |
-
-Name note: the full name is 23 characters. `DarkEradicWarlock` (17) is the alternative
-if you'd rather keep "Dark" than "Warlock" intact.
-
-*Not representable:* Level 7, DARK.
 
 ---
 
@@ -209,20 +198,6 @@ Fusion: *Dark Magician + 1 Level 7+ Dragon or Warrior*. No levels exist, so the
 
 ---
 
-## Dark Magician the Magician of Black Magic
-
-| | |
-|---|---|
-| **In-game name** | `MagicianBlackMagic` — 18 tiles |
-| **ATK / DEF** | 2500 / 2100 |
-| **Type** | Spellcaster |
-| **Flavour** | `The oldest form of` (18) / `the black art.` (14) |
-| **Slot zone** | either |
-
-*Not representable:* Level 7, DARK.
-
----
-
 ## Dark Paladin
 
 | | |
@@ -266,20 +241,6 @@ by a wide margin — it will play very differently from the rest of the Spellcas
 | **ATK / DEF** | 2100 / 2500 |
 | **Type** | Spellcaster |
 | **Flavour** | `A mirage born of` (16) / `the chaos void.` (15) |
-| **Slot zone** | either |
-
-*Not representable:* Level 7, DARK.
-
----
-
-## Magician of Chaos
-
-| | |
-|---|---|
-| **In-game name** | `Magician of Chaos` — 17 tiles |
-| **ATK / DEF** | 2500 / 2100 |
-| **Type** | Spellcaster |
-| **Flavour** | `Chaos answers to` (16) / `his staff alone.` (16) |
 | **Slot zone** | either |
 
 *Not representable:* Level 7, DARK.
@@ -417,30 +378,172 @@ apex is Perfect Great Moth at 3500, and Yami Yugi's best is Black Skull Dragon a
 
 ---
 
+## Buster Blader
+
+| | |
+|---|---|
+| **In-game name** | `Buster Blader` — 13 tiles |
+| **ATK / DEF** | 2600 / 2300 |
+| **Type** | Warrior |
+| **Flavour** | `Trained to slay` (15) / `the great dragons.` (18) |
+| **Slot zone** | **#1–#300 required** — Fusion *material* |
+
+The keystone the whole Dark Magician fusion line has been waiting on: material for
+**Dark Paladin** (Dark Magician + Buster Blader), **Buster Blader the Dragon Destroyer
+Swordsman**, and **Buster Dragon**. Must live in the fusion zone.
+
+*Not representable:* Level 7, EARTH.
+
+---
+
+## Buster Blader, the Dragon Destroyer Swordsman
+
+| | |
+|---|---|
+| **In-game name** | `BusterBladeDrgnDst` — 18 tiles |
+| **ATK / DEF** | 2800 / 2500 |
+| **Type** | Warrior |
+| **Flavour** | `Sworn to end every` (18) / `winged dragon.` (14) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Buster Blader + 1 Dragon* — a hand-picked partner list.
+Name alternatives: `BladerDrgnDestroyr` (18), `BusterDragonSlayer` (18).
+
+*Not representable:* Level 8, LIGHT, Fusion/Effect subtype.
+
+---
+
+## Buster Dragon
+
+| | |
+|---|---|
+| **In-game name** | `Buster Dragon` — 13 tiles |
+| **ATK / DEF** | 1200 / 2800 |
+| **Type** | Dragon |
+| **Flavour** | `The sword itself` (16) / `reborn as a beast.` (18) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *a Warrior + a Dragon*. A defensive body (2800 DEF), unusual in this set.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype.
+
+---
+
+## Timaeus the United Dragon
+
+| | |
+|---|---|
+| **In-game name** | `TimaeusUnitedDragn` — 18 tiles |
+| **ATK / DEF** | 2800 / 1800 |
+| **Type** | Dragon |
+| **Flavour** | `The knight who` (14) / `sealed the dragon.` (18) |
+| **Slot zone** | **#1–#300 required** — Fusion *material* |
+
+Material for Timaeus the United Magical Dragon. Name alternatives:
+`Timaeus the Dragon` (18), `TimaeusUnitdDragon` (18).
+
+*Not representable:* Level 8, LIGHT.
+
+---
+
+## Timaeus the United Magical Dragon
+
+| | |
+|---|---|
+| **In-game name** | `TimaeusMagicDragon` — 18 tiles |
+| **ATK / DEF** | 2800 / 1800 |
+| **Type** | Dragon |
+| **Flavour** | `Dragon and mage` (15) / `sworn together.` (15) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Timaeus the United Dragon + Dark Magician*. A clean two-card pair — one row.
+
+*Not representable:* Level 10, LIGHT, Fusion subtype.
+
+---
+
+## Timestar Magician
+
+| | |
+|---|---|
+| **In-game name** | `Timestar Magician` — 17 tiles |
+| **ATK / DEF** | 2400 / 1200 |
+| **Type** | Spellcaster |
+| **Flavour** | `Turns back the` (14) / `duel's very clock.` (17) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Originally an Xyz ("Rank 4", 2 Level-4 Spellcasters). No Xyz or ranks exist, so it's
+treated as a fusion of two Spellcasters — a hand-picked partner list.
+
+*Not representable:* Rank 4 / Xyz, DARK, Fusion/Effect subtype.
+
+---
+
+## Skilled Blue Magician
+
+| | |
+|---|---|
+| **In-game name** | `SkilledBlueMagicin` — 17 tiles |
+| **ATK / DEF** | 1800 / 1800 |
+| **Type** | Spellcaster |
+| **Flavour** | `Adept in the art` (16) / `of blue magic.` (14) |
+| **Slot zone** | either |
+
+*Not representable:* Level 4, LIGHT, spell-counter effect.
+
+---
+
+## Skilled Dark Magician
+
+| | |
+|---|---|
+| **In-game name** | `SkilledDarkMagicin` — 17 tiles |
+| **ATK / DEF** | 1900 / 1700 |
+| **Type** | Spellcaster |
+| **Flavour** | `Adept in the art` (16) / `of dark magic.` (14) |
+| **Slot zone** | either |
+
+*Not representable:* Level 4, DARK, spell-counter effect.
+
+---
+
+## Skilled White Magician
+
+| | |
+|---|---|
+| **In-game name** | `SkilledWhiteMagicn` — 17 tiles |
+| **ATK / DEF** | 1700 / 1900 |
+| **Type** | Spellcaster |
+| **Flavour** | `Adept in the art` (16) / `of white magic.` (15) |
+| **Slot zone** | either |
+
+*Not representable:* Level 4, LIGHT, spell-counter effect.
+
+---
+
 ## ⚠ Stat collisions
 
 DM1 has no effects, so **two cards with the same type and the same ATK/DEF are
-mechanically identical** — only name, art and flavour differ. **15 of the 26 recorded
-cards sit in a collision group:**
+mechanically identical** — only name, art and flavour differ. After cutting the three
+Dark Magician clones, the remaining collision groups are:
 
 | Type | Stats | Cards |
 |---|---|---|
 | Spellcaster | 2000/1700 | AprnticeIlusnMagc, Dark Magician Girl, DMGirl:Aprentice |
-| Spellcaster | 2500/2100 | EradicatorWarlock, MagicianBlackMagic, Magician of Chaos |
 | Spellcaster | 2800/2600 | DarkMagicianChaos, DarkMagcnDestructn, MagicnDarkChaos |
 | Spellcaster | 2800/2300 | Dark Cavalry, The Dark Magicians |
 | Spellcaster | 2100/2500 | Illusion of Chaos, MagicnDarkIllusion |
 | Spellcaster | 3000/2500 | Master of Chaos, RedEyesDarkDragoon |
+| Dragon | 2800/1800 | TimaeusUnitedDragn, TimaeusMagicDragon |
 
-And three of them also duplicate a card **already in the ROM** — `EradicatorWarlock`,
-`MagicianBlackMagic` and `Magician of Chaos` are all 2500/2100 Spellcasters, which is
-exactly **Dark Magician**. As printed, they *are* Dark Magician.
+No entry now duplicates a card already in the ROM.
 
-This is faithful to the real cards and fine if they're meant as
-same-card-different-art. The engine offers only two levers to separate them: nudging
-ATK/DEF apart, or assigning different types — and type is the stronger lever, because
-the terrain tables give ±30% by type, so a Spellcaster and a Fiend with identical
-stats genuinely play differently on Yami.
+This is faithful to the real cards and fine where they're meant as
+same-card-different-art (the two Timaeus forms, the DMG variants). The engine offers
+two levers to separate any that should feel distinct: nudging ATK/DEF apart, or
+assigning different types — and type is the stronger lever, because the terrain tables
+give ±30% by type, so a Spellcaster and a Fiend with identical stats genuinely play
+differently on Yami.
 
 ---
 
@@ -448,34 +551,41 @@ stats genuinely play differently on Yami.
 
 | | |
 |---|---|
-| Cards recorded | 26 |
-| Name tiles required | **408** |
-| Fusion-zone (#1–#300) slots required | **10** |
+| Cards recorded | **32** |
+| Name tiles required | **504** |
+| Fusion-zone (#1–#300) slots required | **16** |
 | Free-zone (#351–365) eligible | 16 (only 15 slots exist) |
 
-### ⚠ The name pool does not balance yet
+### ⚠ The name pool does not balance
 
-The pool is 4480 tiles with **zero free**, and the stock average is 12.3 tiles/card.
-So adding 26 cards by overwriting 26 existing ones does **not** pay for itself:
+The pool is 4480 tiles with **zero free**, stock average 12.3 tiles/card. Adding 32
+cards by overwriting 32 existing ones does **not** pay for itself:
 
 | | Tiles |
 |---|---|
-| Cost of the 26 new names | 408 |
-| Freed by retiring 26 *average* cards | 319 |
-| Freed by retiring the 26 *longest-named* cards | 463 |
+| Cost of the 32 new names | 504 |
+| Freed by retiring 32 *average* cards | 393 |
+| Freed by retiring the 32 *longest-named* cards | 565 |
 
-Retiring average-length cards leaves us **89 tiles short**. Paying for these 26 names
-requires retiring **at least 23 cards chosen from the longest-named end** — and in
-practice more, since the retirement list will be chosen for weakness, not name length.
+To break even purely by name length you'd retire **at least 29 cards from the
+longest-named end** — and the real retirement list is chosen for weakness, not name
+length, so it will free less than that and fall short. This is now the binding
+constraint, and it points at the pending **name-pool relocation** task: bank 1's pool
+ends exactly at `$7FFF`, so growing it means finding 4480+ contiguous free bytes in
+another bank and re-pointing the reader.
 
-Three ways out, none yet chosen: retire more cards than we add, shorten the new names
-further, or relocate the name pool out of bank 1 (it currently runs to `$7FFF`, the
-exact end of the bank, so relocation means finding 4480+ contiguous bytes elsewhere).
+### ⚠ Fusion-zone pressure is the harder limit
 
-### Fusion-zone pressure
+**16 of 32 cards must live in #1–#300** because fusion cannot reach above #300. That
+is 16 existing monsters displaced from the fusion-capable range — the free tail
+#351–365 cannot absorb a single one of them. Related: **Black Luster Soldier (#364)
+sits outside the fusion zone**, so using it as a Master of Chaos material means
+relocating it into #1–#300 too.
 
-10 of 26 cards must live in **#1–#300** because fusion cannot reach above #300. The
-free tail #351–365 is only 15 slots and cannot hold any of them. Two existing cards
-are also implicated: **Buster Blader must be added** (material for Dark Paladin), and
-**Black Luster Soldier (#364) sits outside the fusion zone**, so using it as a Master
-of Chaos material means relocating it into #1–#300.
+The 16 non-fusion cards (the Skilled trio, the God cards, the collision-group
+Spellcasters, Dark Sage, the Robe/Rod, etc.) *can* use the free tail, but there are
+only 15 slots there — so at least one of them also displaces a #1–#300 monster.
+
+**Net: at least 17 existing monsters must be retired to seat this roster**, before the
+name-pool arithmetic is even satisfied. The retirement list is the next thing to
+build.
