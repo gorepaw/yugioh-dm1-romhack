@@ -5,7 +5,22 @@ as Yami: old cards kept as the beatable body, new Toon monsters layered on.
 
 Identity: **Toons.** DM1 has zero Toon cards (verified), so all 18 are new.
 
-## Relinquished / Thousand-Eyes — CUT (recommended)
+## Opponent AI cannot use magic cards (engine fact — verify into NOTES.md later)
+
+Confirmed by code + data:
+- **0 of 16 stock opponent decks contain a single magic card** (ids 301–350).
+- The magic-activation path (`$56AE` → verb dispatch `$6F49`) is reached **only through
+  the player's cursor-driven card menu**: selector `$5095` reads the player's menu
+  bitflags at `$CAA5/$CAA6`, indexes the category handler table `$505E`, and only that
+  branch fires "play magic". The opponent's turn is a separate path that samples its
+  weighted deck and **summons monsters** — no spell-activation branch.
+
+So giving an opponent magic cards yields **dead draws** (it holds cards it never plays).
+Making the AI use magic is a **code** change (new assembly), not data — a Project-2
+capability, not available now. *(This belongs in docs/NOTES.md; recorded here to avoid
+a concurrent edit to that shared file.)*
+
+## Relinquished / Thousand-Eyes — CUT (confirmed)
 
 The chain in the real game:
 
@@ -53,15 +68,33 @@ Toon Ancient Gear Golem (3000/3000) is a brand-new stat line — the beefiest wa
 so far. *Parrot Dragon (2000/1300 Dragon)* is an archetype Toon with no "Toon" in its
 name — omitted; add if wanted.
 
-## Deck — 67 cards (old 49 + 18 Toons), weights /2048
+## Deck — 18 cards, ALL TOON (weights /2048)
 
-Additive. Old ≈ **76%**, Toons ≈ **24%** (his old deck is large, so Toons dilute more
-than Yami's did). If you want Pegasus to feel more Toon-dominant, say so and I'll shift
-the split. Top of curve is his old fiends/warriors (Gatekeeper, Kojikocy, Ansatsu ~4.5%);
-Toon threat tier runs 0.6–2.0%, with the three 3000-ATK Toons at 0.59% each.
+His entire old deck is cut (per owner). He had **zero** magic cards, and the AI can't
+play magic anyway (above), so "keep toons + magic" resolves to a pure all-Toon deck. The
+weak Toons are the beatable body: **44% of his draws are sub-1500 ATK "outs"**, and the
+three 3000-ATK Toons are just **1.5% each** (4.5% combined). No Gods (those are Yami's).
 
-Full weighted list lives in the eventual `work/p1/drop_config.json` + deck config; this
-doc records the design, not the raw array.
+| wt | % | ATK/DEF | card |
+|---:|---:|---|---|
+| 191 | 9.33 | 800/1600 | Toon Alligator |
+| 183 | 8.94 | 900/1400 | ToonMaskSorcerer |
+| 178 | 8.69 | 1400/1500 | Toon Mermaid |
+| 173 | 8.45 | 1400/1300 | ToonCannonSoldier |
+| 173 | 8.45 | 1300/1400 | Toon Harpie Lady |
+| 157 | 7.67 | 1900/900 | Toon Gemini Elf |
+| 141 | 6.88 | 2000/1700 | ToonDarkMagGirl |
+| 131 | 6.40 | 2100/1600 | Toon Cyber Dragon |
+| 115 | 5.62 | 2200/2600 | Manga Ryu-Ran |
+| 115 | 5.62 | 2300/0 | ToonGoblinForce |
+| 94 | 4.59 | 2400/2000 | RedEyesToonDragon |
+| 84 | 4.10 | 2500/1200 | ToonSummonSkull |
+| 84 | 4.10 | 2500/2100 | Toon DarkMagician |
+| 68 | 3.32 | 2600/2300 | Toon Buster Blader |
+| 68 | 3.32 | 2600/2200 | Toon Barrel Dragon |
+| 31 | 1.51 | 3000/2500 | BlueEyesToonDrgn |
+| 31 | 1.51 | 3000/2500 | ToonBlackLuster |
+| 31 | 1.51 | 3000/3000 | ToonAncientGolem |
 
 ## Drop table — every card except the Gods
 
