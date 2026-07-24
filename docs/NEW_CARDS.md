@@ -160,21 +160,287 @@ Name note: full name is 44 characters. Alternative: `DMGirlMagAprntce` (16).
 
 ---
 
+## Dark Magician of Chaos
+
+| | |
+|---|---|
+| **In-game name** | `DarkMagicianChaos` — 17 tiles |
+| **ATK / DEF** | 2800 / 2600 |
+| **Type** | Spellcaster |
+| **Flavour** | `Chaos remade the` (16) / `master magician.` (16) |
+| **Slot zone** | either |
+
+*Not representable:* Level 8, DARK.
+
+---
+
+## Dark Magician of Destruction
+
+| | |
+|---|---|
+| **In-game name** | `DarkMagcnDestructn` — 18 tiles |
+| **ATK / DEF** | 2800 / 2600 |
+| **Type** | Spellcaster |
+| **Flavour** | `Magic turned only` (17) / `toward ruin.` (12) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician + 1 LIGHT or DARK monster*. There are no attributes in this
+engine, so "LIGHT or DARK" has no meaning — this becomes an explicit list of allowed
+partners, chosen by hand.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype, attribute condition.
+
+---
+
+## Dark Magician the Knight of Dragon Magic
+
+| | |
+|---|---|
+| **In-game name** | `DarkMagicianKnight` — 18 tiles |
+| **ATK / DEF** | 2900 / 2400 |
+| **Type** | Dragon |
+| **Flavour** | `Dragon and mage` (15) / `joined as one.` (14) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician + 1 Level 7+ Dragon or Warrior*. No levels exist, so the
+"Level 7 or higher" gate is unrepresentable — pick the partner list by hand.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype, the level condition.
+
+---
+
+## Dark Magician the Magician of Black Magic
+
+| | |
+|---|---|
+| **In-game name** | `MagicianBlackMagic` — 18 tiles |
+| **ATK / DEF** | 2500 / 2100 |
+| **Type** | Spellcaster |
+| **Flavour** | `The oldest form of` (18) / `the black art.` (14) |
+| **Slot zone** | either |
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Dark Paladin
+
+| | |
+|---|---|
+| **In-game name** | `Dark Paladin` — 12 tiles |
+| **ATK / DEF** | 2900 / 2400 |
+| **Type** | Spellcaster |
+| **Flavour** | `Mage and blade in` (17) / `a single hand.` (14) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician + Buster Blader*. The only recipe so far that is a clean
+two-card pair with no type/level wildcard — it maps to the engine exactly as printed,
+one row. **Buster Blader must therefore also be added, in #1–#300.**
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype.
+
+---
+
+## Dark Sage
+
+| | |
+|---|---|
+| **In-game name** | `Dark Sage` — 9 tiles |
+| **ATK / DEF** | 2800 / 3200 |
+| **Type** | Spellcaster |
+| **Flavour** | `Ancient wisdom in` (17) / `a frail body.` (12) |
+| **Slot zone** | either |
+
+Highest DEF of any card recorded so far, and the only one whose DEF exceeds its ATK
+by a wide margin — it will play very differently from the rest of the Spellcasters.
+
+*Not representable:* Level 9, DARK.
+
+---
+
+## Illusion of Chaos
+
+| | |
+|---|---|
+| **In-game name** | `Illusion of Chaos` — 16 tiles |
+| **ATK / DEF** | 2100 / 2500 |
+| **Type** | Spellcaster |
+| **Flavour** | `A mirage born of` (16) / `the chaos void.` (15) |
+| **Slot zone** | either |
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Magician of Chaos
+
+| | |
+|---|---|
+| **In-game name** | `Magician of Chaos` — 17 tiles |
+| **ATK / DEF** | 2500 / 2100 |
+| **Type** | Spellcaster |
+| **Flavour** | `Chaos answers to` (16) / `his staff alone.` (16) |
+| **Slot zone** | either |
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Magician of Dark Chaos - Black Chaos
+
+| | |
+|---|---|
+| **In-game name** | `MagicnDarkChaos` — 15 tiles |
+| **ATK / DEF** | 2800 / 2600 |
+| **Type** | Spellcaster |
+| **Flavour** | `Reborn in the dark` (18) / `chaos ritual.` (13) |
+| **Slot zone** | either |
+
+*Not representable:* Level 8, DARK.
+
+---
+
+## Magician of Dark Illusion
+
+| | |
+|---|---|
+| **In-game name** | `MagicnDarkIllusion` — 17 tiles |
+| **ATK / DEF** | 2100 / 2500 |
+| **Type** | Spellcaster |
+| **Flavour** | `Weaves shadow into` (18) / `waking dreams.` (14) |
+| **Slot zone** | either |
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Magician's Robe
+
+| | |
+|---|---|
+| **In-game name** | `Magician's Robe` — 14 tiles |
+| **ATK / DEF** | 700 / 2000 |
+| **Type** | Spellcaster |
+| **Flavour** | `Cloth that guards` (17) / `its wearer well.` (15) |
+| **Slot zone** | either |
+
+*Not representable:* Level 2, DARK.
+
+---
+
+## Magician's Rod
+
+| | |
+|---|---|
+| **In-game name** | `Magician's Rod` — 13 tiles |
+| **ATK / DEF** | 1600 / 100 |
+| **Type** | Spellcaster |
+| **Flavour** | `A rod that strikes` (18) / `but cannot shield.` (18) |
+| **Slot zone** | either |
+
+*Not representable:* Level 3, DARK.
+
+---
+
+## Master of Chaos
+
+| | |
+|---|---|
+| **In-game name** | `Master of Chaos` — 15 tiles |
+| **ATK / DEF** | 3000 / 2500 |
+| **Type** | Spellcaster |
+| **Flavour** | `Chaos itself bows` (17) / `to his command.` (15) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician + 1 "Chaos" or "Black Luster Soldier" Ritual Monster*. There
+are no rituals in this engine; the partner list is chosen by hand. Black Luster
+Soldier already exists as #364 — but that slot is **outside the fusion zone**, so
+using it as a material means moving it into #1–#300.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype, ritual condition.
+
+---
+
+## Red-Eyes Dark Dragoon
+
+| | |
+|---|---|
+| **In-game name** | `RedEyesDarkDragoon` — 18 tiles |
+| **ATK / DEF** | 3000 / 2500 |
+| **Type** | Spellcaster |
+| **Flavour** | `Mage astride the` (16) / `black dragon.` (13) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician + Red-Eyes Black Dragon* (or any Dragon effect monster).
+Red-Eyes already exists as **#82**, comfortably inside the fusion zone, so the
+headline recipe maps directly with no relocation.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype.
+
+---
+
+## The Dark Magicians
+
+| | |
+|---|---|
+| **In-game name** | `The Dark Magicians` — 18 tiles |
+| **ATK / DEF** | 2800 / 2300 |
+| **Type** | Spellcaster |
+| **Flavour** | `Master and pupil` (15) / `cast as one.` (12) |
+| **Slot zone** | **#1–#300 required** — Fusion result |
+
+Fusion: *Dark Magician or Dark Magician Girl + 1 Spellcaster*. Two wildcards, so this
+expands to a hand-picked list against both.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype.
+
+---
+
+## The Egyptian God cards
+
+All three are **4000 / 4000** with no effects. The engine has no Divine-Beast type, so
+each takes a different existing type — which is not merely cosmetic: **the terrain
+tables give ±30% by type**, so the type choice is the only thing that makes them play
+differently from one another.
+
+| Card | In-game name | ATK/DEF | Type | Flavour |
+|---|---|---|---|---|
+| Obelisk the Tormentor | `ObeliskTormentor` (15) | 4000/4000 | Fiend | `The god of the` (14) / `tormenting fist.` (16) |
+| Slifer the Sky Dragon | `SliferSkyDragon` (14) | 4000/4000 | Dragon | `The sky serpent` (15) / `of the storm god.` (17) |
+| The Winged Dragon of Ra | `WingedDragonOfRa` (16) | 4000/4000 | Winged Beast | `The sun god sealed` (18) / `in golden wings.` (16) |
+
+At 4000 these become the strongest cards in the game by a wide margin — the current
+apex is Perfect Great Moth at 3500, and Yami Yugi's best is Black Skull Dragon at
+3200. On matching terrain a God card reaches **5200**.
+
+*Not representable:* Level 10, DIVINE, Divine-Beast type, all effects.
+
+---
+
 ## ⚠ Stat collisions
 
 DM1 has no effects, so **two cards with the same type and the same ATK/DEF are
-mechanically identical** — only name, art and flavour differ. Three entries currently
-collide:
+mechanically identical** — only name, art and flavour differ. **15 of the 26 recorded
+cards sit in a collision group:**
 
-| Card | Stats | Type |
+| Type | Stats | Cards |
 |---|---|---|
-| Apprentice Illusion Magician | 2000 / 1700 | Spellcaster |
-| Dark Magician Girl | 2000 / 1700 | Spellcaster |
-| Dark Magician Girl the Magician's Apprentice | 2000 / 1700 | Spellcaster |
+| Spellcaster | 2000/1700 | AprnticeIlusnMagc, Dark Magician Girl, DMGirl:Aprentice |
+| Spellcaster | 2500/2100 | EradicatorWarlock, MagicianBlackMagic, Magician of Chaos |
+| Spellcaster | 2800/2600 | DarkMagicianChaos, DarkMagcnDestructn, MagicnDarkChaos |
+| Spellcaster | 2800/2300 | Dark Cavalry, The Dark Magicians |
+| Spellcaster | 2100/2500 | Illusion of Chaos, MagicnDarkIllusion |
+| Spellcaster | 3000/2500 | Master of Chaos, RedEyesDarkDragoon |
 
-That is faithful to the real cards, and is fine if they're intended as
-same-card-different-art. If they should feel distinct in play, the only lever the
-engine offers is nudging ATK/DEF apart.
+And three of them also duplicate a card **already in the ROM** — `EradicatorWarlock`,
+`MagicianBlackMagic` and `Magician of Chaos` are all 2500/2100 Spellcasters, which is
+exactly **Dark Magician**. As printed, they *are* Dark Magician.
+
+This is faithful to the real cards and fine if they're meant as
+same-card-different-art. The engine offers only two levers to separate them: nudging
+ATK/DEF apart, or assigning different types — and type is the stronger lever, because
+the terrain tables give ±30% by type, so a Spellcaster and a Fiend with identical
+stats genuinely play differently on Yami.
 
 ---
 
@@ -182,13 +448,34 @@ engine offers is nudging ATK/DEF apart.
 
 | | |
 |---|---|
-| Cards recorded | 8 |
-| Name tiles used by new cards | 130 |
-| Fusion-zone (#1–#300) slots required | 4 |
-| Free-zone (#351–365) eligible | 4 |
+| Cards recorded | 26 |
+| Name tiles required | **408** |
+| Fusion-zone (#1–#300) slots required | **10** |
+| Free-zone (#351–365) eligible | 16 (only 15 slots exist) |
 
-The name pool is zero-slack, so every new name must be paid for by retiring an
-existing card's name of equal or greater length. That accounting starts once the
-retirement list exists. Note the fusion-zone requirement already exceeds nothing yet,
-but four of eight cards cannot use the free tail — they must displace existing
-monsters in #1–#300.
+### ⚠ The name pool does not balance yet
+
+The pool is 4480 tiles with **zero free**, and the stock average is 12.3 tiles/card.
+So adding 26 cards by overwriting 26 existing ones does **not** pay for itself:
+
+| | Tiles |
+|---|---|
+| Cost of the 26 new names | 408 |
+| Freed by retiring 26 *average* cards | 319 |
+| Freed by retiring the 26 *longest-named* cards | 463 |
+
+Retiring average-length cards leaves us **89 tiles short**. Paying for these 26 names
+requires retiring **at least 23 cards chosen from the longest-named end** — and in
+practice more, since the retirement list will be chosen for weakness, not name length.
+
+Three ways out, none yet chosen: retire more cards than we add, shorten the new names
+further, or relocate the name pool out of bank 1 (it currently runs to `$7FFF`, the
+exact end of the bank, so relocation means finding 4480+ contiguous bytes elsewhere).
+
+### Fusion-zone pressure
+
+10 of 26 cards must live in **#1–#300** because fusion cannot reach above #300. The
+free tail #351–365 is only 15 slots and cannot hold any of them. Two existing cards
+are also implicated: **Buster Blader must be added** (material for Dark Paladin), and
+**Black Luster Soldier (#364) sits outside the fusion zone**, so using it as a Master
+of Chaos material means relocating it into #1–#300.
