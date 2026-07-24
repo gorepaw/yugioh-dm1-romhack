@@ -32,7 +32,8 @@ import cards  # noqa: E402
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
 TBL = os.path.join(ROOT, "reference", "DM1Translation", "Insertion", "text.tbl")
-DESC_EDITS = os.path.join(ROOT, "work", "desc_edits.json")
+import products  # noqa: E402
+DESC_EDITS = products.data_path("desc_edits.json")   # default product (p1)
 
 LINE = 18
 LIGATURES = {"il": 0x4E, "li": 0x4F, "ll": 0x50, "l!": 0x51, "'s": 0x52, "'t": 0x53}
@@ -102,6 +103,9 @@ def save_edits(e):
 
 
 def main(argv):
+    global DESC_EDITS
+    product, argv = products.pop_arg(argv)
+    DESC_EDITS = products.data_path("desc_edits.json", product)
     if not argv:
         print(__doc__)
         return 1

@@ -36,10 +36,11 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cards as cardlib  # noqa: E402
 import cardtext  # noqa: E402
+import products  # noqa: E402
 
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
-CARDS_JSON = os.path.join(ROOT, "work", "cards.json")
+CARDS_JSON = products.data_path("cards.json")   # default product (p1)
 
 NCARD = 365
 
@@ -204,6 +205,8 @@ def load_db(path=CARDS_JSON):
 
 # --- CLI -----------------------------------------------------------------
 def main(argv):
+    product, argv = products.pop_arg(argv)
+    cards_json = products.data_path("cards.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -211,7 +214,7 @@ def main(argv):
     rom = bytearray(open(BASE_ROM, "rb").read())
 
     if cmd == "extract":
-        out = CARDS_JSON
+        out = cards_json
         if "--out" in argv:
             out = argv[argv.index("--out") + 1]
         db = extract(rom)

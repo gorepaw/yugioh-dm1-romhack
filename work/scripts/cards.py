@@ -27,7 +27,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 BASE_ROM = os.path.join(ROOT, "roms", "dm1-english.gb")
 CARDNAMES = os.path.join(ROOT, "reference", "DM1Translation",
                          "Insertion", "script", "cardname.txt")
-CARD_EDITS = os.path.join(ROOT, "work", "card_edits.json")
+import products  # noqa: E402
+CARD_EDITS = products.data_path("card_edits.json")   # default product (p1)
 
 NCARD = 365      # index 365 in the name pointer table is the end sentinel
 # (ATK array addr, DEF array addr); index 0 is the base (no-field) table.
@@ -163,6 +164,9 @@ def save_edits(edits):
 
 # --- CLI -----------------------------------------------------------------
 def main(argv):
+    global CARD_EDITS
+    product, argv = products.pop_arg(argv)
+    CARD_EDITS = products.data_path("card_edits.json", product)
     if not argv:
         print(__doc__)
         return 1

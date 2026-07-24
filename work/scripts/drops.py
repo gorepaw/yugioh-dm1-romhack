@@ -31,7 +31,8 @@ import cards  # noqa: E402
 
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
-DROP_CONFIG = os.path.join(ROOT, "work", "drop_config.json")
+import products  # noqa: E402
+DROP_CONFIG = products.data_path("drop_config.json")   # default product (p1)
 PTRTAB = 0x34072
 NPOOL = 17
 NCARD = 365
@@ -124,6 +125,9 @@ def save_cfg(c):
 
 
 def main(argv):
+    global DROP_CONFIG
+    product, argv = products.pop_arg(argv)
+    DROP_CONFIG = products.data_path("drop_config.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -175,7 +179,7 @@ def main(argv):
     elif cmd == "clear":
         if os.path.exists(DROP_CONFIG):
             os.remove(DROP_CONFIG)
-        print("cleared work/drop_config.json")
+        print(f"cleared {os.path.relpath(DROP_CONFIG, ROOT)}")
 
     else:
         print(__doc__)

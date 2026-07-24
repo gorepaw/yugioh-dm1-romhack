@@ -39,10 +39,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cards as cardlib  # noqa: E402
+import products  # noqa: E402
 
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
-FUSIONS_JSON = os.path.join(ROOT, "work", "fusions.json")
+FUSIONS_JSON = products.data_path("fusions.json")   # default product (p1)
 
 TAB_A = 0x0EC155
 TAB_B = 0x0ED233
@@ -102,6 +103,8 @@ def load_db(path=FUSIONS_JSON):
 
 
 def main(argv):
+    product, argv = products.pop_arg(argv)
+    fusions_json = products.data_path("fusions.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -113,7 +116,7 @@ def main(argv):
         return names.get(num - 1, f"<#{num}>")
 
     if cmd == "extract":
-        out = FUSIONS_JSON
+        out = fusions_json
         if "--out" in argv:
             out = argv[argv.index("--out") + 1]
         db = extract(rom)

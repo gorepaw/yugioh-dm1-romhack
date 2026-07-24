@@ -27,7 +27,8 @@ import cards  # noqa: E402
 
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
-REWARD_CONFIG = os.path.join(ROOT, "work", "reward_config.json")
+import products  # noqa: E402
+REWARD_CONFIG = products.data_path("reward_config.json")   # default product (p1)
 
 THRESHOLDS = 0x036F02
 PTRS = 0x036F18
@@ -78,6 +79,9 @@ def save_cfg(c):
 
 
 def main(argv):
+    global REWARD_CONFIG
+    product, argv = products.pop_arg(argv)
+    REWARD_CONFIG = products.data_path("reward_config.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -120,7 +124,7 @@ def main(argv):
     elif cmd == "clear":
         if os.path.exists(REWARD_CONFIG):
             os.remove(REWARD_CONFIG)
-        print("cleared work/reward_config.json")
+        print(f"cleared {os.path.relpath(REWARD_CONFIG, ROOT)}")
 
     else:
         print(__doc__)

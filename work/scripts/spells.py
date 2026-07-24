@@ -47,7 +47,8 @@ import cards as cardlib  # noqa: E402
 
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
-SPELL_CONFIG = os.path.join(ROOT, "work", "spell_config.json")
+import products  # noqa: E402
+SPELL_CONFIG = products.data_path("spell_config.json")   # default product (p1)
 
 JUMP_TABLE = 0x00EF82        # bank 3 $6F82
 NJUMP = 54                   # verbs $00-$35; the table ends at $6FED and the
@@ -123,6 +124,9 @@ def save_cfg(c):
 
 
 def main(argv):
+    global SPELL_CONFIG
+    product, argv = products.pop_arg(argv)
+    SPELL_CONFIG = products.data_path("spell_config.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -181,7 +185,7 @@ def main(argv):
     elif cmd == "clear":
         if os.path.exists(SPELL_CONFIG):
             os.remove(SPELL_CONFIG)
-        print("cleared work/spell_config.json")
+        print(f"cleared {os.path.relpath(SPELL_CONFIG, ROOT)}")
 
     else:
         print(__doc__)

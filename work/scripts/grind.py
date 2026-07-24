@@ -49,7 +49,8 @@ import cards  # noqa: E402
 
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
-GRIND_CONFIG = os.path.join(ROOT, "work", "grind_config.json")
+import products  # noqa: E402
+GRIND_CONFIG = products.data_path("grind_config.json")   # default product (p1)
 
 BANK = 0x0D
 BLOCK_CPU = 0x400C
@@ -174,6 +175,9 @@ def save_cfg(c):
 
 
 def main(argv):
+    global GRIND_CONFIG
+    product, argv = products.pop_arg(argv)
+    GRIND_CONFIG = products.data_path("grind_config.json", product)
     if not argv:
         print(__doc__)
         return 1
@@ -204,7 +208,7 @@ def main(argv):
     elif cmd == "clear":
         if os.path.exists(GRIND_CONFIG):
             os.remove(GRIND_CONFIG)
-        print("cleared work/grind_config.json")
+        print(f"cleared {os.path.relpath(GRIND_CONFIG, ROOT)}")
 
     else:
         print(__doc__)
