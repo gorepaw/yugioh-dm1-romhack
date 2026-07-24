@@ -21,6 +21,11 @@ OUT = os.path.join(ROOT, "build", "dm1-hack.gb")
 # (offset, expected_old_byte, new_byte, description)
 EDITS = [
     (0x01540D, 0x44, 0x3F, "Duel-start message: 'It's your turn.' -> 'It's your turn!'"),
+    # EXPERIMENT (P1.0b): magic-slot effect table @0x15162, index = card# - 301.
+    # Card #343 Sparks is index 42 -> 0x1518C. Change effect id 0x21 (33, weakest
+    # burn) to 0x1B (27, Raigeki). If playing Sparks now DESTROYS all enemy
+    # monsters, spell effects are reassignable per slot (not just flavour text).
+    (0x01518C, 0x21, 0x1B, "TEST: Sparks effect id 33 (burn) -> 27 (Raigeki)"),
 ]
 
 
@@ -67,6 +72,15 @@ def main():
                                               e.get("line1", ""), e.get("line2", ""))
             print(f"  desc #{e['card']} {e.get('name', '')}: {summary}")
             desc_edit_count += 1
+
+    # --- card drop-pool changes (work/drop_config.json) ---
+    drop_config_path = os.path.join(ROOT, "work", "drop_config.json")
+    drop_pool_count = 0
+    if os.path.exists(drop_config_path):
+        import drops
+        drop_pool_count = drops.apply_config(rom, json.load(open(drop_config_path)))
+        if drop_pool_count:
+            print(f"  drop pools rewritten: {drop_pool_count}")
 
     rom[0x14D] = header_checksum(rom)
     gc = global_checksum(rom)

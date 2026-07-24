@@ -89,6 +89,131 @@ complete for this game's card model.
   = file offset), but fixed width means edits are in-place — pointers never change.
 - Ligature squashes (`il li ll l! 's 't`) auto-applied to fit more per line.
 
+## Card drop system (Bank D) — EDITABLE (`drops.py`)
+- 16 duelists → pool index via the map at `0xB734` (16 bytes).
+- Pool pointer table at `0x34072` (CPU `$4072`): 17 pointers; pool file offset =
+  pointer + `0x30000`.
+- Each pool = **365 entries of 16-bit cumulative weights**, total **2048**. Per-card
+  weight = `cum[i] - cum[i-1]`; after a win the game rolls 0..2047 and awards the card
+  whose cumulative bucket contains the roll. Pools are themed (~20–36 cards each; e.g.
+  pool 0 = insects/Weevil). `drops.py` rewrites pools keeping total 2048 & monotonic.
+
+## Spell / magic effect system (P1.0a) — THE DESIGN SPACE
+
+**Magic cards are card #301–350** (contiguous; type byte `0x14`).
+
+> **TESTED 2026-07-23 — the `0x15162` table is FLAVOUR TEXT ONLY.**
+> Experiment: card #343 Sparks (slot 42) had its id changed `0x21`(33, weakest burn)
+> → `0x1B`(27, Raigeki). In-game the *message* became Raigeki's, but the *effect*
+> stayed Sparks' (no monsters destroyed). So this table selects the duel message and
+> **not** the effect handler. **Spell effects are bound elsewhere — positionally, by
+> card id.** Finding that real binding is the open question.
+
+| Thing | Location | Notes |
+|---|---|---|
+| Magic slot → **message** id (NOT effect) | **`0x15162`, 50 bytes** | index = card# − 301. Flavour text only — proven by experiment |
+| Effect-handler pointer table | `0x1400C` (CPU `$400C`, bank 5) | **16 handlers**: `$500C $501F $5032 $508A $509A $50AD $50BD $50DD $512C $5148 $5194 $51DB $5204 $5049 $5059 $50CD` |
+| Current message id (RAM) | `$CF47` | every effect handler writes it |
+| Message pointer table | `0x14980` (CPU `$4980`, bank 5) | indexed by `$CF47`; → strings at `0x15400`+ |
+| Petit Moth evolution stages | `0x15118` (4 bytes) | → messages 10–13 |
+| Swords of Revealing Light state | `0x15146` (2 bytes) | active / expired messages |
+
+**Effect id values seen** (`0x10`–`0x28` = 16–40): `16` generic equip, `17` Elegant
+Egotist, `18` Stop Defence, `19` Dragon Capture Jar, `20-25` the six field terrains
+(Forest/Wasteland/Mountain/Sogen/Umi/Yami), `26` Dark Hole, `27` Raigeki, `28-32`
+heals (5 magnitudes), `33-37` burns (5 magnitudes), `38` Swords, `39` Spellbinding
+Circle, `40` Dark-Piercing Light.
+
+**Engine verb vocabulary (~16 handlers):** equip/power-up, set field terrain,
+destroy-all, destroy-enemy-side, heal (several magnitudes), burn (several magnitudes),
+skip-enemy-attacks (Swords), power-down-all-enemies (Spellbinding Circle), reveal
+(Dark-Piercing Light), force-attack (Stop Defence), seal-by-type (Dragon Capture Jar),
+transform (Elegant Egotist), plus fusion and Petit Moth evolution as special cases.
+*This is the complete set of "verbs" available for card design in both projects.*
+
+Bank calling convention: `rst $08` (`CF`) + bank + routine index; each bank starts
+with a routine pointer table (bank 5's is at `0x14002`).
+
+**Open question (the important one):** where the card → effect-handler binding lives.
+The 16 handlers are bank-5 routines reached through bank 5's routine table (`0x14002`,
+handler entries = routine indices 5..20). Far-calls use `rst $08` (`CF`) + routine
+index + bank, so **searching for `CF <idx> 05` finds every effect invocation** — the
+surrounding code is what decides which effect a played card runs. That decision point
+is the next target.
+
+Confirmed separately: no trap / effect-monster category exists (21-type enum has none).
+
+**Far-call convention (decoded):** `rst $08` = `CF <routine_index> <bank>`; each bank
+begins with a routine pointer table (bank 5's at `0x14002`; effect handlers are its
+routine indices 5..20).
+**Effect invocation sites** cluster in **bank 3, `0x00D000`–`0x00D340`** (e.g. three
+handlers called in a row at `0x00D01C/26/30`, beside a 7-entry jump table at
+`0x00D05E`). The card→effect decision is *there, in code*.
+
+### Assembly assessment — CAN verbs be re-pointed? YES, via a small patch
+"Play a card" in bank 3 (`0x00D014`) dispatches by **card category** through a
+7-entry jump table at `$505E` (= file `0x00D05E` → handlers `$50CF $50DC $50F0
+$5100 $5110 $5120 $5130`), using an index from `$5095`. The 16 **spell** handlers are
+then reached from scattered *guarded call sites* (`0xD01C/26/30`, `0xD262`, `0xD28C`,
+`0xD291`, `0xD2F8`, `0xD331`) — i.e. the card→verb binding is **hardcoded control
+flow**, not a table. That is why the `0x15162` data edit only moved the text.
+
+**Feasible fix — insert a table-driven indirection** (classic romhack technique):
+every effect handler is already uniformly callable as `rst $08 <routine_idx> <bank 5>`
+(indices 5..20 via bank 5's routine table at `0x14002`). So:
+1. Put a new **50-byte table** (magic slot → bank-5 routine index) in free ROM
+   (e.g. the zero-filled `0x34094`–`0x340F3` region in bank D).
+2. Add a ~20–40 byte stub: read slot → index, issue the `rst $08`.
+3. Patch the magic-effect decision point to call the stub.
+Result: spell verbs become **freely assignable per magic slot** — what Project 2 wants.
+
+**Remaining work to do it:** pinpoint the exact decision site for "which spell effect".
+Fastest route is a BGB breakpoint on one effect handler, then read the caller.
+
+### DESIGN CONSEQUENCE (current, unpatched): "the slot IS the verb"
+Because effects are bound in code by card id, you cannot reassign a spell's effect by
+editing data. The workable model for both projects is the inverse: **assign card
+identities to the existing effect slots.** Whatever card occupies magic slot #337 will
+always Raigeki, so name/describe it as the card that should do that. The 50 magic slots
+are a fixed palette of verbs to design around. Changing which verb a slot runs is an
+*assembly* change (RGBDS is already installed) — a later capability, not a blocker.
+
+## Fusion system (bank 0x3B) — located, format partly decoded
+- Bank routine table at `0xEC000` (`$404C $405E $4091 $402B`), then code.
+- A large contiguous block of 16-bit **card ids from ~`0xEC155`** (~6,500 entries)
+  fills most of the bank. Repeated values (e.g. 207×7, 252×8, 259×10 at `0xED930`)
+  look like fusion **results** shared across many partners.
+- Exact record grouping (per-material lists vs flat recipe list) still to decode.
+
+## Opponent decks (bank 8) — SAME FORMAT AS DROP POOLS
+- Deck tables are **monotonic cumulative weight arrays** (values run past 365, so they
+  are weights, not card ids). Opponent decks are **probability distributions the game
+  samples**, not fixed 40-card lists.
+- Seen at `0x20486`, `0x206E0`, `0x223E0`, `0x228FC` (bank 8 = `0x20000`).
+- **Implication:** `drops.py`'s transform logic (flatten / uniform / weighted / boost,
+  preserving the running total) applies directly to decks — one toolset retunes both
+  what opponents play and what they drop.
+
+## Win-count reward system (bank 13) — LOCATED & STRUCTURED
+Beating a duelist 10/20/…/100 times awards a specific card.
+
+| Part | Address | Format |
+|---|---|---|
+| **Thresholds** | **`0x036F02`** | 10 × 16-bit **BCD** (`10,20,…,100`), `FFFF`-terminated |
+| Reward pointer table | `0x036F1A` | 17 pointers (one per duelist/pool), 20 bytes apart; file = ptr + `0x30000` |
+| Reward card lists | from `0x036F3A` | 17 blocks × 10 × 16-bit card id (award per threshold) |
+
+- Lookup routine ~`0x036EC0` reads the win count from RAM (`$CF70`+) and walks the
+  threshold table to pick an index.
+- Sanity check — duelist 0 (Weevil): #329, #49 Big Insect, #304 Axe of Despair,
+  #52 Hercules Beetle, #305 Laser Cannon Armor, #53 Killer Needle, … (insect-themed ✓).
+- **To ease the grind: edit the ten BCD values at `0x036F02`** (e.g. 3,6,9,…,30).
+  Reward *cards* can be re-chosen by editing the 17 × 10 id blocks.
+
+## TODO — remaining grind goal
+- **Cards per win** — award ~3 instead of 1: find the award-count value/loop
+  (drop-award routine is in bank D around `0x34008`–`0x34070`).
+
 ### Card lore / description text (bonus find)
 - Bank `0x3C`: description pointer table at `$F0060`, strings from `$F033A`
   (card #0 Blue-Eyes description @ `$F033A`). Editable later via `text_tool.py`.

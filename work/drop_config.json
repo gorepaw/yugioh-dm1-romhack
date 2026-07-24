@@ -1,0 +1,11 @@
+{
+  "default_mode": "none",
+  "pool_modes": {},
+  "boosts": [
+    {
+      "pool": 0,
+      "card": 209,
+      "weight": 300
+    }
+  ]
+}
