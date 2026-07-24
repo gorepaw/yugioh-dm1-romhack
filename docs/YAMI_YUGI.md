@@ -8,8 +8,12 @@ tables are **additive**: Yami keeps his old cards (the beatable body that gives 
 outs) and the 27 new cards are layered on top as the threat. Broad cuts to the old
 cards come later, in the great card-list culling — not here.
 
-- **Deck** = old 27 + new 27 = 54 cards. Old ≈ 56% of draws (defeatable), new ≈ 44%.
-  Dark Magician (#35) featured. The three Gods combined are **0.29%** of his draws.
+- **Deck** = old 23 + new 27 = 50 cards (the 4 Joey-themed cards — Flame Swordsman,
+  Swamp Battleguard, Garoozis, Battle Steer — were removed as off-theme). After
+  renormalizing to 2048 this shifts the mix to **old ≈ 45% / new ≈ 54%** (removing old
+  cards concentrated weight on the rest, so Yami is a touch harder than the approved
+  56/44). Dark Magician (#35) featured. Three Gods combined **0.44%** of his draws
+  (0.15% each — up from 0.10% for the same reason). Say the word to rebalance either.
 - **Drops** = old 22 + new 27 = 49 cards, additive. Every fusion result is droppable
   (rough grind), but **suppressed well below its stats** so a 2900 fusion is rarer
   than a 2900 vanilla. Gods are an ultra-rare jackpot (~0.15% each).
@@ -20,37 +24,33 @@ cards come later, in the great card-list culling — not here.
 
 ---
 
-## Deck — 54 cards (old kept + new layered), weights /2048
+## Deck — 50 cards (old kept + new layered), weights /2048
 
-**Old cards (kept — the beatable body):**
+**Old cards (kept — the beatable body):** *(the 4 Joey-themed cards removed)*
 
 | wt | % | # | card |
 |---:|---:|---:|---|
-| 114 | 5.57 | 15 | Flame Swordsman |
-| 112 | 5.47 | 12 | Swamp Battleguard |
-| 111 | 5.42 | 68 | Garoozis |
-| 105 | 5.13 | 39 | Curse of Dragon |
-| 101 | 4.93 | 14 | Battle Steer |
-| 65 | 3.17 | 74 | Giant Rock Soldier |
-| 62 | 3.03 | 22 | Summoned Skull |
-| 53 | 2.59 | 60 | Great White |
-| 51 | 2.49 | 31 | Koumori Dragon |
-| 50 | 2.44 | **35** | **Dark Magician** (featured) |
-| 39 | 1.90 | 10 | Blackland Fire Dragon |
-| 36 | 1.76 | 7 | Winged Dragon |
-| 35 | 1.71 | 38 | Gaia the Fierce Knight |
-| 35 | 1.71 | 41 | Celtic Guardian |
-| 35 | 1.71 | 89 | Catapult Turtle |
-| 30 | 1.46 | 6 | Feral Imp |
-| 24 | 1.17 | 27 | Beaver Warrior |
-| 24 | 1.17 | 46 | Griffore |
-| 23 | 1.12 | 2 | Mystical Elf |
-| 18 | 0.88 | 25 | Horn Imp |
-| 11 | 0.54 | 37 | Gaia the Dragon Champion |
-| 8 | 0.39 | 30 | Zombie Warrior |
-| 7 | 0.34 | 47 | Torike |
-| 7 | 0.34 | 59 | Mammoth Graveyard |
-| 7 | 0.34 | 65 | Silver Fang |
+| 128 | 6.25 | 39 | Curse of Dragon |
+| 83 | 4.05 | 74 | Giant Rock Soldier |
+| 79 | 3.86 | 22 | Summoned Skull |
+| 67 | 3.27 | 60 | Great White |
+| 65 | 3.17 | 31 | Koumori Dragon |
+| 64 | 3.12 | **35** | **Dark Magician** (featured) |
+| 50 | 2.44 | 10 | Blackland Fire Dragon |
+| 46 | 2.25 | 7 | Winged Dragon |
+| 45 | 2.20 | 38 | Gaia the Fierce Knight |
+| 45 | 2.20 | 41 | Celtic Guardian |
+| 45 | 2.20 | 89 | Catapult Turtle |
+| 38 | 1.86 | 6 | Feral Imp |
+| 31 | 1.51 | 27 | Beaver Warrior |
+| 31 | 1.51 | 46 | Griffore |
+| 29 | 1.42 | 2 | Mystical Elf |
+| 23 | 1.12 | 25 | Horn Imp |
+| 14 | 0.68 | 37 | Gaia the Dragon Champion |
+| 10 | 0.49 | 30 | Zombie Warrior |
+| 9 | 0.44 | 47 | Torike |
+| 9 | 0.44 | 59 | Mammoth Graveyard |
+| 9 | 0.44 | 65 | Silver Fang |
 | 1 | 0.05 | 48 | Sangan |
 | 1 | 0.05 | 217 | Black Skull Dragon |
 
@@ -58,33 +58,33 @@ cards come later, in the great card-list culling — not here.
 
 | wt | % | ATK/DEF | card |
 |---:|---:|---|---|
-| 66 | 3.22 | 2000/1700 | Dark Magician Girl |
-| 64 | 3.12 | 1900/1700 | Skilled Dark Magician |
-| 64 | 3.12 | 1800/1800 | Skilled Blue Magician |
-| 64 | 3.12 | 1700/1900 | Skilled White Magician |
-| 55 | 2.69 | 2100/2500 | Illusion of Chaos |
-| 50 | 2.44 | 2800/1800 | Legendary Knight Timaeus |
-| 50 | 2.44 | 2500/2500 | Chronicle Magician |
-| 47 | 2.29 | 2800/1800 | Timaeus the United Dragon |
-| 44 | 2.15 | 2600/2300 | Buster Blader |
-| 41 | 2.00 | 2400/1200 | Timestar Magician |
-| 39 | 1.90 | 2600/1700 | DMG the Dragon Knight |
-| 39 | 1.90 | 1600/100 | Magician's Rod |
-| 36 | 1.76 | 700/2000 | Magician's Robe |
-| 36 | 1.76 | 1200/2800 | Buster Dragon |
-| 25 | 1.22 | 2800/2300 | Dark Cavalry |
-| 25 | 1.22 | 2800/2600 | Dark Magician of Chaos |
-| 25 | 1.22 | 2800/2300 | The Dark Magicians |
-| 25 | 1.22 | 2800/2500 | Buster Blader Dragon Destroyer |
-| 22 | 1.07 | 2800/3200 | Dark Sage |
-| 15 | 0.73 | 2900/2400 | Dark Paladin |
-| 15 | 0.73 | 2900/2500 | Amulet Dragon |
-| 14 | 0.68 | 2900/2400 | Dark Magician Knight |
-| 8 | 0.39 | 3000/2500 | Master of Chaos |
-| 8 | 0.39 | 3000/2500 | Red-Eyes Dark Dragoon |
-| 2 | 0.10 | 4000/4000 | Obelisk the Tormentor |
-| 2 | 0.10 | 4000/4000 | Slifer the Sky Dragon |
-| 2 | 0.10 | 4000/4000 | The Winged Dragon of Ra |
+| 84 | 4.10 | 2000/1700 | Dark Magician Girl |
+| 81 | 3.96 | 1900/1700 | Skilled Dark Magician |
+| 81 | 3.96 | 1800/1800 | Skilled Blue Magician |
+| 81 | 3.96 | 1700/1900 | Skilled White Magician |
+| 70 | 3.42 | 2100/2500 | Illusion of Chaos |
+| 64 | 3.12 | 2800/1800 | Legendary Knight Timaeus |
+| 64 | 3.12 | 2500/2500 | Chronicle Magician |
+| 60 | 2.93 | 2800/1800 | Timaeus the United Dragon |
+| 56 | 2.73 | 2600/2300 | Buster Blader |
+| 52 | 2.54 | 2400/1200 | Timestar Magician |
+| 50 | 2.44 | 2600/1700 | DMG the Dragon Knight |
+| 50 | 2.44 | 1600/100 | Magician's Rod |
+| 46 | 2.25 | 700/2000 | Magician's Robe |
+| 46 | 2.25 | 1200/2800 | Buster Dragon |
+| 32 | 1.56 | 2800/2300 | Dark Cavalry |
+| 32 | 1.56 | 2800/2600 | Dark Magician of Chaos |
+| 32 | 1.56 | 2800/2300 | The Dark Magicians |
+| 32 | 1.56 | 2800/2500 | Buster Blader Dragon Destroyer |
+| 28 | 1.37 | 2800/3200 | Dark Sage |
+| 19 | 0.93 | 2900/2400 | Dark Paladin |
+| 19 | 0.93 | 2900/2500 | Amulet Dragon |
+| 18 | 0.88 | 2900/2400 | Dark Magician Knight |
+| 10 | 0.49 | 3000/2500 | Master of Chaos |
+| 10 | 0.49 | 3000/2500 | Red-Eyes Dark Dragoon |
+| 3 | 0.15 | 4000/4000 | Obelisk the Tormentor |
+| 3 | 0.15 | 4000/4000 | Slifer the Sky Dragon |
+| 3 | 0.15 | 4000/4000 | The Winged Dragon of Ra |
 
 ---
 
