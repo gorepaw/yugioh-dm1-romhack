@@ -6,9 +6,11 @@ missing signature cards to each duelist's theme, boost their existing theme card
 make the new signature(s) their top rewards. No full weight tables here; these are minor
 opponents, and the specifics fill in at ROM-build time.
 
-Two type choices made to keep **Kaiba the sole dragon pillar** and each deck cohesive:
-- **Harpie's Pet Dragon → Winged Beast** (canonically Dragon) — stays in Mai's flock.
+One type choice keeps a deck cohesive:
 - **Legendary Fisherman → Aqua** (canonically Warrior) — stays in Mako's sea.
+
+Kaiba remains the dragon *bulk*, but a character's own iconic dragon can stay a Dragon —
+Harpie's Pet Dragon is Mai's (kept as Dragon per owner).
 
 ## Weevil — Insects (+1)
 
@@ -27,7 +29,7 @@ Has Harpie Lady (1300) and Harpie Lady Sisters (1950).
 
 | card | ATK/DEF | type | flavour |
 |---|---|---|---|
-| Harpie'sPetDragn | 2000/2500 | Winged Beast | `The harpies'` / `prized beast.` |
+| Harpie'sPetDragn | 2000/2500 | Dragon | `The harpies'` / `prized beast.` |
 | Cyber Harpie | 1800/1300 | Winged Beast | `A harpy clad` / `in steel.` |
 | AmazonSwordsWmn | 1500/1600 | Warrior | `A warrior of` / `the jungle tribe.` |
 
