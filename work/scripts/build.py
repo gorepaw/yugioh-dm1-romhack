@@ -63,6 +63,13 @@ def main():
         print(f"  cards.json compiled: names {s['names']}/{s['name_budget']} B, "
               f"descriptions {s['descs']}/{s['desc_budget']} B")
 
+    # --- fusion recipes (work/fusions.json) ---
+    fusions_json = os.path.join(ROOT, "work", "fusions.json")
+    if os.path.exists(fusions_json):
+        import fusions
+        n = fusions.apply_config(rom, fusions.load_db(fusions_json))
+        print(f"  fusions.json compiled: {n} recipes")
+
     # --- card stat edits (work/card_edits.json, applied via cards.py) ---
     card_edits_path = os.path.join(ROOT, "work", "card_edits.json")
     card_edit_count = 0

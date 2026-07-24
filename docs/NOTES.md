@@ -203,12 +203,41 @@ always Raigeki, so name/describe it as the card that should do that. The 50 magi
 are a fixed palette of verbs to design around. Changing which verb a slot runs is an
 *assembly* change (RGBDS is already installed) — a later capability, not a blocker.
 
-## Fusion system (bank 0x3B) — located, format partly decoded
-- Bank routine table at `0xEC000` (`$404C $405E $4091 $402B`), then code.
-- A large contiguous block of 16-bit **card ids from ~`0xEC155`** (~6,500 entries)
-  fills most of the bank. Repeated values (e.g. 207×7, 252×8, 259×10 at `0xED930`)
-  look like fusion **results** shared across many partners.
-- Exact record grouping (per-material lists vs flat recipe list) still to decode.
+## Fusion system (bank 0x3B) — FULLY DECODED
+Tool: `work/scripts/fusions.py` (`extract` / `verify` / `list` / `find` / `stats`).
+Round-trips byte-identically.
+
+Not grouped and not variable-length — **three parallel arrays of 2159 16-bit entries**:
+
+| Array | CPU | File | Meaning |
+|---|---|---|---|
+| material A | `$4155` | `0x0EC155` | 0-based card index |
+| material B | `$5233` | `0x0ED233` | 0-based card index |
+| result | `$6311` | `0x0EE311` | 0-based card index (ends `0x0EF3EF`) |
+
+Recipe *i* is `A[i] + B[i] -> result[i]`. Values are **card index = card number − 1**;
+`$016D` (365) is the "empty slot" sentinel used in RAM and never appears in the tables.
+Observed range is 1..299, i.e. monsters #2..#300 only — Magic starts at #301 and never
+fuses. Sanity checks: *Baby Dragon + Time Wizard → Thousand Dragon*, *Gaia the Fierce
+Knight + Curse of Dragon → Gaia the Dragon Champion*.
+
+Resolution (`$4091`, bank routine index 2):
+- inputs in RAM at `$CECB/$CECC` and `$CECD/$CECE`; result to `$CECF/$CED0`;
+  returns `0` on success, `1` on no fusion (`$400A`/`$402B` reset all three to 365)
+- `$40E2` **linear-scans** array A for a match and calls `$411F` on each hit to test
+  array B at the same index — first match wins
+- on failure the pair is swapped (`$4070`) and rescanned, so recipes are
+  order-insensitive even though each is stored in one direction only
+- `$4145` maps the matched index to the result via the array at `$6311`
+
+> ⚠️ The count **2159 is a hardcoded immediate `$086E` in three places** — `$40E4`,
+> `$4112`, `$4122`. The array length is fixed unless all three are patched. To retire
+> a recipe, point it at an unreachable material pair rather than shortening the array;
+> `fusions.py` refuses to compile any other row count.
+
+Stock content: 2159 recipes, **0 duplicate pairs**, 52 distinct results, 263 distinct
+materials. Most-produced: Flame Swordsman (418), Zombie Warrior (318),
+CharubinFireKnight (168) — so a handful of results absorb most of the table.
 
 ## Opponent decks (bank 8) — SAME FORMAT AS DROP POOLS
 - Deck tables are **monotonic cumulative weight arrays** (values run past 365, so they

@@ -13,11 +13,12 @@ tools/
 # --- External repos we depend on but don't own (re-clonable) ---
 reference/
 
-# --- Extracted game content ---
-# work/cards.json holds every card's English name and description, i.e. Darrman's
-# translation text lifted out of the ROM. It is regenerable at any time with
-# `python cardc.py extract`, so it is treated like the ROM: used, never shipped.
+# --- Extracted game content (regenerable; treated like the ROM: used, never shipped) ---
+# cards.json holds every card's English name and description, i.e. Darrman's
+# translation text lifted out of the ROM. fusions.json is bulk table data.
+# Regenerate with `python cardc.py extract` / `python fusions.py extract`.
 work/cards.json
+work/fusions.json
 
 # --- Build artifacts ---
 *.o
