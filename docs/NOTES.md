@@ -171,37 +171,58 @@ in `$4002..$40FF`.
 > ⚠️ Earlier notes had this as `CF <index> <bank>`. That is wrong and made every
 > call-site search miss. The award routine's real call site is `CF 03 0D`, not
 > `CF 00 0D`.
-**Effect invocation sites** cluster in **bank 3, `0x00D000`–`0x00D340`** (e.g. three
-handlers called in a row at `0x00D01C/26/30`, beside a 7-entry jump table at
-`0x00D05E`). The card→effect decision is *there, in code*.
+## Spell verbs (bank 3) — ALREADY DATA-DRIVEN, no patch needed
+Tool: `work/scripts/spells.py` (`list` / `verbs` / `set` / `verify`).
 
-### Assembly assessment — CAN verbs be re-pointed? YES, via a small patch
-"Play a card" in bank 3 (`0x00D014`) dispatches by **card category** through a
-7-entry jump table at `$505E` (= file `0x00D05E` → handlers `$50CF $50DC $50F0
-$5100 $5110 $5120 $5130`), using an index from `$5095`. The 16 **spell** handlers are
-then reached from scattered *guarded call sites* (`0xD01C/26/30`, `0xD262`, `0xD28C`,
-`0xD291`, `0xD2F8`, `0xD331`) — i.e. the card→verb binding is **hardcoded control
-flow**, not a table. That is why the `0x15162` data edit only moved the text.
+> ⚠️ **Retraction.** Earlier notes here claimed the card→effect binding was
+> "hardcoded control flow", that `0x00D000`–`0x00D340` was the decision site, and that
+> a table-driven indirection had to be *added*. All three are wrong.
+> `0x00D014` is the **menu-slot** dispatcher — `$5095` reads cursor bitflags from
+> `$CAA5`/`$CAA6`, not card ids. And the `0x15162` experiment only moved the text
+> because that table only ever selects the **message**: `$5148` writes it to `$CF47`
+> and returns. Message and effect are simply two independent tables.
 
-**Feasible fix — insert a table-driven indirection** (classic romhack technique):
-every effect handler is already uniformly callable as `rst $08 <routine_idx> <bank 5>`
-(indices 5..20 via bank 5's routine table at `0x14002`). So:
-1. Put a new **50-byte table** (magic slot → bank-5 routine index) in genuinely free
-   ROM — see the free-space section below (**do not** use bank-13 zero runs).
-2. Add a ~20–40 byte stub: read slot → index, issue the `rst $08`.
-3. Patch the magic-effect decision point to call the stub.
-Result: spell verbs become **freely assignable per magic slot** — what Project 2 wants.
+The binding is a **one-byte-per-card lookup** that already exists:
 
-**Remaining work to do it:** pinpoint the exact decision site for "which spell effect".
-Fastest route is a BGB breakpoint on one effect handler, then read the caller.
+| Structure | CPU | File | Notes |
+|---|---|---|---|
+| Verb jump table | `$6F82` | `0x00EF82` | **53 entries** (`$00`–`$34`) → bank 3 routines |
+| Verb table A | base `$6EF2` | magic block `0x00F01E` | play onto field |
+| Verb table B | base `$6F62` | magic block `0x00F08E` | equip / combine |
 
-### DESIGN CONSEQUENCE (current, unpatched): "the slot IS the verb"
-Because effects are bound in code by card id, you cannot reassign a spell's effect by
-editing data. The workable model for both projects is the inverse: **assign card
-identities to the existing effect slots.** Whatever card occupies magic slot #337 will
-always Raigeki, so name/describe it as the card that should do that. The 50 magic slots
-are a fixed palette of verbs to design around. Changing which verb a slot runs is an
-*assembly* change (RGBDS is already installed) — a later capability, not a blocker.
+Both bases are **negative offsets**: the dispatcher computes `base + card_id`, so table
+A's first real entry is `$6EF2 + 300 = $701E`. The notional first 300 entries overlap
+the jump table and the dispatcher code itself and are never read, because ids below 300
+are short-circuited. Only ids 300–364 (cards **#301–365**) are live — 65 bytes each.
+
+Dispatchers, both ending in `x2 → index $6F82 → jp hl`:
+- `$6FEE` **play path** — card from `$CDF2/$CDF3`; id < 300 → verb `$2F` outright
+- `$705F` **fuse path** — card from `$CECD/$CECE`; id < 300 → try a fusion (far-call
+  bank `$3B` idx 2), returning verb `$01` if it fused, else `$02`
+
+Two tables exist because *playing* an equip card is generic (verb `$2F`) while
+*combining* it with a monster needs per-equip logic, so table B gives each equip its own
+verb `$15`–`$2E`. Swords of Light, Spellbinding Circle and Dark-Piercing Light are `$00`
+(a bare `ret`) in table B — they cannot be combined.
+
+### The complete verb vocabulary (what card design can use)
+`$00` nothing · `$01` summon fusion result · `$02` summon fusion material ·
+`$03`–`$08` field (Forest, Wasteland, Mountain, Sogen, Umi, Yami) ·
+`$09`–`$0D` heal ×5 magnitudes · `$0E`–`$12` burn ×5 magnitudes ·
+`$13` Dark Hole · `$14` Raigeki · `$15`–`$2E` per-equip combine ·
+`$2F` generic play/summon · `$30` Stop Defence · `$31` Dragon Capture Jar ·
+`$32` Swords of Light · `$33` Dark-Piercing Light · `$34` Spellbinding Circle ·
+`$35` Elegant Egotist.
+
+**Reassigning a spell is a one-byte edit.** Making Sparks (#343) cast Raigeki is
+`0x00F048: 0x0E → 0x14`, and nothing else changes — note the message table is separate,
+so the card would still *say* "Sparks". Verified as a 1-byte diff.
+
+### DESIGN CONSEQUENCE — the slot is NOT the verb
+The earlier "assign card identities to fixed effect slots" workaround is unnecessary.
+Any of the 65 cards from #301 up can be given any of the 53 verbs freely, in either
+table, independently of its name, art and lore. For Project 2 the real limits are the
+**53 available verbs** and the fact that new verbs need new assembly — not the binding.
 
 ## Fusion system (bank 0x3B) — FULLY DECODED
 Tool: `work/scripts/fusions.py` (`extract` / `verify` / `list` / `find` / `stats`).

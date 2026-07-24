@@ -64,9 +64,12 @@ def read_table(rom, bank):
     """Decode a bank's routine pointer table.
 
     The table ends where the first routine begins, so the entry with the
-    lowest target address bounds it.
+    lowest target address bounds it. Returns [] for a bank that isn't in the
+    ROM, so disassembling data that merely looks like `rst $08` can't crash.
     """
     base = bank_base(bank)
+    if base + BANKSIZE > len(rom):
+        return []
     entries, limit = [], 0x4000 + BANKSIZE
     for i in range(256):
         addr = 0x4002 + 2 * i

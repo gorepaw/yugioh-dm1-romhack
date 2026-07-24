@@ -70,6 +70,14 @@ def main():
         n = fusions.apply_config(rom, fusions.load_db(fusions_json))
         print(f"  fusions.json compiled: {n} recipes")
 
+    # --- spell verbs (work/spell_config.json) ---
+    spell_config = os.path.join(ROOT, "work", "spell_config.json")
+    if os.path.exists(spell_config):
+        import spells
+        n = spells.apply_config(rom, json.load(open(spell_config)))
+        if n:
+            print(f"  spell verbs reassigned: {n}")
+
     # --- card stat edits (work/card_edits.json, applied via cards.py) ---
     card_edits_path = os.path.join(ROOT, "work", "card_edits.json")
     card_edit_count = 0
