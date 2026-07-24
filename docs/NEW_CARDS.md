@@ -52,18 +52,129 @@ rows currently pointing at Flame Swordsman and Zombie Warrior.
 
 | | |
 |---|---|
-| **In-game name** | `IllusionMagician` — 15 tiles |
+| **In-game name** | `AprnticeIlusnMagc` — 17 tiles |
 | **ATK / DEF** | 2000 / 1700 |
 | **Type** | Spellcaster |
 | **Flavour** | `Novice of the dark` (18) / `magician's craft.` (16) |
 | **Slot zone** | either — no fusion involvement yet |
 
-Name note: the full "Apprentice Illusion Magician" is 28 characters and cannot fit.
-`IllusionMagician` keeps the recognisable half and is the cheapest option at 15 tiles.
-Alternatives if you'd rather keep "Apprentice": `ApprenticeMagicn` (16) or
-`AprnticeIlusnMagc` (17). Flag a preference and it changes here, not in the ROM.
+*Not representable:* Level 6, DARK.
+
+---
+
+## Chronicle Magician
+
+| | |
+|---|---|
+| **In-game name** | `Chronicle Magician` — 18 tiles (at the ceiling) |
+| **ATK / DEF** | 2500 / 2500 |
+| **Type** | Spellcaster |
+| **Flavour** | `Keeper of the ages` (18) / `and their secrets.` (18) |
+| **Slot zone** | either — no fusion involvement yet |
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Dark Cavalry
+
+| | |
+|---|---|
+| **In-game name** | `Dark Cavalry` — 12 tiles |
+| **ATK / DEF** | 2800 / 2300 |
+| **Type** | Spellcaster |
+| **Flavour** | `The magician rides` (18) / `armed for war.` (14) |
+| **Slot zone** | **#1–#300 required** — it is a Fusion result |
+
+Fusion: *Dark Magician + 1 Warrior monster*. Same as Amulet Dragon — no "any monster
+of type X" rule exists, so this becomes one explicit row per Warrior we allow.
+
+*Not representable:* Level 8, DARK, Fusion/Effect subtype, the effect text.
+
+---
+
+## Dark Eradicator Warlock
+
+| | |
+|---|---|
+| **In-game name** | `EradicatorWarlock` — 17 tiles |
+| **ATK / DEF** | 2500 / 2100 |
+| **Type** | Spellcaster |
+| **Flavour** | `Burns all it finds` (17) / `to bitter ash.` (14) |
+| **Slot zone** | either — no fusion involvement yet |
+
+Name note: the full name is 23 characters. `DarkEradicWarlock` (17) is the alternative
+if you'd rather keep "Dark" than "Warlock" intact.
+
+*Not representable:* Level 7, DARK.
+
+---
+
+## Dark Magician Girl
+
+| | |
+|---|---|
+| **In-game name** | `Dark Magician Girl` — 18 tiles (at the ceiling) |
+| **ATK / DEF** | 2000 / 1700 |
+| **Type** | Spellcaster |
+| **Flavour** | `The magician's own` (17) / `bright pupil.` (12) |
+| **Slot zone** | **#1–#300 required** — it is a Fusion *material* |
+
+Material for Dark Magician Girl the Dragon Knight, so it must sit in the fusion zone.
 
 *Not representable:* Level 6, DARK.
+
+---
+
+## Dark Magician Girl the Dragon Knight
+
+| | |
+|---|---|
+| **In-game name** | `DMGirl:DrgnKnight` — 17 tiles |
+| **ATK / DEF** | 2600 / 1700 |
+| **Type** | Dragon |
+| **Flavour** | `Rides a dragon in` (17) / `her master's name.` (17) |
+| **Slot zone** | **#1–#300 required** — it is a Fusion result |
+
+Fusion: *Dark Magician Girl + 1 Dragon monster* — one row per allowed Dragon.
+Name note: full name is 36 characters. The colon-and-dropped-vowels style matches the
+stock `Gaia:DrgnChampion`. Alternative: `MagGirlDrgnKnight` (17).
+
+*Not representable:* Level 7, DARK, Fusion/Effect subtype, the effect text.
+
+---
+
+## Dark Magician Girl the Magician's Apprentice
+
+| | |
+|---|---|
+| **In-game name** | `DMGirl:Aprentice` — 16 tiles |
+| **ATK / DEF** | 2000 / 1700 |
+| **Type** | Spellcaster |
+| **Flavour** | `Still learning the` (17) / `dark master's art.` (17) |
+| **Slot zone** | either — no fusion involvement yet |
+
+Name note: full name is 44 characters. Alternative: `DMGirlMagAprntce` (16).
+
+*Not representable:* Level 6, DARK.
+
+---
+
+## ⚠ Stat collisions
+
+DM1 has no effects, so **two cards with the same type and the same ATK/DEF are
+mechanically identical** — only name, art and flavour differ. Three entries currently
+collide:
+
+| Card | Stats | Type |
+|---|---|---|
+| Apprentice Illusion Magician | 2000 / 1700 | Spellcaster |
+| Dark Magician Girl | 2000 / 1700 | Spellcaster |
+| Dark Magician Girl the Magician's Apprentice | 2000 / 1700 | Spellcaster |
+
+That is faithful to the real cards, and is fine if they're intended as
+same-card-different-art. If they should feel distinct in play, the only lever the
+engine offers is nudging ATK/DEF apart.
 
 ---
 
@@ -71,11 +182,13 @@ Alternatives if you'd rather keep "Apprentice": `ApprenticeMagicn` (16) or
 
 | | |
 |---|---|
-| Cards recorded | 2 |
-| Name tiles used by new cards | 28 |
-| Fusion-zone (#1–#300) slots required | 1 |
-| Free-zone (#351–365) eligible | 1 |
+| Cards recorded | 8 |
+| Name tiles used by new cards | 130 |
+| Fusion-zone (#1–#300) slots required | 4 |
+| Free-zone (#351–365) eligible | 4 |
 
 The name pool is zero-slack, so every new name must be paid for by retiring an
 existing card's name of equal or greater length. That accounting starts once the
-retirement list exists.
+retirement list exists. Note the fusion-zone requirement already exceeds nothing yet,
+but four of eight cards cannot use the free tail — they must displace existing
+monsters in #1–#300.
