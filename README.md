@@ -3,6 +3,12 @@
 A romhack of the first Game Boy Yu-Gi-Oh! game (**Yu-Gi-Oh! Duel Monsters**, Japan-only, 1998),
 built on top of **Darrman's English translation** as the base.
 
+> **No ROM is included or distributed here.** This repository contains only original
+> tooling and reverse-engineering documentation. You must supply your own legally
+> obtained copy of the game. Darrman's translation patch is available separately from
+> [its own repository](https://github.com/Darrman/DM1Translation). Emulator and
+> assembler binaries are likewise not redistributed — see the setup notes below.
+
 ## Goal
 
 Improve the game across four layers:

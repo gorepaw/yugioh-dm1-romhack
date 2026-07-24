@@ -82,6 +82,15 @@ def main():
         if drop_pool_count:
             print(f"  drop pools rewritten: {drop_pool_count}")
 
+    # --- win-count reward thresholds/cards (work/reward_config.json) ---
+    reward_config_path = os.path.join(ROOT, "work", "reward_config.json")
+    reward_changed = 0
+    if os.path.exists(reward_config_path):
+        import rewards
+        reward_changed = rewards.apply_config(rom, json.load(open(reward_config_path)))
+        if reward_changed:
+            print(f"  reward values written: {reward_changed}")
+
     rom[0x14D] = header_checksum(rom)
     gc = global_checksum(rom)
     rom[0x14E], rom[0x14F] = (gc >> 8) & 0xFF, gc & 0xFF
