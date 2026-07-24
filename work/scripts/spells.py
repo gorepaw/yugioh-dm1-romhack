@@ -50,7 +50,8 @@ BASE_ROM = cardlib.BASE_ROM
 SPELL_CONFIG = os.path.join(ROOT, "work", "spell_config.json")
 
 JUMP_TABLE = 0x00EF82        # bank 3 $6F82
-NJUMP = 53
+NJUMP = 54                   # verbs $00-$35; the table ends at $6FED and the
+                             # dispatcher starts at $6FEE — ZERO spare bytes
 TABLE_A = 0x00EEF2           # base $6EF2 — add card id
 TABLE_B = 0x00EF62           # base $6F62 — add card id
 FIRST = 300                  # ids below this never reach either table

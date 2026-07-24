@@ -65,3 +65,45 @@ card descriptions; drop pools (17 × cumulative weights); duelist→pool map.
    (e.g. "cut the bottom-N by usefulness; add these later vanillas")?
 2. Keep the 366 card slots and repopulate in place (simplest, all tables sized for it)?
 3. For swapped cards: reuse the existing art, or plan art edits for key ones?
+
+---
+
+## Deferred engine options (parked — revisit before P1.2 content lock)
+
+Both concern the **transform** primitive. Recorded so they aren't lost; neither is
+started.
+
+### 1. Generalise verb `$35` from one hardcoded pair into a table
+Verb `$35` (`$7A05`, file `0x00FA05`) is the whole transform mechanic, and it is a
+single hardcoded pair: *if the combined-with monster equals card X, replace it with
+card Y*. Both ids are plain 16-bit immediates —
+
+| What | CPU | File | Stock value |
+|---|---|---|---|
+| source card | `$7A11` | `0x00FA11` | 61 = Harpie Lady |
+| result card | `$7A2A` | `0x00FA2A` | 62 = HarpieLadySisters |
+
+So *which* pair is a 2-byte edit each, and any card can become any card. But there is
+exactly **one** pair, because there is no table.
+
+**The patch:** rewrite `$7A05` in place, replacing the single equality test with a
+walk over a list of `(source, result)` word pairs. Roughly +20 bytes of code plus the
+table. That turns transform into **unlimited pairs on one verb slot** — evolution
+lines, ritual-style upgrades, level-ups — all as data.
+
+> This matters because **the verb jump table is exactly full**: 54 entries
+> (`$00`–`$35`) ending at `$6FED`, with the dispatcher starting at `$6FEE` and **zero
+> spare bytes**. A 55th verb is impossible without first relocating the table, which
+> is itself only two operand patches (`ld hl,$6F82` at `$6F54` and `$6F72`) plus
+> somewhere to put it. Generalising `$35` avoids needing a new verb at all.
+
+Same shape of change as the cards-per-win patch: re-lay-out one self-contained
+routine, no relocation, no free space needed.
+
+### 2. The Petit Moth evolution line — a SECOND, untraced transform system
+Petit Moth -> Larvae Moth -> Great Moth -> Perfect Great Moth is **turn-counter
+driven**, not verb driven, so it is separate code from verb `$35`. Not yet located.
+
+Worth tracing before designing evolution content: it may already be the more general
+of the two mechanisms (staged, timed transformation rather than an instant swap), in
+which case it is the better thing to generalise.
