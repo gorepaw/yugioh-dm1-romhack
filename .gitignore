@@ -13,6 +13,12 @@ tools/
 # --- External repos we depend on but don't own (re-clonable) ---
 reference/
 
+# --- Extracted game content ---
+# work/cards.json holds every card's English name and description, i.e. Darrman's
+# translation text lifted out of the ROM. It is regenerable at any time with
+# `python cardc.py extract`, so it is treated like the ROM: used, never shipped.
+work/cards.json
+
 # --- Build artifacts ---
 *.o
 *.gbo

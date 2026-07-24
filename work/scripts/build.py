@@ -52,6 +52,17 @@ def main():
         rom[off] = new
         print(f"  @0x{off:06X}: 0x{old:02X} -> 0x{new:02X}   {desc}")
 
+    # --- the card compiler (work/cards.json): names, types, ATK/DEF, lore ---
+    # When present this is the authority for the whole card model and is applied
+    # FIRST, so the narrower editors below can still tweak individual cards on
+    # top of it. Generate it with `python cardc.py extract`.
+    cards_json = os.path.join(ROOT, "work", "cards.json")
+    if os.path.exists(cards_json):
+        import cardc
+        s = cardc.apply_config(rom, cardc.load_db(cards_json))
+        print(f"  cards.json compiled: names {s['names']}/{s['name_budget']} B, "
+              f"descriptions {s['descs']}/{s['desc_budget']} B")
+
     # --- card stat edits (work/card_edits.json, applied via cards.py) ---
     card_edits_path = os.path.join(ROOT, "work", "card_edits.json")
     card_edit_count = 0

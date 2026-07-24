@@ -315,6 +315,48 @@ Verified against the built ROM: the patch changes only `$400C-$4071`; the far-ca
 table, drop pointer table, all 16 weight arrays, and the whole reward system are
 byte-identical to the base.
 
+## P1.1 — the card compiler (DONE)
+`work/scripts/cardc.py`. One source of truth, `work/cards.json` (gitignored — it
+contains Darrman's translated names and lore), regenerating all four card structures.
+`python cardc.py verify` extracts from the pristine ROM, compiles straight back, and
+requires byte-identity. It passes, and `build.py` with `cards.json` present reproduces
+MD5 `dea982111cc284f28ec4c161e921bbcf` — the base ROM exactly.
+
+| Structure | Address | Format |
+|---|---|---|
+| Name pointers | `0x440F` | 365 × 16-bit CPU addr **+ a 366th end sentinel** (`$8000`) |
+| Name pool | `$6E80`–`$7FFF` (bank 1, file == CPU) | **4480 bytes, 100% full** |
+| Type | `0x2409E` | 365 × 1 byte |
+| ATK / DEF | 7 pairs (see `cards.py TABLES`) | 365 × BCD16 LE each; Magic = `$FFFF` |
+| Description pointers | `0xF0060` | 365 × 16-bit CPU addr (**no** sentinel) |
+| Description pool | `$433A`–`$768D` (bank `$3C`, file = `0xEC000`+CPU) | **13139 bytes, 100% full** |
+
+**Strings have no terminator** — `0x00` is a *space*. A record's length is the gap to
+the next pointer, which is why both pools must be repacked and re-pointed together.
+
+> ⚠️ Descriptions are **not** fixed 36-byte records. Cards 76 and 121 are 35 bytes and
+> card 175 is 37, so `0xF033A + 36*index` is wrong from card #77 onward and lands on
+> top of the neighbouring record. `descriptions.py` used to do exactly that; it now
+> reads the pointer table and refuses any in-place edit that changes a record's length.
+
+**Text codec** (`cardtext.py`): built from `text.tbl` rather than hardcoded, and
+longest-match-first, because six bytes are ligatures (`il li ll l! 's 't`) that squash
+two glyphs into one tile. All 365 names and all 365 descriptions survive
+decode → encode byte-identically, so `cards.json` can hold readable text and still
+round-trip. A per-record raw-hex fallback exists but is currently unused (0 records).
+
+### The constraint Project 1 has to plan around
+**Both pools are exactly full — 0 free bytes.** Renaming is a zero-sum budget:
+swapping *Skull Servant* (12 B, `ll` is one tile) for *Buster Blader* (13 B) is
+rejected with "over by 1" until a byte is freed elsewhere. Verified that a
+budget-neutral swap works end to end and leaves every other card untouched.
+Growing the roster's total name length at all requires relocating a pool and
+re-pointing its reader — not yet investigated.
+
+Card count is **365**, not 366; index 365 in the name pointer table is the end
+sentinel. `cards.py NCARD` was 366 and `load_names()` read Darrman's script file
+instead of the ROM; both are fixed, so names now come from whatever ROM is loaded.
+
 ### Card lore / description text (bonus find)
 - Bank `0x3C`: description pointer table at `$F0060`, strings from `$F033A`
   (card #0 Blue-Eyes description @ `$F033A`). Editable later via `text_tool.py`.

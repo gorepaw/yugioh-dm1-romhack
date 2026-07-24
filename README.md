@@ -69,6 +69,32 @@ roms/dm1-english.gb  --our edits-->  build/dm1-hack.gb   (our romhack)
 Edits are queued as data (JSON / the `EDITS` list) and applied by `build.py`.
 Scripts are in `work/scripts/` (run with your Python 3).
 
+**The card compiler** (`cardc.py`) is the main way to edit cards. It extracts every
+card's complete model — name, type, ATK/DEF across all seven terrain tables, and lore —
+into `work/cards.json`, then recompiles all of it back into the ROM, repacking and
+re-pointing the name and description pools:
+
+```
+python cardc.py extract              # -> work/cards.json (the source of truth)
+python cardc.py verify               # extract -> recompile -> must be byte-identical
+python cardc.py show 1 24
+python cardc.py budget               # name / description pool usage
+```
+
+Edit `work/cards.json`, then `python build.py`. `verify` is the safety net: it proves
+the compiler reproduces the base ROM exactly, so any diff in your build is a change
+you made rather than a decoding bug.
+
+> **Both text pools are 100% full** (names 4480 B, descriptions 13139 B). Renaming is
+> a zero-sum budget — a longer name has to be paid for by a shorter one somewhere, and
+> the compiler refuses to build if the total overflows.
+
+`work/cards.json` is gitignored: it holds the translated card text, which isn't ours
+to redistribute. Regenerate it with `cardc.py extract`.
+
+The narrower editors below still work and are applied *after* the compiler, so they
+can tweak individual cards on top of it.
+
 **Card stats & type** — `cards.py` → `work/card_edits.json`:
 ```
 python cards.py find dragon                          # search by name

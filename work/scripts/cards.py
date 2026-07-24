@@ -29,7 +29,7 @@ CARDNAMES = os.path.join(ROOT, "reference", "DM1Translation",
                          "Insertion", "script", "cardname.txt")
 CARD_EDITS = os.path.join(ROOT, "work", "card_edits.json")
 
-NCARD = 366
+NCARD = 365      # index 365 in the name pointer table is the end sentinel
 # (ATK array addr, DEF array addr); index 0 is the base (no-field) table.
 TABLES = [
     (0x24381, 0x2465D),   # base
@@ -80,20 +80,22 @@ def type_name(b):
 
 
 # --- names ---------------------------------------------------------------
-def load_names(path=CARDNAMES):
-    names, idx, got = {}, None, False
-    for raw in open(path, encoding="utf-8", errors="replace"):
-        t = raw.strip()
-        m = re.match(r"//POINTER #(\d+)\b", t)
-        if m:
-            idx, got = int(m.group(1)), False
-            continue
-        if idx is None or not t or t.startswith("//") or t.startswith("#"):
-            continue
-        if not got:
-            names[idx] = t
-            got = True
-    return names
+NAME_PTRS = 0x440F     # bank 1; file offset == CPU address in this bank
+
+
+def load_names(rom=None):
+    """{card_index: name}, read from the ROM itself.
+
+    Names live in a pointer-indexed pool at $6E80-$7FFF with no terminators —
+    each string runs to the next pointer, and 0x00 is a space. Index 365 is the
+    end sentinel. Reading the ROM rather than Darrman's script file keeps this
+    working on any build we produce, including one with renamed cards.
+    """
+    import cardtext
+    if rom is None:
+        rom = open(BASE_ROM, "rb").read()
+    ptr = [rd(rom, NAME_PTRS + 2 * i) for i in range(NCARD + 1)]
+    return {i: cardtext.decode(rom[ptr[i]:ptr[i + 1]]) for i in range(NCARD)}
 
 
 # --- read / edit ---------------------------------------------------------

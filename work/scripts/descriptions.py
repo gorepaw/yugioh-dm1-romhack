@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-"""Card description / lore text editor (Bank 0x3C).
+"""Card description / lore text editor (Bank 0x3C) — in-place, single card.
 
-Descriptions are FIXED 36-byte records: 2 lines of 18 tiles, laid consecutively
-from ROM 0xF033A. Card index = card number - 1. Editing is in-place and safe
-(no pointer/relocation work): each line is encoded and space-padded to 18 tiles.
+For bulk work prefer `cardc.py`, the card compiler, which owns the whole card
+model and repacks the pool. This tool exists for quick one-off edits.
+
+Descriptions are **pointer-indexed and variable-length**, NOT fixed 36-byte
+records: the table at 0xF0060 holds one CPU pointer per card into bank 0x3C, and
+while most records are 36 bytes (2 lines x 18 tiles), cards 76 and 121 are 35
+and card 175 is 37. Computing an offset as 0xF033A + 36*index is therefore
+wrong from card #77 onward and corrupts the neighbouring record.
+
+Editing here is in-place, so a replacement must encode to exactly the record's
+existing length; anything else needs the compiler, which repacks and re-points.
 
 Ligature squashes (il, li, ll, l!, 's, 't = one tile) are applied automatically,
 so a line can hold a bit more than 18 literal characters.
@@ -26,8 +34,6 @@ BASE_ROM = cards.BASE_ROM
 TBL = os.path.join(ROOT, "reference", "DM1Translation", "Insertion", "text.tbl")
 DESC_EDITS = os.path.join(ROOT, "work", "desc_edits.json")
 
-DESC_BASE = 0xF033A
-DESC_LEN = 36
 LINE = 18
 LIGATURES = {"il": 0x4E, "li": 0x4F, "ll": 0x50, "l!": 0x51, "'s": 0x52, "'t": 0x53}
 
@@ -36,11 +42,20 @@ def _table():
     return text_tool.load_table(TBL)
 
 
+def desc_span(rom, index):
+    """(file_offset, length) of a card's record, read from the pointer table."""
+    import cardc
+    lo = cardc.rd16(rom, cardc.DESC_PTRS + 2 * index)
+    hi = (cardc.rd16(rom, cardc.DESC_PTRS + 2 * (index + 1))
+          if index + 1 < cardc.NCARD else cardc.DESC_POOL_END_CPU)
+    return cardc.DESC_BANK + lo, hi - lo
+
+
 def decode_desc(rom, index):
     tbl = _table()
-    off = DESC_BASE + DESC_LEN * index
+    off, ln = desc_span(rom, index)
     return (text_tool.decode(rom[off:off + LINE], tbl),
-            text_tool.decode(rom[off + LINE:off + DESC_LEN], tbl))
+            text_tool.decode(rom[off + LINE:off + ln], tbl))
 
 
 def encode_line(s, single):
@@ -65,8 +80,15 @@ def encode_desc(line1, line2):
 
 
 def apply_desc(rom, index, line1, line2):
-    off = DESC_BASE + DESC_LEN * index
-    rom[off:off + DESC_LEN] = encode_desc(line1, line2)
+    """In-place, so the new text must occupy the record's exact byte length."""
+    off, ln = desc_span(rom, index)
+    new = encode_desc(line1, line2)
+    if len(new) != ln:
+        raise ValueError(
+            f"card #{index + 1}'s description record is {ln} bytes but the "
+            f"replacement encodes to {len(new)}. In-place edits cannot resize a "
+            f"record — use cardc.py (the compiler), which repacks the pool.")
+    rom[off:off + ln] = new
     return f'"{line1.strip()}" / "{line2.strip()}"'
 
 
