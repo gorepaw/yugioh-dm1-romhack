@@ -131,8 +131,9 @@ skip-enemy-attacks (Swords), power-down-all-enemies (Spellbinding Circle), revea
 transform (Elegant Egotist), plus fusion and Petit Moth evolution as special cases.
 *This is the complete set of "verbs" available for card design in both projects.*
 
-Bank calling convention: `rst $08` (`CF`) + bank + routine index; each bank starts
-with a routine pointer table (bank 5's is at `0x14002`).
+Bank calling convention: `rst $08` (`CF`) + `sel` + bank — see the fully decoded
+description below; each bank starts with a routine pointer table at `$4002`
+(bank 5's is at `0x14002`).
 
 **Open question (the important one):** where the card → effect-handler binding lives.
 The 16 handlers are bank-5 routines reached through bank 5's routine table (`0x14002`,
@@ -143,9 +144,33 @@ is the next target.
 
 Confirmed separately: no trap / effect-monster category exists (21-type enum has none).
 
-**Far-call convention (decoded):** `rst $08` = `CF <routine_index> <bank>`; each bank
-begins with a routine pointer table (bank 5's at `0x14002`; effect handlers are its
-routine indices 5..20).
+**Far-call convention — FULLY DECODED** (handler disassembled at bank 0 `$1033`;
+tooling: `work/scripts/farcall.py`, `work/scripts/dis.py`):
+
+```
+rst $08          ; CF
+db  <sel>        ; sel = 2*index + 3   (ALWAYS ODD — a strong search filter)
+db  <bank>       ; destination bank number
+```
+
+The handler reads a 16-bit LE target from the **destination** bank at
+`$4000 + sel - 1`, so each bank is laid out:
+
+```
+$4000  db <this bank's own number>   ; the handler reads it to save the caller's bank
+$4001  db $00
+$4002  dw routine_0                  ; sel = 3
+$4004  dw routine_1                  ; sel = 5   ...  sel = 2*i + 3
+```
+
+It builds a fake stack frame returning to `$1071`, which restores the caller's bank,
+so far calls **nest freely** (bank 13's `$400C` issues three of them itself).
+Note `sel` is *not* bounds-checked against the table — it can address any byte pair
+in `$4002..$40FF`.
+
+> ⚠️ Earlier notes had this as `CF <index> <bank>`. That is wrong and made every
+> call-site search miss. The award routine's real call site is `CF 03 0D`, not
+> `CF 00 0D`.
 **Effect invocation sites** cluster in **bank 3, `0x00D000`–`0x00D340`** (e.g. three
 handlers called in a row at `0x00D01C/26/30`, beside a 7-entry jump table at
 `0x00D05E`). The card→effect decision is *there, in code*.
@@ -200,11 +225,19 @@ Beating a duelist 10/20/…/100 times awards a specific card.
 | Part | Address | Format |
 |---|---|---|
 | **Thresholds** | **`0x036F02`** | 10 × 16-bit **BCD** (`10,20,…,100`), `FFFF`-terminated |
-| Reward pointer table | `0x036F1A` | 17 pointers (one per duelist/pool), 20 bytes apart; file = ptr + `0x30000` |
+| Reward pointer table | **`0x036F18`** | 17 pointers (one per duelist/pool), 20 bytes apart; file = ptr + `0x30000` |
 | Reward card lists | from `0x036F3A` | 17 blocks × 10 × 16-bit card id (award per threshold) |
 
-- Lookup routine ~`0x036EC0` reads the win count from RAM (`$CF70`+) and walks the
-  threshold table to pick an index.
+- Both addresses are read straight out of the code: `$6EBD` does `ld hl,$6F02` to walk
+  the thresholds, `$6E8E` does `ld hl,$6F18 / add hl,de` with `DE = 2 * pool`.
+  (`0x036F1A` was wrong — it read pool *N+1*'s list for pool *N*. Fixed 2026-07-23.)
+- Lookup routine `$6EBD` (`0x036EBD`) reads a 16-bit BCD win count from
+  `$CF70 + 2*duelist` and walks the threshold table. It is a **pure comparison** —
+  it never increments anything, and the reward fires only when the win count is
+  **exactly** equal to a threshold. So running the award routine twice on the same
+  win hands out the milestone card twice.
+- Win counts are incremented by the BCD adder at `0x002867` (caps at 9999); the
+  17 × 2-byte zero table at `0x002823` is their initialiser — **not** free space.
 - Sanity check — duelist 0 (Weevil): #329, #49 Big Insect, #304 Axe of Despair,
   #52 Hercules Beetle, #305 Laser Cannon Armor, #53 Killer Needle, … (insect-themed ✓).
 - **To ease the grind: edit the ten BCD values at `0x036F02`** (e.g. 3,6,9,…,30).
@@ -217,33 +250,70 @@ Use `work/scripts/find_freespace.py`. **Zero runs are not automatically free.**
 > drop-pool weight data** — cards with 0% drop chance. Writing a patch there would
 > silently corrupt the drop tables. Verify a run isn't inside a known table first.
 
-Genuinely free (`0xFF`/`0x00` padding at bank ends), e.g.:
-`0x017C00`/`0x017E00` (bank 5), `0x01FC00`–`0x01FE00` (bank 7),
-`0x033283` (208 B) and `0x03390C` (332 B) in bank 12.
-**Bank 13 is completely full** — packed to `0x37FFF`, no padding at all.
+Two more traps found the same way, both of which *look* like padding:
 
-## Cards per win — analysis (NOT yet patched)
-Award routine is bank D routine 0 at `$400C` (file `0x3400C`):
+> ⚠️ `0x002823` (68 bytes of `0x00`, bank 0, right after a `ret`) is the **win-counter
+> initialiser table** — read by `ld de,$2823` / `ld de,$2845` at `0x0027FF`/`0x002810`.
+> ⚠️ Bank 13's tail (`~$71CD`–`$7FFF`) and bank 4's `0xFF` runs are **graphics**;
+> blank tiles scan as free space. Classify 64-byte blocks by `%00/FF` first.
+
+**Method that actually works:** account for every known structure in a bank and report
+what's left over — `work/scripts/bank13_map.py` does this for bank 13. Its result:
+
+| Range | Contents |
+|---|---|
+| `$4000-$400B` | far-call routine table (5 entries) |
+| `$400C-$4071` | award routine + drop picker (102 bytes, exactly packed) |
+| `$4072-$4093` | drop-pool pointer table |
+| `$4094-$6E33` | 16 × 730-byte cumulative weight arrays (duelists 6 and 7 **share** a pool) |
+| `$6E34-$6F01` | code (`$6E34`, `$6E68`, `$6E8E`, `$6EBD`) |
+| `$6F02-$708D` | thresholds + reward pointer table + reward lists |
+| `$708E-~$71CC` | code, then a 9-entry string table at `$7173` |
+| `~$71CD-$7FFF` | graphics |
+
+So **bank 13 genuinely has no free space** — but it did not need any (below).
+
+## Cards per win — SOLVED & PATCHED
+`work/scripts/grind.py`, config `work/grind_config.json` (`{"cards_per_win": 3}`;
+set it to 1 for stock). Applied by `build.py`.
+
+Call site: **bank 4 `$4110` (file `0x010110`)** = `CF 03 0D`, the *only* far call to
+bank 13 index 0. Found by searching for the correct `sel` once the convention was
+decoded — the previously-suspected `0x09F92A` was indeed a false positive.
+
+The trick is that `$400C-$4071` is one **contiguous 102-byte block holding only the
+award routine and its picker**. Verified: the sole reference into it from inside
+bank 13 is the award routine's own `call $4027`, and the sole reference from outside
+is table entry 0. So the whole block can be re-laid-out in place, and no free space,
+no stub, and no second bank are involved.
+
+A counted loop costs 6 bytes. It is funded from inside the picker without changing
+what the picker does:
+
 ```
-call $23F7 ; cp 0 ; jr z,skip
-call $4027        ; pick the card: PRNG ($2112) x2, then scan the pool's
-                  ; cumulative weights until the roll is covered -> card index
-rst08 x3          ; add to collection / display
-call $6E8E
+ld a,$00 / ld [$CE9D],a / ld a,$FF / ld [$CE9E],a      (10 bytes)
+ld hl,$CE9D / xor a / ld [hl+],a / ld [hl],$FF         ( 7 bytes)   x2  = -6
+cp $00  ->  and a   (identical flags)                  in both routines = -2
 ```
-`$4027` (file `0x34027`) is the picker. Awarding 3 cards means running that body
-three times — i.e. redirect `$400C` to a looping stub.
 
-**Blockers to solve first:**
-1. Bank 13 has **no free space** for the stub, so it must live in another bank
-   (fine — `rst $08` switches banks) or replace dead code in bank 13.
-2. The caller of `$400C` is **not confirmed**: the only `CF 00 0D` match
-   (`0x09F92A`, bank 39) sits in high-entropy data and is very likely a false
-   positive. So the invocation path needs verifying.
+New layout — award `$400C-$402C` (33 B), picker `$402D-$4070` (68 B), 1 byte spare:
 
-**Recommended next step:** BGB breakpoint on `0x3400C` (bank 13 `$400C`), win a duel,
-and read the call stack / return address. That confirms the caller and the banking
-context in minutes, versus guessing statically.
+```
+$400C  push af / push bc / call $23F7 / and a / jr z,$402A
+$4014  ld b,<cards_per_win>          ; <-- the tunable byte, file 0x034015
+$4016  push bc / call $402D / rst08 $11,$01 / rst08 $41,$01 / rst08 $29,$02
+$4023  pop bc / dec b / jr nz,$4016
+$4027  call $6E8E                    ; milestone reward — OUTSIDE the loop
+$402A  pop bc / pop af / ret
+```
+
+**`call $6E8E` must stay outside the loop.** `$6EBD` fires on an *exact* win-count
+match and never increments, so looping the whole routine would award three copies of
+the milestone card on wins 10, 20, 30…
+
+Verified against the built ROM: the patch changes only `$400C-$4071`; the far-call
+table, drop pointer table, all 16 weight arrays, and the whole reward system are
+byte-identical to the base.
 
 ### Card lore / description text (bonus find)
 - Bank `0x3C`: description pointer table at `$F0060`, strings from `$F033A`

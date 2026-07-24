@@ -88,10 +88,40 @@ python descriptions.py set 1 "line one (<=18)" "line two (<=18)"
 python text_tool.py reference/DM1Translation/Insertion/text.tbl roms/dm1-english.gb search "your turn."
 ```
 
+**Cards awarded per won duel** — `grind.py` → `work/grind_config.json`:
+```
+python grind.py show
+python grind.py set 3                                 # 1 = stock
+```
+
+**Win-count reward thresholds / cards** — `rewards.py` → `work/reward_config.json`:
+```
+python rewards.py show 0                              # thresholds + duelist 0's rewards
+python rewards.py set-thresholds 10 20 30 40 50 60 70 80 90 100
+```
+
 Then build, and undo by removing the relevant JSON entry / `EDITS` line:
 ```
 python build.py                                       # -> build/dm1-hack.gb
 ```
+
+### Reverse-engineering tools
+
+The game calls across banks with `rst $08` followed by two inline parameter bytes,
+which desyncs ordinary disassemblers. These understand it:
+
+```
+python farcall.py table 0x0D          # decode a bank's routine pointer table
+python farcall.py calls 0x0D 0        # every call site targeting bank 13 routine 0
+python dis.py 0x03400C 33             # disassemble, resolving far calls
+python dis.py 0x03400C 33 --rom ../../build/dm1-hack.gb
+python bank13_map.py                  # account for every byte of bank 13
+python find_freespace.py ../../roms/dm1-english.gb
+```
+
+Note `find_freespace.py` reports *candidates*, not free space: runs of `0x00`/`0xFF`
+in this ROM are frequently live cumulative-weight data, pointer-table initialisers,
+or blank graphics tiles. Always confirm against a bank map before writing a patch.
 
 DM1 cards have no deck cost, Guardian Stars, or levels (those are later-game systems),
 so name + ATK + DEF + type + description is the complete, editable card model.

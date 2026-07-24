@@ -91,6 +91,15 @@ def main():
         if reward_changed:
             print(f"  reward values written: {reward_changed}")
 
+    # --- cards awarded per won duel (work/grind_config.json) ---
+    grind_config_path = os.path.join(ROOT, "work", "grind_config.json")
+    cards_per_win = 0
+    if os.path.exists(grind_config_path):
+        import grind
+        cards_per_win = grind.apply_config(rom, json.load(open(grind_config_path)))
+        if cards_per_win:
+            print(f"  award routine rebuilt: {cards_per_win} cards per won duel")
+
     rom[0x14D] = header_checksum(rom)
     gc = global_checksum(rom)
     rom[0x14E], rom[0x14F] = (gc >> 8) & 0xFF, gc & 0xFF

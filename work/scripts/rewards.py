@@ -3,8 +3,12 @@
 
 Beating a duelist N times awards a card. Layout:
   thresholds   0x036F02 : 10 x 16-bit BCD (10,20,...,100), FFFF-terminated
-  pointers     0x036F1A : 17 pointers (one per duelist/pool); file = ptr + 0x30000
+  pointers     0x036F18 : 17 pointers (one per duelist/pool); file = ptr + 0x30000
   reward lists 0x036F3A : 17 blocks x 10 x 16-bit card id (award per threshold)
+
+Both addresses are read straight out of the code that uses them: $6EBD does
+`ld hl,$6F02` to walk the thresholds, and $6E8E does `ld hl,$6F18 / add hl,de`
+with DE = 2 * pool to reach the pointer table.
 
 Edits queue to work/reward_config.json and are applied by build.py.
 
@@ -26,7 +30,7 @@ BASE_ROM = cards.BASE_ROM
 REWARD_CONFIG = os.path.join(ROOT, "work", "reward_config.json")
 
 THRESHOLDS = 0x036F02
-PTRS = 0x036F1A
+PTRS = 0x036F18
 NSTEP = 10
 NPOOL = 17
 
