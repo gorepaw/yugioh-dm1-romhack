@@ -19,14 +19,14 @@ BASE = os.path.join(ROOT, "roms", "dm1-english.gb")
 OUT = os.path.join(ROOT, "build", "dm1-hack.gb")
 
 # (offset, expected_old_byte, new_byte, description)
-EDITS = [
-    (0x01540D, 0x44, 0x3F, "Duel-start message: 'It's your turn.' -> 'It's your turn!'"),
-    # EXPERIMENT (P1.0b): magic-slot effect table @0x15162, index = card# - 301.
-    # Card #343 Sparks is index 42 -> 0x1518C. Change effect id 0x21 (33, weakest
-    # burn) to 0x1B (27, Raigeki). If playing Sparks now DESTROYS all enemy
-    # monsters, spell effects are reassignable per slot (not just flavour text).
-    (0x01518C, 0x21, 0x1B, "TEST: Sparks effect id 33 (burn) -> 27 (Raigeki)"),
-]
+#
+# Empty on purpose. The demo/test edits that used to live here were removed once
+# they had served their purpose:
+#   0x01540D  "It's your turn." -> "It's your turn!"  (proved text editing worked)
+#   0x01518C  Sparks effect id 33 -> 27               (tested whether the table at
+#             0x15162 reassigns spell verbs — it does NOT, it only picks the
+#             message, so the edit just gave Sparks the wrong flavour text)
+EDITS = []
 
 
 def header_checksum(rom):
