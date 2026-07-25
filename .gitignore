@@ -33,6 +33,9 @@ work/*/mtg_flavor.json
 # Regenerate with `python cardart.py extract [--product NAME]`.
 work/*/art_src/
 work/*/art/_preview_*.png
+# Source images fed to `cardart.py import` (full-res original art). Local working
+# input only — the hack ships as a BPS diff, so raw source art is never committed.
+work/*/art_in/
 # Same for the full-screen graphics (title, portraits, menus, duel backdrops,
 # font) that `screens.py extract` dumps, and its zoomed previews.
 work/*/screens_src/
