@@ -17,7 +17,7 @@ fusion recipes are unplaytested first-pass numbers.
 | File | What |
 |---|---|
 | `work/duelmonsters-kaizo/new_cards.json` | the 85 new cards: name, ATK, DEF, type, 2-line flavour, and `id` (assigned slot). **The master ledger.** |
-| `work/duelmonsters-kaizo/patches.json` | 34 starter-pool remaps (verified byte patches) so the player doesn't start with new cards/gods |
+| `work/duelmonsters-kaizo/starter_config.json` | the 100-card starter monster pool (33 drawn at random per new game); keeps new cards/gods out of the opening and points ex-toon slots at their real DM1 counterparts. Applied by `starter.py`. |
 | `work/duelmonsters-kaizo/deck_config.json` | 16 opponent decks — `{card_id: weight}` per pool |
 | `work/duelmonsters-kaizo/reward_config.json` | 16 reward lists — `{pool: [10 card_ids]}` |
 | `work/duelmonsters-kaizo/drop_config.json` | 17 drop pools — explicit `{card_id: weight}` |
@@ -67,7 +67,9 @@ Recorded here so it isn't lost. `new_cards.json` already holds the results.
 3. **Assign** fusion cards (21) to #1–300 slots (fusion can't reach above #300), the
    rest anywhere. Names were de-spaced + `Magician`→`Magicn` to fit the pool.
 4. **Starter fix**: 34 starter-monster entries pointed at retired slots → remapped to
-   weak kept monsters (patches.json). Excludes Exodia (Simon's reward chase) and Cocoon.
+   weak kept monsters (now expressed directly in `starter_config.json`; this
+   originally shipped as `patches.json` byte-remaps, since retired). Excludes Exodia
+   (Simon's reward chase) and Cocoon.
 
 ## Later additions (post-first-build)
 
@@ -76,9 +78,9 @@ DEF<1500, deck/reward/fusion-unused slot whose name is *longer* than the new nam
 the name pool stays under budget), then re-run the pipeline:
 
 - **#85 Gemini Elf** (1900/900 Spellcaster, owner Yugi) — retired **#29 Mountain Warrior**
-  (16-tile name → freed 6 tiles; pool 4469/4480). Repointed **starter[38]** (its only
-  live reference besides one dead fusion) to Haniwa #237 so it can't leak into the
-  opening hand. Added a `NEW Gemini Elf | 1900/900` line to Yugi's `DECKLISTS.md` block
+  (16-tile name → freed 6 tiles; pool 4469/4480). Repointed its **starter-pool slot**
+  (its only live reference besides one dead fusion) to Haniwa #237 so it can't leak
+  into the opening hand. Added a `NEW Gemini Elf | 1900/900` line to Yugi's `DECKLISTS.md` block
   so the deck/reward regen places it; drops follow from the ledger `owner` field. Lands
   in Yugi's deck (wt 51), his reward table, and drops from Yugi (Stage 1) + Pegasus.
 
