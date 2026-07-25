@@ -1,0 +1,842 @@
+[
+ {
+  "owner": "Yami",
+  "name": "AmuletDragon",
+  "atk": 2900,
+  "def": 2500,
+  "type": "Dragon",
+  "l1": "Dragon born of the",
+  "l2": "Magician's power.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "ChronicleMagicn",
+  "atk": 2500,
+  "def": 2500,
+  "type": "Spellcaster",
+  "l1": "Keeper of the ages",
+  "l2": "and their secrets.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkCavalry",
+  "atk": 2800,
+  "def": 2300,
+  "type": "Warrior",
+  "l1": "The magician rides",
+  "l2": "armed for war.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkMagicnGirl",
+  "atk": 2000,
+  "def": 1700,
+  "type": "Spellcaster",
+  "l1": "The magician's own",
+  "l2": "bright pupil.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "DMGirl:DrgnKnight",
+  "atk": 2600,
+  "def": 1700,
+  "type": "Dragon",
+  "l1": "Rides a dragon in",
+  "l2": "her master's name.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkMagicnChaos",
+  "atk": 2800,
+  "def": 2600,
+  "type": "Spellcaster",
+  "l1": "Chaos remade the",
+  "l2": "master magician.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkMagicnKnight",
+  "atk": 2900,
+  "def": 2400,
+  "type": "Dragon",
+  "l1": "Dragon and mage",
+  "l2": "joined as one.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkPaladin",
+  "atk": 2900,
+  "def": 2400,
+  "type": "Spellcaster",
+  "l1": "Mage and blade in",
+  "l2": "a single hand.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "DarkSage",
+  "atk": 2800,
+  "def": 3200,
+  "type": "Spellcaster",
+  "l1": "Ancient wisdom in",
+  "l2": "a frail body.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "IllusionofChaos",
+  "atk": 2100,
+  "def": 2500,
+  "type": "Spellcaster",
+  "l1": "A mirage born of",
+  "l2": "the chaos void.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "Magicn'sRobe",
+  "atk": 700,
+  "def": 2000,
+  "type": "Spellcaster",
+  "l1": "Cloth that guards",
+  "l2": "its wearer well.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "Magicn'sRod",
+  "atk": 1600,
+  "def": 100,
+  "type": "Spellcaster",
+  "l1": "A rod that strikes",
+  "l2": "but cannot shield.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "MasterofChaos",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Spellcaster",
+  "l1": "Chaos itself bows",
+  "l2": "to his command.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "RedEyesDarkDragoon",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Warrior",
+  "l1": "Mage astride the",
+  "l2": "black dragon.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "TheDarkMagicns",
+  "atk": 2800,
+  "def": 2300,
+  "type": "Spellcaster",
+  "l1": "Master and pupil",
+  "l2": "cast as one.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "ObeliskTormentor",
+  "atk": 4000,
+  "def": 4000,
+  "type": "Fiend",
+  "l1": "The god of the",
+  "l2": "tormenting fist.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "SliferSkyDragon",
+  "atk": 4000,
+  "def": 4000,
+  "type": "Dragon",
+  "l1": "The sky serpent",
+  "l2": "of the storm god.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "WingedDragonOfRa",
+  "atk": 4000,
+  "def": 4000,
+  "type": "Winged Beast",
+  "l1": "The sun god sealed",
+  "l2": "in golden wings.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "BusterBlader",
+  "atk": 2600,
+  "def": 2300,
+  "type": "Warrior",
+  "l1": "Trained to slay",
+  "l2": "the great dragons.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "BusterBladeDrgnDst",
+  "atk": 2800,
+  "def": 2500,
+  "type": "Warrior",
+  "l1": "Sworn to end every",
+  "l2": "winged dragon.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "BusterDragon",
+  "atk": 1200,
+  "def": 2800,
+  "type": "Dragon",
+  "l1": "The sword itself",
+  "l2": "reborn as a beast.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "LegndKnghtTimaeus",
+  "atk": 2800,
+  "def": 1800,
+  "type": "Warrior",
+  "l1": "Sworn knight of",
+  "l2": "the eye of time.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "TimaeusUnitedDragn",
+  "atk": 2800,
+  "def": 1800,
+  "type": "Dragon",
+  "l1": "The knight who",
+  "l2": "sealed the dragon.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "TimestarMagicn",
+  "atk": 2400,
+  "def": 1200,
+  "type": "Spellcaster",
+  "l1": "Turns back the",
+  "l2": "duel's very clock.",
+  "zone": "F"
+ },
+ {
+  "owner": "Yami",
+  "name": "SkilledBlueMagcn",
+  "atk": 1800,
+  "def": 1800,
+  "type": "Spellcaster",
+  "l1": "Adept in the art",
+  "l2": "of blue magic.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "SkilledDarkMagcn",
+  "atk": 1900,
+  "def": 1700,
+  "type": "Spellcaster",
+  "l1": "Adept in the art",
+  "l2": "of dark magic.",
+  "zone": ""
+ },
+ {
+  "owner": "Yami",
+  "name": "SkilledWhiteMagcn",
+  "atk": 1700,
+  "def": 1900,
+  "type": "Spellcaster",
+  "l1": "Adept in the art",
+  "l2": "of white magic.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonAlligator",
+  "atk": 800,
+  "def": 1600,
+  "type": "Reptile",
+  "l1": "A toon gator with",
+  "l2": "a cartoon grin.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonMermaid",
+  "atk": 1400,
+  "def": 1500,
+  "type": "Aqua",
+  "l1": "A toon siren of",
+  "l2": "the ink-drawn sea.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonSummonSkull",
+  "atk": 2500,
+  "def": 1200,
+  "type": "Fiend",
+  "l1": "A toon fiend",
+  "l2": "full of dark glee.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "MangaRyu-Ran",
+  "atk": 2200,
+  "def": 2600,
+  "type": "Dragon",
+  "l1": "A toon dragon",
+  "l2": "in an eggshell.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonGeminiElf",
+  "atk": 1900,
+  "def": 900,
+  "type": "Spellcaster",
+  "l1": "Twin toon elves",
+  "l2": "full of mischief.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonMaskSorcerer",
+  "atk": 900,
+  "def": 1400,
+  "type": "Spellcaster",
+  "l1": "A masked toon",
+  "l2": "trickster mage.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonCannonSoldier",
+  "atk": 1400,
+  "def": 1300,
+  "type": "Machine",
+  "l1": "A toon cannon",
+  "l2": "on stubby legs.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "BlueEyesToonDrgn",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Dragon",
+  "l1": "The white dragon",
+  "l2": "drawn as a toon.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "RedEyesToonDragon",
+  "atk": 2400,
+  "def": 2000,
+  "type": "Dragon",
+  "l1": "The black dragon",
+  "l2": "drawn as a toon.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonDarkMagicn",
+  "atk": 2500,
+  "def": 2100,
+  "type": "Spellcaster",
+  "l1": "The dark mage",
+  "l2": "in toon form.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonDarkMagGirl",
+  "atk": 2000,
+  "def": 1700,
+  "type": "Spellcaster",
+  "l1": "The mage's pupil",
+  "l2": "as a toon.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonGoblinForce",
+  "atk": 2300,
+  "def": 0,
+  "type": "Warrior",
+  "l1": "A toon goblin",
+  "l2": "raid squad.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonHarpieLady",
+  "atk": 1300,
+  "def": 1400,
+  "type": "Winged Beast",
+  "l1": "A toon harpy",
+  "l2": "with sharp claws.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonCyberDragon",
+  "atk": 2100,
+  "def": 1600,
+  "type": "Machine",
+  "l1": "A toon machine",
+  "l2": "serpent of coils.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonBarrelDragon",
+  "atk": 2600,
+  "def": 2200,
+  "type": "Machine",
+  "l1": "A toon gunner",
+  "l2": "of three barrels.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonBlackLuster",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Warrior",
+  "l1": "The chaos knight",
+  "l2": "drawn as a toon.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonBusterBlader",
+  "atk": 2600,
+  "def": 2300,
+  "type": "Warrior",
+  "l1": "The dragonslayer",
+  "l2": "in toon form.",
+  "zone": ""
+ },
+ {
+  "owner": "Pegasus",
+  "name": "ToonAncientGolem",
+  "atk": 3000,
+  "def": 3000,
+  "type": "Machine",
+  "l1": "A toon golem",
+  "l2": "of ancient gears.",
+  "zone": ""
+ },
+ {
+  "owner": "Simon",
+  "name": "GynoSphinx",
+  "atk": 2500,
+  "def": 3000,
+  "type": "Beast",
+  "l1": "Her riddle slays",
+  "l2": "the unworthy.",
+  "zone": "F"
+ },
+ {
+  "owner": "Simon",
+  "name": "AndroSphinx",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Beast",
+  "l1": "A guardian sphinx",
+  "l2": "of living stone.",
+  "zone": "F"
+ },
+ {
+  "owner": "Simon",
+  "name": "TheinenGrtSphinx",
+  "atk": 3500,
+  "def": 3000,
+  "type": "Beast",
+  "l1": "The twin sphinxes",
+  "l2": "joined as one.",
+  "zone": "F"
+ },
+ {
+  "owner": "Simon",
+  "name": "ExxodMasterGuard",
+  "atk": 0,
+  "def": 4000,
+  "type": "Rock",
+  "l1": "An immovable wall",
+  "l2": "of ancient stone.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "D.D.Dragon",
+  "atk": 1200,
+  "def": 1500,
+  "type": "Dragon",
+  "l1": "A wyrm from",
+  "l2": "another dimension.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "LusterDragon2",
+  "atk": 2400,
+  "def": 1400,
+  "type": "Dragon",
+  "l1": "A sapphire wyrm",
+  "l2": "of great worth.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "KaiserGlider",
+  "atk": 2400,
+  "def": 2200,
+  "type": "Dragon",
+  "l1": "A golden dragon",
+  "l2": "guards the king.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "TyrantDragon",
+  "atk": 2900,
+  "def": 2500,
+  "type": "Dragon",
+  "l1": "A ruthless wyrm",
+  "l2": "with no mercy.",
+  "zone": "F"
+ },
+ {
+  "owner": "Kaiba",
+  "name": "Rabidragon",
+  "atk": 2950,
+  "def": 2900,
+  "type": "Dragon",
+  "l1": "A colossal beast",
+  "l2": "of raw fury.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "ChaosEmperorDrgn",
+  "atk": 3000,
+  "def": 2500,
+  "type": "Dragon",
+  "l1": "Envoy of the end",
+  "l2": "and oblivion.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "BlueEyesTyrantDrg",
+  "atk": 3400,
+  "def": 2900,
+  "type": "Dragon",
+  "l1": "Blue-Eyes fused",
+  "l2": "with the tyrant.",
+  "zone": "F"
+ },
+ {
+  "owner": "Kaiba",
+  "name": "BlueEyesChaosMax",
+  "atk": 4000,
+  "def": 0,
+  "type": "Dragon",
+  "l1": "Blue-Eyes drowned",
+  "l2": "in chaos light.",
+  "zone": ""
+ },
+ {
+  "owner": "Kaiba",
+  "name": "BlueEyesUltDragon",
+  "atk": 4500,
+  "def": 3800,
+  "type": "Dragon",
+  "l1": "Three white",
+  "l2": "dragons as one.",
+  "zone": "F"
+ },
+ {
+  "owner": "Kaiba",
+  "name": "DragonMasterKnght",
+  "atk": 5000,
+  "def": 5000,
+  "type": "Dragon",
+  "l1": "Rider and dragon,",
+  "l2": "ultimate union.",
+  "zone": "F"
+ },
+ {
+  "owner": "Weevil",
+  "name": "InsectQueen",
+  "atk": 2200,
+  "def": 2400,
+  "type": "Insect",
+  "l1": "Mother of the",
+  "l2": "endless swarm.",
+  "zone": ""
+ },
+ {
+  "owner": "Mai",
+  "name": "Harpie'sPetDragn",
+  "atk": 2000,
+  "def": 2500,
+  "type": "Dragon",
+  "l1": "The harpies'",
+  "l2": "prized beast.",
+  "zone": ""
+ },
+ {
+  "owner": "Mai",
+  "name": "CyberHarpie",
+  "atk": 1800,
+  "def": 1300,
+  "type": "Winged Beast",
+  "l1": "A harpy clad",
+  "l2": "in steel.",
+  "zone": ""
+ },
+ {
+  "owner": "Mai",
+  "name": "AmazonSwordsWmn",
+  "atk": 1500,
+  "def": 1600,
+  "type": "Warrior",
+  "l1": "A warrior of",
+  "l2": "the jungle tribe.",
+  "zone": ""
+ },
+ {
+  "owner": "Rex",
+  "name": "BlackTyranno",
+  "atk": 2600,
+  "def": 1800,
+  "type": "Dinosaur",
+  "l1": "A savage",
+  "l2": "carnivore king.",
+  "zone": ""
+ },
+ {
+  "owner": "Rex",
+  "name": "UltimateTyranno",
+  "atk": 3000,
+  "def": 2200,
+  "type": "Dinosaur",
+  "l1": "The apex of",
+  "l2": "all dinosaurs.",
+  "zone": ""
+ },
+ {
+  "owner": "Rex",
+  "name": "SuperCondTyranno",
+  "atk": 3300,
+  "def": 1400,
+  "type": "Dinosaur",
+  "l1": "A dinosaur",
+  "l2": "charged with rage.",
+  "zone": ""
+ },
+ {
+  "owner": "Mako",
+  "name": "LegendFisherman",
+  "atk": 1850,
+  "def": 1600,
+  "type": "Aqua",
+  "l1": "He rides the",
+  "l2": "deep-sea beast.",
+  "zone": ""
+ },
+ {
+  "owner": "Mako",
+  "name": "FortressWhale",
+  "atk": 2350,
+  "def": 2150,
+  "type": "Fish",
+  "l1": "A whale as vast",
+  "l2": "as a fortress.",
+  "zone": ""
+ },
+ {
+  "owner": "Mako",
+  "name": "Levia-Daedalus",
+  "atk": 2600,
+  "def": 1500,
+  "type": "Sea Serpent",
+  "l1": "Lord of the",
+  "l2": "ocean depths.",
+  "zone": ""
+ },
+ {
+  "owner": "Mako",
+  "name": "AmphibianBeast",
+  "atk": 2400,
+  "def": 2000,
+  "type": "Fish",
+  "l1": "A savage beast",
+  "l2": "of the tides.",
+  "zone": ""
+ },
+ {
+  "owner": "Keith",
+  "name": "BarrelDragon",
+  "atk": 2600,
+  "def": 2200,
+  "type": "Machine",
+  "l1": "A gunslinging",
+  "l2": "war machine.",
+  "zone": ""
+ },
+ {
+  "owner": "Keith",
+  "name": "MachineKing",
+  "atk": 2200,
+  "def": 2000,
+  "type": "Machine",
+  "l1": "Sovereign of",
+  "l2": "all machines.",
+  "zone": ""
+ },
+ {
+  "owner": "Keith",
+  "name": "SlotMachine",
+  "atk": 2000,
+  "def": 2300,
+  "type": "Machine",
+  "l1": "Fortune favors",
+  "l2": "the machine.",
+  "zone": ""
+ },
+ {
+  "owner": "Keith",
+  "name": "Jinzo",
+  "atk": 2400,
+  "def": 1500,
+  "type": "Machine",
+  "l1": "A psychic android",
+  "l2": "of cold steel.",
+  "zone": ""
+ },
+ {
+  "owner": "Yugi",
+  "name": "Queen'sKnight",
+  "atk": 1500,
+  "def": 1600,
+  "type": "Warrior",
+  "l1": "A knight sworn",
+  "l2": "to the crown.",
+  "zone": ""
+ },
+ {
+  "owner": "Yugi",
+  "name": "King'sKnight",
+  "atk": 1600,
+  "def": 1400,
+  "type": "Warrior",
+  "l1": "Loyal blade of",
+  "l2": "the sovereign.",
+  "zone": ""
+ },
+ {
+  "owner": "Yugi",
+  "name": "Jack'sKnight",
+  "atk": 1900,
+  "def": 1000,
+  "type": "Warrior",
+  "l1": "A gallant knight",
+  "l2": "of the realm.",
+  "zone": ""
+ },
+ {
+  "owner": "Joey",
+  "name": "GearfriedIronKngt",
+  "atk": 1800,
+  "def": 1600,
+  "type": "Warrior",
+  "l1": "A knight sealed",
+  "l2": "in iron armor.",
+  "zone": ""
+ },
+ {
+  "owner": "Joey",
+  "name": "PantherWarrior",
+  "atk": 2000,
+  "def": 1600,
+  "type": "Beast-Warrior",
+  "l1": "A fierce warrior",
+  "l2": "riding a panther.",
+  "zone": ""
+ },
+ {
+  "owner": "Joey",
+  "name": "RocketWarrior",
+  "atk": 1500,
+  "def": 1300,
+  "type": "Warrior",
+  "l1": "A warrior that",
+  "l2": "swift as a rocket.",
+  "zone": ""
+ },
+ {
+  "owner": "Joey",
+  "name": "GilfordLightning",
+  "atk": 2800,
+  "def": 1400,
+  "type": "Warrior",
+  "l1": "His blade calls",
+  "l2": "down the storm.",
+  "zone": ""
+ },
+ {
+  "owner": "Bakura",
+  "name": "DarkNecrofear",
+  "atk": 2200,
+  "def": 2800,
+  "type": "Fiend",
+  "l1": "A vengeful doll",
+  "l2": "of the damned.",
+  "zone": ""
+ },
+ {
+  "owner": "Bakura",
+  "name": "HeadlessKnight",
+  "atk": 1450,
+  "def": 1700,
+  "type": "Fiend",
+  "l1": "A cursed knight",
+  "l2": "without a head.",
+  "zone": ""
+ },
+ {
+  "owner": "Bakura",
+  "name": "Portrait'sSecret",
+  "atk": 1200,
+  "def": 1500,
+  "type": "Fiend",
+  "l1": "A face that stirs",
+  "l2": "within the frame.",
+  "zone": ""
+ }
+]
