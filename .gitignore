@@ -48,3 +48,6 @@ Desktop.ini
 
 # Recalc output — bulk translated names, regenerable working file
 docs/RECALC.md
+
+# Slot assignment view — bulk names, regenerable
+docs/ASSIGNMENT.md

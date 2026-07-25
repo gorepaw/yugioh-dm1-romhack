@@ -7,7 +7,8 @@
   "type": "Dragon",
   "l1": "Dragon born of the",
   "l2": "Magician's power.",
-  "zone": "F"
+  "zone": "F",
+  "id": 3
  },
  {
   "owner": "Yami",
@@ -17,7 +18,8 @@
   "type": "Spellcaster",
   "l1": "Keeper of the ages",
   "l2": "and their secrets.",
-  "zone": ""
+  "zone": "",
+  "id": 135
  },
  {
   "owner": "Yami",
@@ -27,7 +29,8 @@
   "type": "Warrior",
   "l1": "The magician rides",
   "l2": "armed for war.",
-  "zone": "F"
+  "zone": "F",
+  "id": 9
  },
  {
   "owner": "Yami",
@@ -37,7 +40,8 @@
   "type": "Spellcaster",
   "l1": "The magician's own",
   "l2": "bright pupil.",
-  "zone": "F"
+  "zone": "F",
+  "id": 23
  },
  {
   "owner": "Yami",
@@ -47,7 +51,8 @@
   "type": "Dragon",
   "l1": "Rides a dragon in",
   "l2": "her master's name.",
-  "zone": "F"
+  "zone": "F",
+  "id": 28
  },
  {
   "owner": "Yami",
@@ -57,7 +62,8 @@
   "type": "Spellcaster",
   "l1": "Chaos remade the",
   "l2": "master magician.",
-  "zone": ""
+  "zone": "",
+  "id": 136
  },
  {
   "owner": "Yami",
@@ -67,7 +73,8 @@
   "type": "Dragon",
   "l1": "Dragon and mage",
   "l2": "joined as one.",
-  "zone": "F"
+  "zone": "F",
+  "id": 36
  },
  {
   "owner": "Yami",
@@ -77,7 +84,8 @@
   "type": "Spellcaster",
   "l1": "Mage and blade in",
   "l2": "a single hand.",
-  "zone": "F"
+  "zone": "F",
+  "id": 56
  },
  {
   "owner": "Yami",
@@ -87,7 +95,8 @@
   "type": "Spellcaster",
   "l1": "Ancient wisdom in",
   "l2": "a frail body.",
-  "zone": ""
+  "zone": "",
+  "id": 139
  },
  {
   "owner": "Yami",
@@ -97,7 +106,8 @@
   "type": "Spellcaster",
   "l1": "A mirage born of",
   "l2": "the chaos void.",
-  "zone": ""
+  "zone": "",
+  "id": 140
  },
  {
   "owner": "Yami",
@@ -107,7 +117,8 @@
   "type": "Spellcaster",
   "l1": "Cloth that guards",
   "l2": "its wearer well.",
-  "zone": ""
+  "zone": "",
+  "id": 142
  },
  {
   "owner": "Yami",
@@ -117,7 +128,8 @@
   "type": "Spellcaster",
   "l1": "A rod that strikes",
   "l2": "but cannot shield.",
-  "zone": ""
+  "zone": "",
+  "id": 145
  },
  {
   "owner": "Yami",
@@ -127,7 +139,8 @@
   "type": "Spellcaster",
   "l1": "Chaos itself bows",
   "l2": "to his command.",
-  "zone": "F"
+  "zone": "F",
+  "id": 75
  },
  {
   "owner": "Yami",
@@ -137,7 +150,8 @@
   "type": "Warrior",
   "l1": "Mage astride the",
   "l2": "black dragon.",
-  "zone": "F"
+  "zone": "F",
+  "id": 94
  },
  {
   "owner": "Yami",
@@ -147,7 +161,8 @@
   "type": "Spellcaster",
   "l1": "Master and pupil",
   "l2": "cast as one.",
-  "zone": "F"
+  "zone": "F",
+  "id": 95
  },
  {
   "owner": "Yami",
@@ -157,7 +172,8 @@
   "type": "Fiend",
   "l1": "The god of the",
   "l2": "tormenting fist.",
-  "zone": ""
+  "zone": "",
+  "id": 146
  },
  {
   "owner": "Yami",
@@ -167,7 +183,8 @@
   "type": "Dragon",
   "l1": "The sky serpent",
   "l2": "of the storm god.",
-  "zone": ""
+  "zone": "",
+  "id": 147
  },
  {
   "owner": "Yami",
@@ -177,7 +194,8 @@
   "type": "Winged Beast",
   "l1": "The sun god sealed",
   "l2": "in golden wings.",
-  "zone": ""
+  "zone": "",
+  "id": 148
  },
  {
   "owner": "Yami",
@@ -187,7 +205,8 @@
   "type": "Warrior",
   "l1": "Trained to slay",
   "l2": "the great dragons.",
-  "zone": "F"
+  "zone": "F",
+  "id": 96
  },
  {
   "owner": "Yami",
@@ -197,7 +216,8 @@
   "type": "Warrior",
   "l1": "Sworn to end every",
   "l2": "winged dragon.",
-  "zone": "F"
+  "zone": "F",
+  "id": 97
  },
  {
   "owner": "Yami",
@@ -207,7 +227,8 @@
   "type": "Dragon",
   "l1": "The sword itself",
   "l2": "reborn as a beast.",
-  "zone": "F"
+  "zone": "F",
+  "id": 98
  },
  {
   "owner": "Yami",
@@ -217,7 +238,8 @@
   "type": "Warrior",
   "l1": "Sworn knight of",
   "l2": "the eye of time.",
-  "zone": ""
+  "zone": "",
+  "id": 151
  },
  {
   "owner": "Yami",
@@ -227,7 +249,8 @@
   "type": "Dragon",
   "l1": "The knight who",
   "l2": "sealed the dragon.",
-  "zone": "F"
+  "zone": "F",
+  "id": 101
  },
  {
   "owner": "Yami",
@@ -237,7 +260,8 @@
   "type": "Spellcaster",
   "l1": "Turns back the",
   "l2": "duel's very clock.",
-  "zone": "F"
+  "zone": "F",
+  "id": 102
  },
  {
   "owner": "Yami",
@@ -247,7 +271,8 @@
   "type": "Spellcaster",
   "l1": "Adept in the art",
   "l2": "of blue magic.",
-  "zone": ""
+  "zone": "",
+  "id": 152
  },
  {
   "owner": "Yami",
@@ -257,7 +282,8 @@
   "type": "Spellcaster",
   "l1": "Adept in the art",
   "l2": "of dark magic.",
-  "zone": ""
+  "zone": "",
+  "id": 153
  },
  {
   "owner": "Yami",
@@ -267,7 +293,8 @@
   "type": "Spellcaster",
   "l1": "Adept in the art",
   "l2": "of white magic.",
-  "zone": ""
+  "zone": "",
+  "id": 154
  },
  {
   "owner": "Pegasus",
@@ -277,7 +304,8 @@
   "type": "Reptile",
   "l1": "A toon gator with",
   "l2": "a cartoon grin.",
-  "zone": ""
+  "zone": "",
+  "id": 156
  },
  {
   "owner": "Pegasus",
@@ -287,7 +315,8 @@
   "type": "Aqua",
   "l1": "A toon siren of",
   "l2": "the ink-drawn sea.",
-  "zone": ""
+  "zone": "",
+  "id": 164
  },
  {
   "owner": "Pegasus",
@@ -297,7 +326,8 @@
   "type": "Fiend",
   "l1": "A toon fiend",
   "l2": "full of dark glee.",
-  "zone": ""
+  "zone": "",
+  "id": 165
  },
  {
   "owner": "Pegasus",
@@ -307,7 +337,8 @@
   "type": "Dragon",
   "l1": "A toon dragon",
   "l2": "in an eggshell.",
-  "zone": ""
+  "zone": "",
+  "id": 168
  },
  {
   "owner": "Pegasus",
@@ -317,7 +348,8 @@
   "type": "Spellcaster",
   "l1": "Twin toon elves",
   "l2": "full of mischief.",
-  "zone": ""
+  "zone": "",
+  "id": 173
  },
  {
   "owner": "Pegasus",
@@ -327,7 +359,8 @@
   "type": "Spellcaster",
   "l1": "A masked toon",
   "l2": "trickster mage.",
-  "zone": ""
+  "zone": "",
+  "id": 175
  },
  {
   "owner": "Pegasus",
@@ -337,7 +370,8 @@
   "type": "Machine",
   "l1": "A toon cannon",
   "l2": "on stubby legs.",
-  "zone": ""
+  "zone": "",
+  "id": 178
  },
  {
   "owner": "Pegasus",
@@ -347,7 +381,8 @@
   "type": "Dragon",
   "l1": "The white dragon",
   "l2": "drawn as a toon.",
-  "zone": ""
+  "zone": "",
+  "id": 179
  },
  {
   "owner": "Pegasus",
@@ -357,7 +392,8 @@
   "type": "Dragon",
   "l1": "The black dragon",
   "l2": "drawn as a toon.",
-  "zone": ""
+  "zone": "",
+  "id": 183
  },
  {
   "owner": "Pegasus",
@@ -367,7 +403,8 @@
   "type": "Spellcaster",
   "l1": "The dark mage",
   "l2": "in toon form.",
-  "zone": ""
+  "zone": "",
+  "id": 191
  },
  {
   "owner": "Pegasus",
@@ -377,7 +414,8 @@
   "type": "Spellcaster",
   "l1": "The mage's pupil",
   "l2": "as a toon.",
-  "zone": ""
+  "zone": "",
+  "id": 196
  },
  {
   "owner": "Pegasus",
@@ -387,7 +425,8 @@
   "type": "Warrior",
   "l1": "A toon goblin",
   "l2": "raid squad.",
-  "zone": ""
+  "zone": "",
+  "id": 198
  },
  {
   "owner": "Pegasus",
@@ -397,7 +436,8 @@
   "type": "Winged Beast",
   "l1": "A toon harpy",
   "l2": "with sharp claws.",
-  "zone": ""
+  "zone": "",
+  "id": 199
  },
  {
   "owner": "Pegasus",
@@ -407,7 +447,8 @@
   "type": "Machine",
   "l1": "A toon machine",
   "l2": "serpent of coils.",
-  "zone": ""
+  "zone": "",
+  "id": 200
  },
  {
   "owner": "Pegasus",
@@ -417,7 +458,8 @@
   "type": "Machine",
   "l1": "A toon gunner",
   "l2": "of three barrels.",
-  "zone": ""
+  "zone": "",
+  "id": 202
  },
  {
   "owner": "Pegasus",
@@ -427,7 +469,8 @@
   "type": "Warrior",
   "l1": "The chaos knight",
   "l2": "drawn as a toon.",
-  "zone": ""
+  "zone": "",
+  "id": 203
  },
  {
   "owner": "Pegasus",
@@ -437,7 +480,8 @@
   "type": "Warrior",
   "l1": "The dragonslayer",
   "l2": "in toon form.",
-  "zone": ""
+  "zone": "",
+  "id": 206
  },
  {
   "owner": "Pegasus",
@@ -447,7 +491,8 @@
   "type": "Machine",
   "l1": "A toon golem",
   "l2": "of ancient gears.",
-  "zone": ""
+  "zone": "",
+  "id": 211
  },
  {
   "owner": "Simon",
@@ -457,7 +502,8 @@
   "type": "Beast",
   "l1": "Her riddle slays",
   "l2": "the unworthy.",
-  "zone": "F"
+  "zone": "F",
+  "id": 103
  },
  {
   "owner": "Simon",
@@ -467,7 +513,8 @@
   "type": "Beast",
   "l1": "A guardian sphinx",
   "l2": "of living stone.",
-  "zone": "F"
+  "zone": "F",
+  "id": 108
  },
  {
   "owner": "Simon",
@@ -477,7 +524,8 @@
   "type": "Beast",
   "l1": "The twin sphinxes",
   "l2": "joined as one.",
-  "zone": "F"
+  "zone": "F",
+  "id": 111
  },
  {
   "owner": "Simon",
@@ -487,7 +535,8 @@
   "type": "Rock",
   "l1": "An immovable wall",
   "l2": "of ancient stone.",
-  "zone": ""
+  "zone": "",
+  "id": 214
  },
  {
   "owner": "Kaiba",
@@ -497,7 +546,8 @@
   "type": "Dragon",
   "l1": "A wyrm from",
   "l2": "another dimension.",
-  "zone": ""
+  "zone": "",
+  "id": 215
  },
  {
   "owner": "Kaiba",
@@ -507,7 +557,8 @@
   "type": "Dragon",
   "l1": "A sapphire wyrm",
   "l2": "of great worth.",
-  "zone": ""
+  "zone": "",
+  "id": 222
  },
  {
   "owner": "Kaiba",
@@ -517,7 +568,8 @@
   "type": "Dragon",
   "l1": "A golden dragon",
   "l2": "guards the king.",
-  "zone": ""
+  "zone": "",
+  "id": 224
  },
  {
   "owner": "Kaiba",
@@ -527,7 +579,8 @@
   "type": "Dragon",
   "l1": "A ruthless wyrm",
   "l2": "with no mercy.",
-  "zone": "F"
+  "zone": "F",
+  "id": 122
  },
  {
   "owner": "Kaiba",
@@ -537,7 +590,8 @@
   "type": "Dragon",
   "l1": "A colossal beast",
   "l2": "of raw fury.",
-  "zone": ""
+  "zone": "",
+  "id": 226
  },
  {
   "owner": "Kaiba",
@@ -547,7 +601,8 @@
   "type": "Dragon",
   "l1": "Envoy of the end",
   "l2": "and oblivion.",
-  "zone": ""
+  "zone": "",
+  "id": 227
  },
  {
   "owner": "Kaiba",
@@ -557,7 +612,8 @@
   "type": "Dragon",
   "l1": "Blue-Eyes fused",
   "l2": "with the tyrant.",
-  "zone": "F"
+  "zone": "F",
+  "id": 130
  },
  {
   "owner": "Kaiba",
@@ -567,7 +623,8 @@
   "type": "Dragon",
   "l1": "Blue-Eyes drowned",
   "l2": "in chaos light.",
-  "zone": ""
+  "zone": "",
+  "id": 229
  },
  {
   "owner": "Kaiba",
@@ -577,7 +634,8 @@
   "type": "Dragon",
   "l1": "Three white",
   "l2": "dragons as one.",
-  "zone": "F"
+  "zone": "F",
+  "id": 132
  },
  {
   "owner": "Kaiba",
@@ -587,7 +645,8 @@
   "type": "Dragon",
   "l1": "Rider and dragon,",
   "l2": "ultimate union.",
-  "zone": "F"
+  "zone": "F",
+  "id": 134
  },
  {
   "owner": "Weevil",
@@ -597,7 +656,8 @@
   "type": "Insect",
   "l1": "Mother of the",
   "l2": "endless swarm.",
-  "zone": ""
+  "zone": "",
+  "id": 235
  },
  {
   "owner": "Mai",
@@ -607,7 +667,8 @@
   "type": "Dragon",
   "l1": "The harpies'",
   "l2": "prized beast.",
-  "zone": ""
+  "zone": "",
+  "id": 236
  },
  {
   "owner": "Mai",
@@ -617,7 +678,8 @@
   "type": "Winged Beast",
   "l1": "A harpy clad",
   "l2": "in steel.",
-  "zone": ""
+  "zone": "",
+  "id": 239
  },
  {
   "owner": "Mai",
@@ -627,7 +689,8 @@
   "type": "Warrior",
   "l1": "A warrior of",
   "l2": "the jungle tribe.",
-  "zone": ""
+  "zone": "",
+  "id": 241
  },
  {
   "owner": "Rex",
@@ -637,7 +700,8 @@
   "type": "Dinosaur",
   "l1": "A savage",
   "l2": "carnivore king.",
-  "zone": ""
+  "zone": "",
+  "id": 242
  },
  {
   "owner": "Rex",
@@ -647,7 +711,8 @@
   "type": "Dinosaur",
   "l1": "The apex of",
   "l2": "all dinosaurs.",
-  "zone": ""
+  "zone": "",
+  "id": 243
  },
  {
   "owner": "Rex",
@@ -657,7 +722,8 @@
   "type": "Dinosaur",
   "l1": "A dinosaur",
   "l2": "charged with rage.",
-  "zone": ""
+  "zone": "",
+  "id": 244
  },
  {
   "owner": "Mako",
@@ -667,7 +733,8 @@
   "type": "Aqua",
   "l1": "He rides the",
   "l2": "deep-sea beast.",
-  "zone": ""
+  "zone": "",
+  "id": 254
  },
  {
   "owner": "Mako",
@@ -677,7 +744,8 @@
   "type": "Fish",
   "l1": "A whale as vast",
   "l2": "as a fortress.",
-  "zone": ""
+  "zone": "",
+  "id": 257
  },
  {
   "owner": "Mako",
@@ -687,7 +755,8 @@
   "type": "Sea Serpent",
   "l1": "Lord of the",
   "l2": "ocean depths.",
-  "zone": ""
+  "zone": "",
+  "id": 258
  },
  {
   "owner": "Mako",
@@ -697,7 +766,8 @@
   "type": "Fish",
   "l1": "A savage beast",
   "l2": "of the tides.",
-  "zone": ""
+  "zone": "",
+  "id": 259
  },
  {
   "owner": "Keith",
@@ -707,7 +777,8 @@
   "type": "Machine",
   "l1": "A gunslinging",
   "l2": "war machine.",
-  "zone": ""
+  "zone": "",
+  "id": 261
  },
  {
   "owner": "Keith",
@@ -717,7 +788,8 @@
   "type": "Machine",
   "l1": "Sovereign of",
   "l2": "all machines.",
-  "zone": ""
+  "zone": "",
+  "id": 265
  },
  {
   "owner": "Keith",
@@ -727,7 +799,8 @@
   "type": "Machine",
   "l1": "Fortune favors",
   "l2": "the machine.",
-  "zone": ""
+  "zone": "",
+  "id": 267
  },
  {
   "owner": "Keith",
@@ -737,7 +810,8 @@
   "type": "Machine",
   "l1": "A psychic android",
   "l2": "of cold steel.",
-  "zone": ""
+  "zone": "",
+  "id": 268
  },
  {
   "owner": "Yugi",
@@ -747,7 +821,8 @@
   "type": "Warrior",
   "l1": "A knight sworn",
   "l2": "to the crown.",
-  "zone": ""
+  "zone": "",
+  "id": 276
  },
  {
   "owner": "Yugi",
@@ -757,7 +832,8 @@
   "type": "Warrior",
   "l1": "Loyal blade of",
   "l2": "the sovereign.",
-  "zone": ""
+  "zone": "",
+  "id": 282
  },
  {
   "owner": "Yugi",
@@ -767,7 +843,8 @@
   "type": "Warrior",
   "l1": "A gallant knight",
   "l2": "of the realm.",
-  "zone": ""
+  "zone": "",
+  "id": 285
  },
  {
   "owner": "Joey",
@@ -777,7 +854,8 @@
   "type": "Warrior",
   "l1": "A knight sealed",
   "l2": "in iron armor.",
-  "zone": ""
+  "zone": "",
+  "id": 292
  },
  {
   "owner": "Joey",
@@ -787,7 +865,8 @@
   "type": "Beast-Warrior",
   "l1": "A fierce warrior",
   "l2": "riding a panther.",
-  "zone": ""
+  "zone": "",
+  "id": 296
  },
  {
   "owner": "Joey",
@@ -797,7 +876,8 @@
   "type": "Warrior",
   "l1": "A warrior that",
   "l2": "swift as a rocket.",
-  "zone": ""
+  "zone": "",
+  "id": 298
  },
  {
   "owner": "Joey",
@@ -807,7 +887,8 @@
   "type": "Warrior",
   "l1": "His blade calls",
   "l2": "down the storm.",
-  "zone": ""
+  "zone": "",
+  "id": 352
  },
  {
   "owner": "Bakura",
@@ -817,7 +898,8 @@
   "type": "Fiend",
   "l1": "A vengeful doll",
   "l2": "of the damned.",
-  "zone": ""
+  "zone": "",
+  "id": 354
  },
  {
   "owner": "Bakura",
@@ -827,7 +909,8 @@
   "type": "Fiend",
   "l1": "A cursed knight",
   "l2": "without a head.",
-  "zone": ""
+  "zone": "",
+  "id": 359
  },
  {
   "owner": "Bakura",
@@ -837,6 +920,7 @@
   "type": "Fiend",
   "l1": "A face that stirs",
   "l2": "within the frame.",
-  "zone": ""
+  "zone": "",
+  "id": 361
  }
 ]
