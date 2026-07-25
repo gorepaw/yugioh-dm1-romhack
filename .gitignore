@@ -1,4 +1,7 @@
 # --- Never commit copyrighted ROMs, patched ROMs, or save files ---
+# Note the asymmetry with dist/, which IS tracked: a built ROM is ~99% Konami's
+# game, but a BPS patch holds only our diff, so it is ours to publish. Don't
+# "tidy up" by adding dist/ here — the patches are the shipped product.
 roms/
 build/
 *.gb

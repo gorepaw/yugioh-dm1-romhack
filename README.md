@@ -27,9 +27,27 @@ Improve the game across four layers:
 | `tools/` | ❌ (large) | RGBDS, BGB emulator, flips, mgbdis |
 | `work/` | ✅ | Our own edits, scripts, and patches |
 | `build/` | ❌ (derived) | Built/patched ROMs we produce |
+| `dist/` | ✅ | **BPS patches** — the diff only, safe to publish |
 | `docs/` | ✅ | Research notes, memory map, addresses we discover |
 
-Only **our own work** (`work/`, `docs/`, this README) is committed. ROMs are never committed.
+Only **our own work** (`work/`, `docs/`, `dist/`, this README) is committed. ROMs are never committed.
+
+## Playing the hacks
+
+The built `.gb` is ~99% Konami's game, so it stays in `build/` and is never published.
+What ships is a **BPS patch** in [`dist/`](dist/): only our edits, applied to a ROM you
+supply yourself. That is how every romhack is distributed.
+
+| Patch | Hack |
+|---|---|
+| `duelmonsters-kaizo-*.bps` | 85 later-era Yu-Gi-Oh! cards worked into every opponent |
+| `duelmonsters-mtg-*.bps` | Total conversion to *Magic: The Gathering* — card type becomes colour |
+
+Apply with [Flips](https://github.com/Alcaro/Flips) or any BPS patcher. The patch stores a
+CRC32 of the base ROM, so the wrong dump **fails loudly** instead of producing a subtly
+broken game. See [`dist/README.md`](dist/README.md) for details.
+
+`build.py` regenerates the patch on every build, so `dist/` can never describe a stale ROM.
 
 ## The base ROM
 

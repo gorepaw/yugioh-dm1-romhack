@@ -65,8 +65,8 @@ def main(argv=None):
 
     # --- per-product raw byte patches (patches.json) ---
     # A list of {offset, bytes(hex), old?(hex), desc}. Verifies `old` when given,
-    # then writes `bytes`. Used for label-table + effect-byte edits (e.g. the P2
-    # colour labels and the seal-by-colour retarget) that no card table covers.
+    # then writes `bytes`. Used for label-table + effect-byte edits (e.g. the
+    # MTG colour labels and the seal-by-colour retarget) that no card table covers.
     patches_path = dpath("patches.json")
     if os.path.exists(patches_path):
         for p in json.load(open(patches_path)):
@@ -233,6 +233,13 @@ def main(argv=None):
     print(f"  applied {len(EDITS)} byte + {card_edit_count} card + "
           f"{desc_edit_count} desc edit(s)")
     print(f"  MD5:  {hashlib.md5(bytes(rom)).hexdigest()}")
+
+    # --- distributable patch ---
+    # Emitted here, not on demand, so dist/ can never describe an older ROM
+    # than build/. The .gb itself is ~99% Konami's game and stays local; the
+    # patch is the part we can actually publish.
+    import patch
+    patch.main(["--product", product])
     return 0
 
 
