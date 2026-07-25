@@ -922,5 +922,16 @@
   "l2": "within the frame.",
   "zone": "",
   "id": 361
+ },
+ {
+  "owner": "Yugi",
+  "name": "Gemini Elf",
+  "atk": 1900,
+  "def": 900,
+  "type": "Spellcaster",
+  "l1": "Twin elf sisters",
+  "l2": "who strike as one.",
+  "zone": "",
+  "id": 29
  }
 ]

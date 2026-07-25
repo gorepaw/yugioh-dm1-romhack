@@ -85,9 +85,9 @@
  },
  {
   "offset": 9976,
-  "bytes": "1d00",
+  "bytes": "ed00",
   "old": "b200",
-  "desc": "starter[38] Claw Reacher -> Mountain Warrior (600/1000 Beast-Warrior)"
+  "desc": "starter[38] Claw Reacher -> Haniwa (500/500 Rock); was Mountain Warrior #29, now Gemini Elf"
  },
  {
   "offset": 9978,
