@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Product routing — keep Project 1 and Project 2 data separate.
+"""Product routing — keep Duel Monsters Kaizo and Duel Monsters MTG data separate.
 
 The two products SHARE this repo's tools and reverse-engineering knowledge
 (NOTES.md, everything in work/scripts/), because the engine is the same for
@@ -7,17 +7,18 @@ both. They must NOT share card data: they are two different games occupying the
 same 366 card slots, so one cards.json cannot represent both.
 
 Rule: all product-specific data lives under `work/<product>/`. Tools take an
-optional `--product duelmonsters-kaizo|p2` (default duelmonsters-kaizo); build.py
-writes `build/<product>-hack.gb` so the two never clobber each other's output.
+optional `--product duelmonsters-kaizo|duelmonsters-mtg` (default
+duelmonsters-kaizo); build.py writes `build/<product>-hack.gb` so the two never
+clobber each other's output.
 
 Shared (both edit, mostly additive): docs/NOTES.md, the scripts.
-Separate (never share a file): work/duelmonsters-kaizo/*  vs  work/p2/*, and the
-build outputs.
+Separate (never share a file): work/duelmonsters-kaizo/* vs
+work/duelmonsters-mtg/*, and the build outputs.
 """
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PRODUCTS = ("duelmonsters-kaizo", "p2")
+PRODUCTS = ("duelmonsters-kaizo", "duelmonsters-mtg")
 DEFAULT = "duelmonsters-kaizo"
 
 

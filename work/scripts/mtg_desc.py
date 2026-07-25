@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Card descriptions for Project 2 — condense real MTG flavour to 2x18 tiles.
+"""Card descriptions for Duel Monsters MTG — condense real MTG flavour to 2x18 tiles.
 
 Creatures: take the card's Scryfall flavour_text, strip attribution/quotes, take
 the opening sentence, and greedily wrap it to two <=18-tile lines (overflow
@@ -24,7 +24,7 @@ def _load():
         # flavour map lives in the session scratch; fall back to empty
         _root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         for p in (os.environ.get("MTG_FLAVOR", ""),
-                  os.path.join(_root, "work", "p2", "mtg_flavor.json"),
+                  os.path.join(_root, "work", "duelmonsters-mtg", "mtg_flavor.json"),
                   os.path.join(os.path.dirname(__file__), "mtg_flavor.json")):
             if p and os.path.exists(p):
                 _DATA = json.load(open(p, encoding="utf-8")); break
@@ -156,7 +156,40 @@ SPELL = {
     "Fireball": ["A fireball burns", "the foe."],
     "Disintegrate": ["Disintegrate the", "foe with force."],
     "Drain Life": ["Drain the foe's", "very life away."],
+    # --- added equips ---
+    "Giant Growth": ["Sudden growth:", "a mighty +3/+3."],
+    "Berserk": ["Berserk fury -", "attack soars."],
+    "Cocoon": ["Wrapped safe,", "then reborn."],
+    "DivineTransform": ["Divine power:", "a great +3/+3."],
+    "InfinitAuthority": ["Authority guards", "its bearer."],
+    "Giant Strength": ["The might of", "giants, +2/+2."],
+    "The Brute": ["Brute force lends", "raw power."],
+    "Rapid Fire": ["A flurry of blows", "before battle."],
+    "Burrowing": ["Burrows through", "the mountain."],
+    "Fishliver Oil": ["Slick with oil,", "it slips past."],
+    "Elven Lyre": ["The lyre sings;", "a creature swells."],
+    "Zelyon Sword": ["A keen blade,", "granting +2/+2."],
+    "Spirit Shield": ["A spirit shield", "guards its bearer."],
+    "Living Armor": ["Armor that lives", "and shields."],
+    "Transmogrant": ["Ashnod's work:", "flesh into metal."],
+    # --- added heals / control ---
+    "Balm Restoration": ["A healing balm", "restores you."],
+    "DarkHeartOfWood": ["The wood's heart", "gives back life."],
+    "Fountain of Youth": ["Drink deep and", "be restored."],
+    "Ivory Cup": ["The ivory cup", "brims with life."],
+    "Siren's Call": ["The siren calls;", "all must attack."],
+    "Festival": ["A festival - none", "may attack now."],
+    "Marsh Gas": ["Foul gas saps", "every creature."],
+    "Amnesia": ["The foe's hand", "is laid bare."],
+    "Dance of Many": ["A phantom double", "takes the field."],
 }
+
+
+def for_spell(name, color):
+    """Functional two-line text for a spell; falls back to a colour-themed line."""
+    if name in SPELL:
+        return SPELL[name]
+    return _wrap2(f"A {color.lower()} spell of Dominaria")[0]
 FILLER = ["A stray token", "of Dominaria."]
 
 

@@ -1,10 +1,54 @@
-# Project 2 — MTG-inspired total conversion
+# Duel Monsters MTG — status & rebuild
 
-Built on Project 1's tools and engine map. This document owns the **design model**;
+**Product id:** `duelmonsters-mtg` · **data:** `work/duelmonsters-mtg/` ·
+**output:** `build/duelmonsters-mtg-hack.gb` (valid 1 MB, MBC1, checksums OK,
+Miyoo-safe). Sibling product is `duelmonsters-kaizo`; tools and `docs/NOTES.md`
+are shared, data is never shared.
+
+## Rebuild (three commands, fully reproducible)
+
+```
+python mtg_assemble.py                        # creatures+spells+tokens -> cards.json
+python mtg_gen.py                             # decks, rewards, equips, drops, starter, fusions
+python build.py --product duelmonsters-mtg    # -> build/duelmonsters-mtg-hack.gb
+```
+
+Run scripts with the full Python 3.13 interpreter path (see the `python-path`
+memory); bare `python` is a broken WindowsApps shim.
+
+## What is DONE (all verified by reading the built ROM back)
+
+| System | State |
+|---|---|
+| Cards | **300 creatures + 50 spells + 15 tokens = 365**; names 4472/4480, descs 12314/13139 |
+| Colours | type byte = colour (White0 Blue1 Black2 Red3 Green4 Colorless5); labels rewritten; terrain tables derived per colour |
+| Spells | **all 50 effect slots filled** — 26 equips, 6 lands, 5 burns, 5 heals, Wrath, Terror, seal, Siren's Call, Festival, Marsh Gas, Amnesia, Dance of Many |
+| Seal | retargeted to Colorless = artifact-hate (1 byte at `0x0DB42`) |
+| Equips | 26 colour-locked, pool 2542/2642 |
+| Opponents | 16 named; decks strictly ascending 528 → 2430 avg ATK across the 4/9/3 stages |
+| Rewards | 16 × 10 — the 10 best of each deck by `max(ATK,DEF)`, weakest → best |
+| Drops | 16 pools, **365/365 cards obtainable**, all Elder Dragons from Yawgmoth |
+| Fusions | 2159 rows, same-colour ladder, all 6 capstones reachable, 0 downgrades |
+| Starter | 100 cards (90 creatures capped at ATK≤800 and ATK+DEF≤1600, plus 6 lands + 4 spells) |
+| Text | duel messages, duelist names, 17 intros, 48 battle lines — **no stock character reference remains** |
+
+## Open / next
+- **Playtesting** is the only real unknown left (does the 400:1 scale feel right).
+- Already fixed from playtest: spells announcing the DM1 card they replaced, stock
+  names on the record page and in dialogue, starter pool too strong.
+- The one choice not backed by original data: the starter pool holds **10 magic
+  cards** where stock had zero. First thing to revert if the opening deck misbehaves.
+- Deliberately untouched: the translation credits at `0xF4900`+.
+
+---
+
+# Duel Monsters MTG — MTG-inspired total conversion
+
+Built on Duel Monsters Kaizo's tools and engine map. This document owns the **design model**;
 concrete engine facts live in `docs/NOTES.md`, and the authoring code lives in
-`work/scripts/` (the P1.1 compiler `cardc.py` plus the P2 color layer `p2colors.py`).
+`work/scripts/` (the card compiler `cardc.py` plus the colour layer `mtg_colors.py`).
 
-Nothing here is in a ROM yet. This is the model we build content against.
+This model is fully implemented in `build/duelmonsters-mtg-hack.gb` — see the status section above.
 
 ## The core decision: the type byte becomes COLOR
 
@@ -98,9 +142,9 @@ eligibility is an **explicit `$FFFF`-terminated list of monster card ids** (no r
 constant** shared by all 26 equips (classic DM1 = +500/+500). That gives two creative tiers.
 
 **Creative tier 1 — data only, no assembly. BUILT & WORKING.** Author `attaches_to:
-[colors]` on an equip card in `cards.json`; `p2colors.py equips` expands it into that
-equip's eligibility list (every monster of those colors) and writes `work/p2/equips.json`;
-`build.py --product p2` compiles it into the ROM. Verified end-to-end: DarkEnergy→Black
+[colors]` on an equip card in `cards.json`; `mtg_colors.py equips` expands it into that
+equip's eligibility list (every monster of those colors) and writes `work/duelmonsters-mtg/equips.json`;
+`build.py --product duelmonsters-mtg` compiles it into the ROM. Verified end-to-end: DarkEnergy→Black
 and Axe of Despair→Red produce ROM lists equal to exactly those colors' monsters, with the
 other 24 equips untouched.
 
@@ -124,11 +168,11 @@ in-place rewrites are the same class of change as the cards-per-win and spell-ve
 engine, so "aura grants flying/first strike/an activated ability" is **not** representable;
 "+X/+Y to creatures of color C" is.
 
-## How the compiler changes (see `work/scripts/p2colors.py`)
+## How the compiler changes (see `work/scripts/mtg_colors.py`)
 Today `cardc.py` stores all six `field_atk`/`field_def` values per card explicitly and
-writes them verbatim. Project 2 makes **color the single source of truth**: a card gets a
+writes them verbatim. Duel Monsters MTG makes **color the single source of truth**: a card gets a
 `color`, and the six terrain values are **derived** — base everywhere except the one slot
-matching the card's color, which is `round(base × 1.3)`. `p2colors.py` holds:
+matching the card's color, which is `round(base × 1.3)`. `mtg_colors.py` holds:
 
 - `COLORS`, the color→terrain-slot map (grounded in the recovered slot order), and `BOOST`.
 - `derive_fields(color, base_atk, base_def)` → the six-long field arrays.
@@ -136,5 +180,5 @@ matching the card's color, which is `round(base × 1.3)`. `p2colors.py` holds:
   has to specify `color` + base stats, never the terrain tables.
 
 The change is fully **contained**: regenerating terrain tables from color touches only the
-six terrain ATK/DEF arrays in bank 9 (proven by `p2colors.py demo`, which diffs a recolored
+six terrain ATK/DEF arrays in bank 9 (proven by `mtg_colors.py demo`, which diffs a recolored
 build against the base and asserts every changed byte lies inside those tables).

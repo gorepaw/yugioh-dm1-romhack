@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Project 2 — the COLOR layer on top of the P1.1 card compiler.
+"""Duel Monsters MTG — the COLOR layer on top of the P1.1 card compiler.
 
-Design rationale and the full mapping live in `docs/PROJECT2.md`; the engine
+Design rationale and the full mapping live in `docs/MTG.md`; the engine
 proof that this is safe (the terrain boost is a pre-baked table selected by
 field index, and the type byte is inert for stats) lives in `docs/NOTES.md`.
 
@@ -15,17 +15,17 @@ authored by hand. A card whose color is C is pumped only by C's land:
 So "a Forest pumps your green creatures" is true by construction, with no new
 assembly — it is purely which of the six tables carries the ×1.3.
 
-This is a Project-2 tool: it defaults to `--product p2` and routes its output
-through `products.py` into `work/p2/`, so it plugs into `build.py --product p2`.
+This is a Duel Monsters MTG tool: it defaults to `--product duelmonsters-mtg` and routes its output
+through `products.py` into `work/duelmonsters-mtg/`, so it plugs into `build.py --product duelmonsters-mtg`.
 
 CLI:
-  python p2colors.py map                 print the grounded color/land/slot table
-  python p2colors.py sample <card#> ...  show a card's per-land stats, colored
-  python p2colors.py recolor             colorize work/p2/cards.json + derive its
-                                         terrain tables in place (default product p2)
-  python p2colors.py equips              generate work/p2/equips.json from each equip
+  python mtg_colors.py map                 print the grounded color/land/slot table
+  python mtg_colors.py sample <card#> ...  show a card's per-land stats, colored
+  python mtg_colors.py recolor             colorize work/duelmonsters-mtg/cards.json + derive its
+                                         terrain tables in place (default product duelmonsters-mtg)
+  python mtg_colors.py equips              generate work/duelmonsters-mtg/equips.json from each equip
                                          card's `attaches_to: [colors]` authoring
-  python p2colors.py demo                containment proof: recolor stock, compile,
+  python mtg_colors.py demo                containment proof: recolor stock, compile,
                                          assert diffs live only in the 6 terrain tables
 """
 import json
@@ -186,7 +186,10 @@ def cmd_equips(product):
     cards = json.load(open(products.data_path("cards.json", product),
                             encoding="utf-8"))["cards"]
 
-    color_of = {c["id"]: c.get("color") for c in cards if c["atk"] is not None}
+    # Tokens are filler bodies, not real creatures — never equip targets. Leaving
+    # them in would also bloat every Colorless list past the 2642-byte pool.
+    color_of = {c["id"]: c.get("color") for c in cards
+                if c["atk"] is not None and not c.get("token")}
     card_to_idx = {e["card"]: e["index"] for e in db_e["equips"] if e["card"]}
 
     locked = 0
@@ -260,8 +263,8 @@ def cmd_demo():
     return 0
 
 
-def pop_product(argv, default="p2"):
-    """Like products.pop_arg but defaults to p2 — this is a Project-2 tool."""
+def pop_product(argv, default="duelmonsters-mtg"):
+    """Like products.pop_arg but defaults to duelmonsters-mtg — this is a Duel Monsters MTG tool."""
     argv = list(argv)
     if "--product" in argv:
         i = argv.index("--product")

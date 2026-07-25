@@ -16,15 +16,24 @@ reference/
 # --- Extracted game content (regenerable; treated like the ROM: used, never shipped) ---
 # cards.json holds every card's English name and description, i.e. Darrman's
 # translation text lifted out of the ROM. fusions.json is bulk table data.
-# Regenerate with `python cardc.py extract [--product pN]` / `fusions.py extract`.
+# Regenerate with `python cardc.py extract [--product NAME]` / `fusions.py extract`.
 # Product data lives under work/<product>/ ; ignore the extracted files there.
 work/*/cards.json
 work/*/fusions.json
-# Bulk WotC MTG source data (Project 2): raw LEB card stats + full flavor-text
+# Bulk WotC MTG source data (Duel Monsters MTG): raw LEB card stats + full flavor-text
 # dump, scraped/regenerable. Same category as the ROM extract above — used, never
 # shipped.
 work/*/leb_cards_raw.json
 work/*/mtg_flavor.json
+# Card artwork extracted from the ROM (Konami's pixel art, 365 PNGs) and the
+# zoomed previews `cardart.py import` writes next to each replacement.
+# Regenerate with `python cardart.py extract [--product NAME]`.
+work/*/art_src/
+work/*/art/_preview_*.png
+# Same for the full-screen graphics (title, portraits, menus, duel backdrops,
+# font) that `screens.py extract` dumps, and its zoomed previews.
+work/*/screens_src/
+work/*/screens/_preview_*.png
 
 # docs/DECKLISTS.md — a bulk dump of every opponent's decklist (most of the
 # translated card names). Working file for manual pruning, regenerable. Local only.

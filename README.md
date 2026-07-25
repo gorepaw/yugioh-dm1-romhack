@@ -134,6 +134,43 @@ python descriptions.py set 1 "line one (<=18)" "line two (<=18)"
 python text_tool.py reference/DM1Translation/Insertion/text.tbl roms/dm1-english.gb search "your turn."
 ```
 
+**Card artwork** — `cardart.py` → `work/<product>/art/NNN.png` (needs Pillow):
+```
+python cardart.py extract                             # all 365 -> work/duelmonsters-kaizo/art_src/
+python cardart.py preview mypic.png --out opts.png    # every dither/fit, with sizes
+python cardart.py import 24 mypic.png --dither bayer4 # -> work/duelmonsters-kaizo/art/024.png
+python cardart.py budget                              # per-bank space report
+```
+Each card is a 64×80 four-shade picture with the frame baked in (art box 52×68).
+`import` converts any image you supply and prints the compressed size against the
+card's slot; `build.py` writes in place when it fits and repacks the bank when it
+doesn't. Cards with no PNG keep their stock picture byte for byte.
+
+> Dithering costs space. `--dither bayer4` (the default) and `bayer8` compress far
+> better than `fs`; `none` is smallest. Watch the byte count `import` prints.
+
+Full reference — format, per-bank budget, which cards share a bank, and the
+traps — is in **[docs/CARDART.md](docs/CARDART.md)**.
+
+**Screens and font** — `screens.py` → `work/<product>/screens/<name>.png`:
+```
+python screens.py list                                # every screen + its budget
+python screens.py extract                             # -> work/<product>/screens_src/
+python screens.py import title mypic.png              # 160x144, any image
+python screens.py import arena00 face.png             # a duel backdrop, 160x88
+python screens.py font extract | font import f.png    # the 128-glyph font, 128x64
+```
+The title screen, the boot splashes, the character portraits and the duel
+backdrops are repaintable pictures; the menus are tilemaps of **font glyphs**,
+so restyling the font restyles every menu and every line of dialogue at once.
+
+> The game runs an **inverted palette** (BGP `$1B`: colour 0 is black, 3 is
+> white). `screens.py` handles it — every PNG it reads or writes is in screen
+> colours. Note this also means `cardart.py`'s extracts are negatives.
+
+Full reference — the four graphics formats, the duel/dialogue screen, per-screen
+budgets and the traps — is in **[docs/SCREENS.md](docs/SCREENS.md)**.
+
 **Cards awarded per won duel** — `grind.py` → `work/grind_config.json`:
 ```
 python grind.py show

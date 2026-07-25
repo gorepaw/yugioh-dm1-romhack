@@ -14,10 +14,10 @@ $6BFC..$764E = 2642 bytes; a 12-byte $FF gap then graphics follow, so the pool
 cannot grow in place. This tool repacks the pool and refuses to compile a set
 that overflows the budget (same discipline as the name/description pools).
 
-    python equips.py extract [--product p2]     -> work/<product>/equips.json
+    python equips.py extract [--product duelmonsters-mtg]     -> work/<product>/equips.json
     python equips.py show                        list every equip + its targets
     python equips.py verify                      round-trip against the base ROM
-    python equips.py budget [--product p2]       pool usage of a product's equips.json
+    python equips.py budget [--product duelmonsters-mtg]       pool usage of a product's equips.json
 """
 import json
 import os

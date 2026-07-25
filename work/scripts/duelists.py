@@ -65,6 +65,22 @@ def duelist_name(rom, d):
         rom[NAME_TABLE + NAME_LEN * d:NAME_TABLE + NAME_LEN * (d + 1)]).strip()
 
 
+def apply_config(rom, cfg):
+    """Rename the 16 duelists. Names are FIXED 8-byte records (space padded), so
+    renaming is in place — there is no pool to repack. This is what the record
+    page and the duel HUD read; opponent *dialogue* is separate text elsewhere."""
+    names = cfg.get("names") or []
+    if len(names) != 16:
+        raise ValueError(f"expected 16 duelist names, got {len(names)}")
+    for d, nm in enumerate(names):
+        enc = cardtext.encode(nm)
+        if len(enc) > NAME_LEN:
+            raise ValueError(f"duelist {d} name {nm!r} is {len(enc)} tiles, max {NAME_LEN}")
+        enc = enc + b"\x00" * (NAME_LEN - len(enc))
+        rom[NAME_TABLE + NAME_LEN * d:NAME_TABLE + NAME_LEN * (d + 1)] = enc
+    return len(names)
+
+
 def pool_of(rom, d):
     return rom[POOL_MAP + d]
 

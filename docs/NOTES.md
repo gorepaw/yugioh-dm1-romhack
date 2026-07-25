@@ -68,13 +68,13 @@ card id (`$CD0F/$CD10`) → ATK into `$CD13/$CD14`; repeats via `$4373` → DEF 
 `$CD15/$CD16`. **It never reads the type array `$409E`.** The base display loader
 `0x24068` likewise reads only the base table + the type byte (for its label).
 
-**Consequence (the important one for Project 2):** the terrain boost is *pre-baked
+**Consequence (the important one for Duel Monsters MTG):** the terrain boost is *pre-baked
 data selected by field index*, not a runtime `base × f(type)`. There is no central
 "type→terrain" rule to edit — the association exists only in *which of the six tables
 carry a boosted value for each card*. So "a given card is pumped by a given land" is
 100% controllable from the compiler, and the **type byte is mechanically inert for
 stats** (it only drives the label and seal-by-type / Dragon Capture Jar). This is what
-makes repurposing the type byte as MTG **color** safe — see `docs/PROJECT2.md`.
+makes repurposing the type byte as MTG **color** safe — see `docs/MTG.md`.
 
 #### Physical terrain-slot order (recovered from stock data)
 Which ROM terrain table is which field, decoded by which types each one boosts:
@@ -162,6 +162,30 @@ Egotist, `18` Stop Defence, `19` Dragon Capture Jar, `20-25` the six field terra
 (Forest/Wasteland/Mountain/Sogen/Umi/Yami), `26` Dark Hole, `27` Raigeki, `28-32`
 heals (5 magnitudes), `33-37` burns (5 magnitudes), `38` Swords, `39` Spellbinding
 Circle, `40` Dark-Piercing Light.
+
+### Duel-message pool — FULLY DECODED & EDITABLE (`messages.py`)
+> ⚠ **A reskinned spell keeps announcing the card it replaced.** What a card *does*
+> (verb tables, bank 3) and what it *says* (this pool) are independent, so renaming
+> a magic card is not enough — Duel Monsters MTG's Psionic Blast still printed "Used
+> Hinotama" until these strings were rewritten. Always edit both.
+
+| Structure | Address | Format |
+|---|---|---|
+| slot → message id | `0x15162` | 50 bytes, index = card number − 301 |
+| message pointers | `0x14980` | **45** × 16-bit CPU addr; file = ptr + `0x10000` |
+| message pool | `0x15400`–`0x15ABE` | **1726 bytes**, strings `[Exit]` (`0xB4`) terminated |
+
+- The stock pool uses **suffix sharing** — three pointers alias into the middle of
+  another string — so it packs 1774 bytes of text into 1726. A repacker that does
+  not re-create the sharing therefore has ~48 bytes *less* room than stock text
+  implies; `messages.py` repacks without sharing and enforces the budget.
+- **All 26 equip slots share message id `0x10`**, so per-equip text is impossible
+  without extending the 45-entry pointer table; use generic wording instead.
+- **Control codes work in messages**: `[Line]` `[Page]` `[Exit]`, and the renderer
+  at `$4961` handles `0xB5`/`0xB6` by `sub $B5` → `call $2CE8`, which sets a render
+  mode in `$CFC3`. Message 10 ("Evolved into `[CardName]`") proves `[CardName]`
+  substitution works, though *which* card it resolves to for a spell is untraced —
+  literal text is the safe choice.
 
 **Engine verb vocabulary (~16 handlers):** equip/power-up, set field terrain,
 destroy-all, destroy-enemy-side, heal (several magnitudes), burn (several magnitudes),
@@ -260,7 +284,7 @@ so the card would still *say* "Sparks". Verified as a 1-byte diff.
 ### DESIGN CONSEQUENCE — the slot is NOT the verb
 The earlier "assign card identities to fixed effect slots" workaround is unnecessary.
 Any of the 65 cards from #301 up can be given any of the 53 verbs freely, in either
-table, independently of its name, art and lore. For Project 2 the real limits are the
+table, independently of its name, art and lore. For Duel Monsters MTG the real limits are the
 **53 available verbs** and the fact that new verbs need new assembly — not the binding.
 
 ### Equip combine system (verbs `$15`–`$2E`) — FULLY DECODED
@@ -290,8 +314,8 @@ contiguously in equip-index order in a **fixed pool `$6BFC`–`$764E` = 2642 byt
 12-byte `$FF` gap then **graphics** follow (the classic mostly-`$FF` tile trap), so the
 pool **cannot grow in place** — it is a hard budget, repacked like the name/description
 pools. `work/scripts/equips.py` does `extract`/`show`/`verify`/`budget`; `build.py` applies
-`work/<product>/equips.json`. Project 2 generates that file from color via
-`p2colors.py equips` (see `docs/PROJECT2.md`).
+`work/<product>/equips.json`. Duel Monsters MTG generates that file from color via
+`mtg_colors.py equips` (see `docs/MTG.md`).
 
 **Bonus amount:** equip cards store `$FFFF` for their own ATK/DEF (the amount is *not*
 the card's own stats), and all 26 equips share the one `$51DB` apply path — so the bonus
@@ -309,7 +333,7 @@ to the card whose table-B byte is `$15+i`; idx 0 = LegendarySword (#301), 1 = Sw
 > compact color gate that replaces the id-list walk with a single color-byte compare at
 > `$409E`, are small in-place routine patches (same class as cards-per-win). What is
 > **not** representable: equips that grant abilities/keywords — there is no ability engine,
-> only stat + eligibility. See `docs/PROJECT2.md` for how Project 2 uses this.
+> only stat + eligibility. See `docs/MTG.md` for how Duel Monsters MTG uses this.
 
 ### Seal-by-type (Dragon Capture Jar, verb `$31`) — sealed type is ONE immediate
 The seal routine `$7926` loops over the board and calls `$5B21` per monster. `$5B21`
@@ -317,8 +341,58 @@ loads the monster's type byte into `$CD17` (via bank 9 idx 0, the card loader) a
 **`$5B41 cp $00`** — comparing against the hardcoded sealed type `$00` (**Dragon**). The
 sealed type is therefore a **single immediate at file `0x0DB42`**, retargetable to any
 type/color with a 1-byte edit (no per-card parameter, and the verb table is full 54/54, so
-only ONE sealed type exists game-wide). Project 2 sets it to the Colorless enum value →
+only ONE sealed type exists game-wide). Duel Monsters MTG sets it to the Colorless enum value →
 "seal all artifact creatures".
+
+## Opponent text — three separate places (all must be edited together)
+Renaming a duelist touches **three** independent structures. Editing only one
+leaves the old character showing somewhere:
+
+| What the player sees | Structure | Tool |
+|---|---|---|
+| Record page, duel HUD | **name table `0x5457`**, 16 × **fixed 8 bytes**, space padded | `duelists.py` |
+| "I am X, beat me 5 times" intro | **block `0x3C17F`**, 17 `[Exit]`-terminated strings, **1384 B** | `dialogue.py` |
+| Post-duel / defeat lines | scattered in bank 15 (`~0x3D1F0`+) | same-length patches |
+
+### The battle block (0x3C6E7) — 48 strings, three groups of 16
+Immediately after the intros: **48 `[Exit]`-terminated strings = 3 × 16**, all in
+the same opponent order as the intros (minus the short label):
+
+| Group | Indices | Content |
+|---|---|---|
+| pre-duel taunt | 0–15 | "I will dominate this battle!" |
+| opponent victory | 16–31 | "You don't even count as a threat!" |
+| opponent defeat | 32–47 | "My Insect Army was annihilated." |
+
+Extent `0x3C6E7`–`0x3D209` = **2850 bytes**. Same no-pointer-table rules as the
+intros. Index 47 is the odd one out — a short status string ("Pegasus defeated"),
+not a quote.
+
+`dialogue.BATTLE_TO_SLOT` maps taunt index → duelist slot:
+`[0,1,2,3,15,9,11,4,5,10,12,6,7,8,14,13]`.
+
+> ⚠ When padding either block, put the filler **before the last string's final
+> `[Page]`**, not after it — padding after `[Page]` renders as an extra blank text
+> box in game.
+
+### The intro block (0x3C17F) — no pointer table
+17 strings, `[Exit]` (`0xB4`) terminated, found by **scanning forward and counting
+terminators**. Per-opponent *battle taunts* begin immediately at `0x3C6E7`.
+
+> ⚠ **Never pad this block with extra terminators.** Writing shorter text and
+> filling the tail with `0xB4` inserts empty strings, which shifts every later
+> string's index and breaks the taunts. Pad *inside the last string* with `0x00`
+> (a space in this codec) so the block occupies exactly 1384 bytes.
+
+> ⚠ **Intro order is NOT duelist-slot order.** It runs Weevil, Mai, Rex, Mako,
+> **YamiYugi**, Yugi, Joey, Kaiba, Mokuba, Tristan, Bakura, Puppeteer, PaniK,
+> Keith, Pegasus, a short label, then **Simon**. `dialogue.DIALOGUE_TO_SLOT` has
+> the mapping.
+
+Post-duel lines are mostly character-neutral ("Damn! I've lost five times") — only
+a few name anyone, so same-length in-place replacement (pad with `0x00`) is enough
+and avoids repacking. The **credits at `0xF4900`+ mention Yugi/Yugipedia and are
+the translators' credit — leave them alone.**
 
 ## Fusion system (bank 0x3B) — FULLY DECODED
 Tool: `work/scripts/fusions.py` (`extract` / `verify` / `list` / `find` / `stats`).
@@ -398,6 +472,45 @@ which selects their deck, drop table and reward list together.
   33% each), Mokuba is 101. "Deck size" means distinct cards with a non-zero share.
 - Names are **fixed 8 bytes**, so renaming an opponent is in-place and free — unlike
   card names there is no shared pool to repack.
+
+## Opponent progression — a hard 4 / 9 / 3 structure (DECODED)
+The "current opponent" index is **`$CEEF`** (read by the pool-map lookup at
+`$7724`, bank 2, which does `hl = $7734 + CEEF` to get the duelist's pool id).
+It has exactly **six writers**, all in bank 0:
+
+| Routine | Sets `$CEEF` to | Call site | Group |
+|---|---|---|---|
+| `$2339` | `0` | — | reset |
+| `$2344` | **`A + 9`** | `0x6880` | **Stage 1 — duelists 9–12** (4, chosen freely) |
+| `$2340` | `A` (caller's value) | `0x653A` | **Stage 2 — duelists 0–8** (9, chosen freely) |
+| `$234C` | `13` | `0x6A6F` | **Boss 1** (fixed) |
+| `$2354` | `14` | `0x6C68` | **Boss 2** (fixed) |
+| `$235C` | `15` | `0x6E42` | **Boss 3** (fixed) |
+
+So the roster is **not** a flat list of 16: it is **4 + 9 + 3**. The `add $09`
+is the giveaway that duelists 9–12 form their own group, addressed by an index
+offset by nine. Slots 13/14/15 each get a dedicated setter with no index at all,
+which is why they are the three sequential end-game duels.
+
+**Stage ORDER comes from the stock roster, not from code layout.** Duelists 9–12
+are Yugi/Tristan/Joey/Bakura — the friends you duel *first* — while 0–8 are the
+nine Duelist Kingdom opponents (Weevil…Keith) and 13–15 are the finals (Simon,
+Pegasus, YamiYugi). So the flow is **4 → 9 → 3**.
+
+> ⚠ Do **not** infer stage order from call-site addresses. `0x653A` (the 0–8
+> setter) sits below `0x6880` (the 9–12 setter), which would suggest 9-then-4;
+> the stock roster proves the opposite. Code layout ≠ game flow.
+
+**Design consequence:** difficulty must ascend *across these three stages* —
+slots 9–12 are the EASIEST, then 0–8, then 13/14/15. Duelist **slot id is a data
+index, not a difficulty rank**. Deck power is the only lever that sets difficulty
+(opponents also **summon monsters only** — no magic, equip or field cards ever
+appear in an opponent deck).
+
+> Dead ends, recorded so they aren't re-investigated: `$CAB6/$CAB7` is a generic
+> 16-bit *display parameter* (the duelist-name draw at `$5436` and the win-count
+> renderer both use it), **not** a current-duelist variable; and the `0..15` byte
+> run at `0x2C3EE` is tilemap data, not a play-order table.
 
 ## Opponent decks (bank 8) — SAME FORMAT AS DROP POOLS
 - Deck tables are **monotonic cumulative weight arrays** (values run past 365, so they
@@ -534,7 +647,7 @@ two glyphs into one tile. All 365 names and all 365 descriptions survive
 decode → encode byte-identically, so `cards.json` can hold readable text and still
 round-trip. A per-record raw-hex fallback exists but is currently unused (0 records).
 
-### The constraint Project 1 has to plan around
+### The constraint Duel Monsters Kaizo has to plan around
 **Both pools are exactly full — 0 free bytes.** Renaming is a zero-sum budget:
 swapping *Skull Servant* (12 B, `ll` is one tile) for *Buster Blader* (13 B) is
 rejected with "over by 1" until a byte is freed elsewhere. Verified that a
@@ -584,6 +697,114 @@ instead of the ROM; both are fixed, so names now come from whatever ROM is loade
 
 ### Opponent decks / AI
 - Location: TBD
+
+## Card artwork (banks $10–$2C) — FULLY DECODED
+Tools: `work/scripts/gblzss.py` (the codec), `work/scripts/cardart.py` (everything else).
+Round-trips all 365 pictures byte-identically. Needs Pillow
+(`<python> -m pip install Pillow`).
+
+> **See `docs/CARDART.md`** for the workflow, the per-bank space budget (which
+> cards share a bank, and what a replacement costs), and the traps. The section
+> below is the format decode only.
+
+Every card carries a **64 × 80 pixel, 4-shade picture with the rounded card frame
+baked into it** — 1280 bytes of GB 2bpp (80 tiles), LZSS-compressed.
+
+| Structure | Address | Format |
+|---|---|---|
+| Art **bank** table | `0x0018F0` | 365 bytes, card index → ROM bank (`$10`–`$2C`) |
+| Art **pointer** table | `0x040028` (bank `$10`, CPU `$4028`) | 365 × 16-bit LE CPU addr, ends `$4302`; bank `$10`'s own art starts `$4304` |
+| Picture data | banks `$10`–`$1F`, `$21`–`$2C` | 13 cards per bank (bank `$11` has 14) |
+| Decompressed size | `$0500` = 1280 B | passed in `bc` by the caller, counted down in `$FF84/85` |
+
+**Loader chain** (all bank 0): `$18B1` → `$18B8` sets it up → `$1AFD` decompresses.
+`$18B8` reads the card id from `$CD0C/$CD0D`, switches to bank `$10`, and calls
+**`$4002` in bank `$10` — a pure lookup** (`d`=0 → pointer table `$4028`,
+`d`=1 → a second table at `$7E84`) that turns the id in `bc` into the art pointer.
+That pointer goes to `$FF80/81`, the output length `$0500` to `$FF84/85`, the
+method selector `1` to `$CD0E`, and only then does `$18B8` index `$18F0` by card
+id and bank-switch to the art. `$1AFD` dispatches on `$CD0E`: **1 → `$1B23`, the
+LZSS decompressor**; anything else → `$1B0E`, a raw 10 × 128-byte copy (the same
+1280 bytes, uncompressed — an alternative the shipped data never uses).
+
+### The codec — Okumura LZSS, N=1024 / F=34
+Recovered from `$1B23` + `$1B92` (source fetch) + `$1BA5` (output store):
+
+- ring buffer `$C000-$C3FF`; `$C000-$C3DD` (990 B) prefilled with `$20`; write
+  cursor starts at **`$C3DE` = N − F**, the textbook initial value
+- flag byte = 8 tokens, **LSB first**, `1` = literal byte, `0` = back-reference
+- reference = two bytes `lo hi` → `length = (hi & $1F) + 3` (3–34),
+  `position = ((hi >> 5) & 3) << 8 | lo` (10-bit); bit 7 of `hi` is unused
+- **no terminator** — the decoder stops the instant the output counter hits 0,
+  mid-token if need be
+- output does *not* go to the ring: `$1BA5` streams it via `$C412` in 128-byte
+  pages (`$FF86` counts down from `$80`) through `$17DB` into the VRAM queue
+
+Since the ring is just a sliding window over `(990 × $20) ++ output`, this is
+plain LZ77 with a 1024-byte window — which is how `gblzss.compress` encodes it.
+Our encoder is **0.4 % smaller than Konami's** across the whole set (392,393 vs
+394,001 bytes) and is larger on only 12 cards, by at most 4 bytes.
+
+### Tile order — 8×16 vertical PAIRS, not row-major
+The 80 tiles are stored as **8×16 metatiles**: tile `2t` is the top half of a
+column and `2t+1` the bottom half, running left→right across a 16-pixel band,
+then band by band. Layout is 8 tiles wide × 10 tall.
+
+> This is why a plain row-major dump looks like scrambled noise. Establish it
+> by seam-continuity scoring (`seam roughness / interior roughness` = 0.90 for
+> 8×10 pairs vs ≥1.12 for every other arrangement), not by eye.
+
+### The frame is part of the picture
+All 365 pictures share a rounded frame in the outer 6 pixels: `col 0` = shade 2,
+`cols 1-3` = white, `col 4` = shade 1 (inner line), `col 5` = shade 2 (bevel),
+mirrored on the right; same top and bottom. `cardart.py` derives it by taking
+the modal value across the roster, so **the art box is x 6–57, y 6–73 = 52 × 68 px**.
+
+### Space budget
+Each record is followed by **~82 bytes of unread padding** (Konami's compressor
+emitted a stream for a larger buffer than the game reads), and each bank has a
+~1–4 KB tail.
+
+| | bytes |
+|---|---|
+| stream data actually read | 394,001 |
+| allocated to art (28 banks) | 457,926 |
+| **slack recoverable by repacking** | **63,925** |
+
+So `cardart.py`'s two-tier strategy: write **in place** when the new stream fits
+the card's existing slot (~1150–1250 B; a build that changes two cards touches
+only those two records), and **repack the whole bank** — re-pointing all 13
+cards — only when it doesn't. That reclaims ~2 KB per bank.
+
+> **Bank `$20` is never selected by the bank table** yet holds data in exactly
+> this format — its first bytes decode to the same frame top-left as card #1.
+> 16 KB of apparently-unreferenced art. Not used by the tooling until we know
+> what reads it. Don't assume it's free.
+
+### The second image set — SOLVED: the 18 duel backdrops
+`$1A65` is the same loader for a **different set**: bank table `0x001A9D`
+(18 entries, banks `$2E`/`$2F`/`$30`, 6 each), pointer table `$7E84` in bank
+`$10` (the `d`=1 path), output length **`$0C00` = 3072 B = 192 tiles**.
+
+No tile arrangement scores well because it is **not a bitmap at all** — it is a
+192-tile *tileset*, arranged by a **20 × 11 tilemap in bank `$06`** (pointer
+table `$4229`, maps packed from `$424D`, 220 bytes each). The 18 images are the
+**duelist portraits behind the duel text window**, selected by `$CD50`. Tiles
+land at VRAM `$9000` (ids `$00`–`$7F`) and `$8800` (ids `$80`–`$BF`); the
+window's own 16 frame tiles come from bank `$06` `$405E` and its 20 × 7 map from
+bank `$06` `$419D`.
+
+Fully decoded, extractable and replaceable — see **[docs/SCREENS.md](SCREENS.md)**
+and `work/scripts/screens.py`, which also covers the title screen, the boot
+splashes, the character portraits, every menu tilemap and the font.
+
+> **Palette correction that applies to card art too.** The game runs
+> **BGP = `$1B`**, which is inverted: stored colour **0 is BLACK** and **3 is
+> WHITE**. (Proof: the title screen rendered under `$1B` matches Darrman's
+> `titleEN.png` on 23,004 / 23,040 pixels; under `$E4`, on 6.) Only the three
+> boot logos use `$E4`. `cardart.py`'s `SHADES` table assumes 0 = lightest, so
+> the PNGs it extracts are negatives of what the player sees — harmless for
+> round-tripping, but don't hand-author a replacement from one by eye.
 
 ## Change log (our edits)
 | ROM offset | Change | Note |

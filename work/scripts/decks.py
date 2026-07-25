@@ -12,8 +12,8 @@ where cards maps card id -> relative weight (normalized to 2048 on build). It is
 applied by build.py. Every card must be a MONSTER (real ATK/DEF), enforced here.
 
 CLI:
-  python decks.py show <pool#> [--product p2]     current deck of a pool
-  python decks.py verify [--product p2]           deck_config sanity (monsters, pools)
+  python decks.py show <pool#> [--product duelmonsters-mtg]     current deck of a pool
+  python decks.py verify [--product duelmonsters-mtg]           deck_config sanity (monsters, pools)
 """
 import json
 import os

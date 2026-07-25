@@ -40,5 +40,29 @@
   "old": "00",
   "bytes": "05",
   "desc": "seal type -> Colorless(5) = artifact-hate"
+ },
+ {
+  "offset": 251398,
+  "old": "0c2532282d380015292d382c",
+  "bytes": "182d273330000c3330253700",
+  "desc": "text: 'Bandit Keith' -> 'Nicol Bolas'"
+ },
+ {
+  "offset": 251000,
+  "old": "0c303929430f3d2937",
+  "bytes": "2836252b3332370000",
+  "desc": "text: 'Blue-Eyes' -> 'dragons'"
+ },
+ {
+  "offset": 251719,
+  "old": "233943112d43192c3f",
+  "bytes": "17252b2d2746000000",
+  "desc": "text: 'Yu-Gi-Oh!' -> 'Magic:'"
+ },
+ {
+  "offset": 251729,
+  "old": "0e3929300017333237382936373f",
+  "bytes": "1e2c29001125382c29362d322b3f",
+  "desc": "text: 'Duel Monsters!' -> 'The Gathering!'"
  }
 ]

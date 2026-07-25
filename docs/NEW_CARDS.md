@@ -1,4 +1,4 @@
-# Project 1 — new card list
+# Duel Monsters Kaizo — new card list
 
 Cards to add to the pool. **Nothing here is in the ROM yet** — this is the design
 sheet. Entries are appended as they're chosen; flavour text is written to fit the

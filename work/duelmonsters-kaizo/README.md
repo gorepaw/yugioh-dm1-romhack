@@ -1,7 +1,7 @@
 # work/duelmonsters-kaizo — Duel Monsters Kaizo data ("Modernized DM1")
 
-All of this hack's card data lives here and **nowhere else**. Project 2's data is
-in `work/p2/`. The two never share a file: they are different games occupying the
+All of this hack's card data lives here and **nowhere else**. Duel Monsters MTG's data is
+in `work/duelmonsters-mtg/`. The two never share a file: they are different games occupying the
 same 366 card slots.
 
 Build this product with:

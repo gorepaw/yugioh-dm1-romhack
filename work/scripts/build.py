@@ -6,12 +6,12 @@ byte first, so a shifted address can never silently corrupt the ROM), then
 compiles the selected product's data from work/<product>/, fixes the Game Boy
 header + global checksums, and writes build/<product>-hack.gb.
 
-    python build.py                 # product p1 (default) -> build/p1-hack.gb
-    python build.py --product p2     #             p2       -> build/p2-hack.gb
+    python build.py                              # duelmonsters-kaizo (default)
+    python build.py --product duelmonsters-mtg   # -> build/duelmonsters-mtg-hack.gb
 
-Project 1 and Project 2 keep SEPARATE data (they are two games in the same 366
-card slots), so each has its own work/<product>/ directory and its own output
-file. The tools and reverse-engineering notes are shared; the data is not.
+The two products keep SEPARATE data (they are two games in the same 366 card
+slots), so each has its own work/<product>/ directory and its own output file.
+The tools and reverse-engineering notes are shared; the data is not.
 """
 import hashlib
 import json
@@ -85,7 +85,7 @@ def main(argv=None):
     # --- the card compiler (cards.json): names, types, ATK/DEF, lore ---
     # When present this is the authority for the whole card model and is applied
     # FIRST, so the narrower editors below can still tweak individual cards on
-    # top of it. Generate it with `python cardc.py extract [--product p2]`.
+    # top of it. Generate it with `python cardc.py extract [--product duelmonsters-mtg]`.
     cards_json = dpath("cards.json")
     if os.path.exists(cards_json):
         import cardc
@@ -116,6 +116,29 @@ def main(argv=None):
         if n:
             print(f"  equip eligibility lists rewritten: {n}")
 
+    # --- replacement card artwork (work/<product>/art/NNN.png) ---
+    # One 64x80 four-shade PNG per card you want to redraw; produce them with
+    # `python cardart.py import <card#> <image>`. Cards with no PNG keep their
+    # stock picture, byte for byte.
+    if os.path.isdir(os.path.join(data, "art")):
+        import cardart
+        n_art, n_repack = cardart.apply_config(rom, cardart.load_overrides(product))
+        if n_art:
+            print(f"  card art written: {n_art} picture(s)"
+                  + (f", {n_repack} bank(s) repacked" if n_repack else ", all in place"))
+
+    # --- replacement screens + font (work/<product>/screens/*.png) ---
+    # One 160x144 PNG per full screen (title, portraits, splashes), 160x88 per
+    # duel backdrop, 128x64 for the font. Produce them with
+    # `python screens.py import <name> <image>`. See docs/SCREENS.md.
+    if os.path.isdir(os.path.join(data, "screens")):
+        import screens as screens_mod
+        overrides, font_png = screens_mod.load_overrides(product)
+        n_scr, n_arena, did_font = screens_mod.apply_config(rom, overrides, font_png)
+        if n_scr or n_arena or did_font:
+            print(f"  screens written: {n_scr} static, {n_arena} duel backdrop(s)"
+                  + (", font replaced" if did_font else ""))
+
     # --- card stat edits (card_edits.json, applied via cards.py) ---
     card_edits_path = dpath("card_edits.json")
     card_edit_count = 0
@@ -136,6 +159,37 @@ def main(argv=None):
                                               e.get("line1", ""), e.get("line2", ""))
             print(f"  desc #{e['card']} {e.get('name', '')}: {summary}")
             desc_edit_count += 1
+
+    # --- duelist names (duelist_config.json) ---
+    duelist_config = dpath("duelist_config.json")
+    if os.path.exists(duelist_config):
+        import duelists
+        n = duelists.apply_config(rom, json.load(open(duelist_config)))
+        print(f"  duelist names written: {n}")
+
+    # --- opponent intro dialogue (dialogue_config.json) ---
+    dialogue_config = dpath("dialogue_config.json")
+    if os.path.exists(dialogue_config):
+        import dialogue
+        n = dialogue.apply_config(rom, json.load(open(dialogue_config)))
+        print(f"  opponent dialogue rewritten: {n}")
+
+    # --- duel messages (message_config.json) ---
+    # What a spell SAYS is a separate table from what it DOES, so a reskinned
+    # spell keeps announcing the DM1 card it replaced until this is written.
+    message_config = dpath("message_config.json")
+    if os.path.exists(message_config):
+        import messages
+        n = messages.apply_config(rom, json.load(open(message_config)))
+        if n:
+            print(f"  duel messages rewritten: {n}")
+
+    # --- the player's 100-card starter pool (starter_config.json) ---
+    starter_config = dpath("starter_config.json")
+    if os.path.exists(starter_config):
+        import starter
+        n = starter.apply_config(rom, json.load(open(starter_config)))
+        print(f"  starter pool written: {n} cards")
 
     # --- opponent decks (deck_config.json, monsters only) ---
     deck_config_path = dpath("deck_config.json")

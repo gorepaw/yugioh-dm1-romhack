@@ -32,7 +32,7 @@ import cards  # noqa: E402
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
 import products  # noqa: E402
-DROP_CONFIG = products.data_path("drop_config.json")   # default product (p1)
+DROP_CONFIG = products.data_path("drop_config.json")   # default product (duelmonsters-kaizo)
 PTRTAB = 0x34072
 NPOOL = 17
 NCARD = 365
@@ -90,11 +90,28 @@ def base_weights(mode, orig):
 
 def apply_config(rom, cfg):
     bases = pool_bases(rom)
+
+    # Explicit pool definitions: {"pools": {"4": {"card_id": weight, ...}}}.
+    # Duel Monsters MTG authors whole drop tables this way (same shape as deck_config);
+    # the mode/boost machinery below is Duel Monsters Kaizo's stock-pool transform path.
+    explicit = cfg.get("pools") or {}
+    for pool, cards_map in explicit.items():
+        weights = [0] * NCARD
+        for cid, w in cards_map.items():
+            weights[int(cid) - 1] = w
+        cum = weights_to_cum(weights)
+        base = bases[int(pool)]
+        for i, c in enumerate(cum):
+            rom[base + 2 * i] = c & 0xFF
+            rom[base + 2 * i + 1] = (c >> 8) & 0xFF
+
     default = cfg.get("default_mode", "none")
     pool_modes = cfg.get("pool_modes", {})
     boosts = cfg.get("boosts", [])
-    changed = 0
+    changed = len(explicit)
     for pi in range(NPOOL):
+        if str(pi) in explicit:
+            continue
         mode = pool_modes.get(str(pi), default)
         orig = cum_to_weights(read_cumulative(rom, bases[pi]))
         bw = base_weights(mode, orig)
