@@ -43,7 +43,7 @@ import products  # noqa: E402
 
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
-FUSIONS_JSON = products.data_path("fusions.json")   # default product (p1)
+FUSIONS_JSON = products.data_path("fusions.json")   # default product (duelmonsters-kaizo)
 
 TAB_A = 0x0EC155
 TAB_B = 0x0ED233

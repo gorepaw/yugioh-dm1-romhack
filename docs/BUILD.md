@@ -1,13 +1,13 @@
-# Project 1 — build pipeline
+# Duel Monsters Kaizo — build pipeline
 
-How `build/p1-hack.gb` is produced from the tracked sources. Run scripts with the full
-Python path (`C:\Users\lando\AppData\Local\Programs\Python\Python313\python.exe`), from
-`work/scripts/`, always `--product p1`.
+How `build/duelmonsters-kaizo-hack.gb` is produced from the tracked sources. Run scripts
+with the full Python path (`C:\Users\lando\AppData\Local\Programs\Python\Python313\python.exe`),
+from `work/scripts/`, always `--product duelmonsters-kaizo`.
 
 ## Status
 
-Project 1 is a **complete, valid, playable ROM** as of 2026-07-24. Full build passes:
-hardware invariants (1 MB / MBC1+RAM+BAT / valid header checksum, Miyoo-safe), the
+Duel Monsters Kaizo is a **complete, valid, playable ROM** as of 2026-07-24. Full build
+passes: hardware invariants (1 MB / MBC1+RAM+BAT / valid header checksum, Miyoo-safe), the
 marquee fusion chain present, and every changed byte inside a known data table (zero
 stray writes). **Next step: playtest** — the deck/drop weights and some type-partner
 fusion recipes are unplaytested first-pass numbers.
@@ -16,30 +16,31 @@ fusion recipes are unplaytested first-pass numbers.
 
 | File | What |
 |---|---|
-| `work/p1/new_cards.json` | the 85 new cards: name, ATK, DEF, type, 2-line flavour, and `id` (assigned slot). **The master ledger.** |
-| `work/p1/patches.json` | 34 starter-pool remaps (verified byte patches) so the player doesn't start with new cards/gods |
-| `work/p1/deck_config.json` | 16 opponent decks — `{card_id: weight}` per pool |
-| `work/p1/reward_config.json` | 16 reward lists — `{pool: [10 card_ids]}` |
-| `work/p1/drop_config.json` | 17 drop pools — explicit `{card_id: weight}` |
+| `work/duelmonsters-kaizo/new_cards.json` | the 85 new cards: name, ATK, DEF, type, 2-line flavour, and `id` (assigned slot). **The master ledger.** |
+| `work/duelmonsters-kaizo/patches.json` | 34 starter-pool remaps (verified byte patches) so the player doesn't start with new cards/gods |
+| `work/duelmonsters-kaizo/deck_config.json` | 16 opponent decks — `{card_id: weight}` per pool |
+| `work/duelmonsters-kaizo/reward_config.json` | 16 reward lists — `{pool: [10 card_ids]}` |
+| `work/duelmonsters-kaizo/drop_config.json` | 17 drop pools — explicit `{card_id: weight}` |
 | `docs/*.md` | the design docs behind all of the above |
 
-**Derived / gitignored** (regenerated, never committed): `work/p1/cards.json`,
-`work/p1/fusions.json` (bulk card data), and the working files `docs/DECKLISTS.md`,
-`docs/RECALC.md`, `docs/ASSIGNMENT.md` (bulk translated names).
+**Derived / gitignored** (regenerated, never committed):
+`work/duelmonsters-kaizo/cards.json`, `work/duelmonsters-kaizo/fusions.json` (bulk card
+data), and the working files `docs/DECKLISTS.md`, `docs/RECALC.md`, `docs/ASSIGNMENT.md`
+(bulk translated names).
 
 ## Rebuild from a clean checkout
 
 ```
 cd work/scripts
-python cardc.py extract --product p1          # stock 365-card db -> work/p1/cards.json
-python apply_new_cards.py --product p1        # overlay the 84 new cards (needs new_cards.json)
-python gen_fusions.py                          # regenerate fusions.json (needs new_cards.json)
-python build.py --product p1                   # -> build/p1-hack.gb
+python cardc.py extract --product duelmonsters-kaizo     # stock 365-card db -> work/duelmonsters-kaizo/cards.json
+python apply_new_cards.py --product duelmonsters-kaizo   # overlay the 85 new cards (needs new_cards.json)
+python gen_fusions.py                                     # regenerate fusions.json (needs new_cards.json)
+python build.py --product duelmonsters-kaizo             # -> build/duelmonsters-kaizo-hack.gb
 ```
 
 That is sufficient: the deck/reward/drop **configs are already tracked**, so the build
 needs only `cards.json` + `fusions.json` regenerated (both come from the tracked
-`new_cards.json`). `build.py` reads every `work/p1/*.json` and applies it.
+`new_cards.json`). `build.py` reads every `work/duelmonsters-kaizo/*.json` and applies it.
 
 ## Regenerating the configs (only if the design changes)
 

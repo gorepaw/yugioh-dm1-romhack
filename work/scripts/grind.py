@@ -50,7 +50,7 @@ import cards  # noqa: E402
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
 import products  # noqa: E402
-GRIND_CONFIG = products.data_path("grind_config.json")   # default product (p1)
+GRIND_CONFIG = products.data_path("grind_config.json")   # default product (duelmonsters-kaizo)
 
 BANK = 0x0D
 BLOCK_CPU = 0x400C

@@ -28,7 +28,7 @@ import cards  # noqa: E402
 ROOT = cards.ROOT
 BASE_ROM = cards.BASE_ROM
 import products  # noqa: E402
-REWARD_CONFIG = products.data_path("reward_config.json")   # default product (p1)
+REWARD_CONFIG = products.data_path("reward_config.json")   # default product (duelmonsters-kaizo)
 
 THRESHOLDS = 0x036F02
 PTRS = 0x036F18

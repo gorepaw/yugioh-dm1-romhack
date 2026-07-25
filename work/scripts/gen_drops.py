@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate work/p1/drop_config.json (explicit per-pool drop tables).
+"""Generate work/duelmonsters-kaizo/drop_config.json (explicit per-pool drop tables).
 
 Goals:
   - every NEW card is droppable from its owner (so all 84 are obtainable, not just
@@ -26,7 +26,7 @@ names = cardlib.load_names(rom)
 def atk(i): return cardlib.bcd_to_int(cardlib.rd(rom, cardlib.BASE_ATK + 2 * i))
 def dfn(i): return cardlib.bcd_to_int(cardlib.rd(rom, cardlib.BASE_DEF + 2 * i))
 
-ROOTP1 = products.data_dir("p1")
+ROOTP1 = products.data_dir("duelmonsters-kaizo")
 ledger = json.load(open(os.path.join(ROOTP1, "new_cards.json")))
 retired = {c["id"] - 1 for c in ledger}
 by_owner = {}

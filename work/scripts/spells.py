@@ -48,7 +48,7 @@ import cards as cardlib  # noqa: E402
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
 import products  # noqa: E402
-SPELL_CONFIG = products.data_path("spell_config.json")   # default product (p1)
+SPELL_CONFIG = products.data_path("spell_config.json")   # default product (duelmonsters-kaizo)
 
 JUMP_TABLE = 0x00EF82        # bank 3 $6F82
 NJUMP = 54                   # verbs $00-$35; the table ends at $6FED and the

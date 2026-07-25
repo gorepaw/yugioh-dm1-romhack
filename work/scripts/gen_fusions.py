@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate work/p1/fusions.json for the new card pool.
+"""Regenerate work/duelmonsters-kaizo/fusions.json for the new card pool.
 
 The table is a fixed 2159 recipes (a + b -> result, all 1-based card ids). Stock
 recipes that reference a retired slot are now meaningless (that slot is a new card),
@@ -24,7 +24,7 @@ stock_names = cardlib.load_names(rom)
 def atk(i): return cardlib.bcd_to_int(cardlib.rd(rom, cardlib.BASE_ATK + 2 * i))
 def ty(i): return cardlib.type_name(rom[cardlib.TYPE_ARRAY + i])
 
-ROOTP1 = products.data_dir("p1")
+ROOTP1 = products.data_dir("duelmonsters-kaizo")
 ledger = json.load(open(os.path.join(ROOTP1, "new_cards.json")))
 retired = {c["id"] for c in ledger}                       # 1-based
 new_by_name = {c["name"]: c["id"] for c in ledger}

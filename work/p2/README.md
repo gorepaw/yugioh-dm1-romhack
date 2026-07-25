@@ -1,8 +1,8 @@
 # work/p2 — Project 2 data (MTG-inspired total conversion)
 
-All of Project 2's card data lives here and **nowhere else**. Project 1's data is
-in `work/p1/`. The two never share a file: they are different games occupying the
-same 366 card slots, so one `cards.json` cannot represent both.
+All of Project 2's card data lives here and **nowhere else**. The Duel Monsters Kaizo
+data is in `work/duelmonsters-kaizo/`. The two never share a file: they are different
+games occupying the same 366 card slots, so one `cards.json` cannot represent both.
 
 Build this product with:
 

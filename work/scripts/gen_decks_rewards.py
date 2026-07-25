@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate work/p1/deck_config.json and reward_config.json from the design.
+"""Generate work/duelmonsters-kaizo/deck_config.json and reward_config.json from the design.
 
 Decks: re-run the RECALC recompute (pruned DECKLISTS stock + new cards weighted by
 power, low-weight midrange padding for the weak decks) and emit each pool as
@@ -28,7 +28,7 @@ def atk(i): return cardlib.bcd_to_int(cardlib.rd(rom, cardlib.BASE_ATK + 2 * i))
 def dfn(i): return cardlib.bcd_to_int(cardlib.rd(rom, cardlib.BASE_DEF + 2 * i))
 
 
-ROOTP1 = products.data_dir("p1")
+ROOTP1 = products.data_dir("duelmonsters-kaizo")
 ledger = json.load(open(os.path.join(ROOTP1, "new_cards.json")))
 new_by_name = {c["name"]: c["id"] for c in ledger}          # new card name -> slot id
 retired = {c["id"] - 1 for c in ledger}

@@ -12,7 +12,7 @@ are stored so field power stays consistent.
 cards.json is regenerable (gitignored), so this is safe to re-run whenever the ledger
 changes.
 
-Usage: python apply_new_cards.py [--product p1]
+Usage: python apply_new_cards.py [--product duelmonsters-kaizo]
 """
 import json
 import os

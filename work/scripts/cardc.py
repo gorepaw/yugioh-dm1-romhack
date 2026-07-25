@@ -40,7 +40,7 @@ import products  # noqa: E402
 
 ROOT = cardlib.ROOT
 BASE_ROM = cardlib.BASE_ROM
-CARDS_JSON = products.data_path("cards.json")   # default product (p1)
+CARDS_JSON = products.data_path("cards.json")   # default product (duelmonsters-kaizo)
 
 NCARD = 365
 

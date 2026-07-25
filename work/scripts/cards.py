@@ -28,7 +28,7 @@ BASE_ROM = os.path.join(ROOT, "roms", "dm1-english.gb")
 CARDNAMES = os.path.join(ROOT, "reference", "DM1Translation",
                          "Insertion", "script", "cardname.txt")
 import products  # noqa: E402
-CARD_EDITS = products.data_path("card_edits.json")   # default product (p1)
+CARD_EDITS = products.data_path("card_edits.json")   # default product (duelmonsters-kaizo)
 
 NCARD = 365      # index 365 in the name pointer table is the end sentinel
 # (ATK array addr, DEF array addr); index 0 is the base (no-field) table.

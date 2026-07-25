@@ -7,17 +7,18 @@ both. They must NOT share card data: they are two different games occupying the
 same 366 card slots, so one cards.json cannot represent both.
 
 Rule: all product-specific data lives under `work/<product>/`. Tools take an
-optional `--product p1|p2` (default p1); build.py writes `build/<product>-hack.gb`
-so the two never clobber each other's output.
+optional `--product duelmonsters-kaizo|p2` (default duelmonsters-kaizo); build.py
+writes `build/<product>-hack.gb` so the two never clobber each other's output.
 
 Shared (both edit, mostly additive): docs/NOTES.md, the scripts.
-Separate (never share a file): work/p1/*  vs  work/p2/*, and the build outputs.
+Separate (never share a file): work/duelmonsters-kaizo/*  vs  work/p2/*, and the
+build outputs.
 """
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PRODUCTS = ("p1", "p2")
-DEFAULT = "p1"
+PRODUCTS = ("duelmonsters-kaizo", "p2")
+DEFAULT = "duelmonsters-kaizo"
 
 
 def check(product):

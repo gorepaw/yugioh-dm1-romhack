@@ -1,19 +1,19 @@
-# work/p1 — Project 1 data ("Modernized DM1")
+# work/duelmonsters-kaizo — Duel Monsters Kaizo data ("Modernized DM1")
 
-All of Project 1's card data lives here and **nowhere else**. Project 2's data is
+All of this hack's card data lives here and **nowhere else**. Project 2's data is
 in `work/p2/`. The two never share a file: they are different games occupying the
 same 366 card slots.
 
 Build this product with:
 
 ```
-python scripts/build.py                 # product p1 is the default
-python scripts/build.py --product p1     # explicit
+python scripts/build.py                            # duelmonsters-kaizo is the default product
+python scripts/build.py --product duelmonsters-kaizo   # explicit
 ```
 
-Output: `build/p1-hack.gb`.
+Output: `build/duelmonsters-kaizo-hack.gb`.
 
-Files that may appear here (each tool writes its own, all with `--product p1`):
+Files that may appear here (each tool writes its own, all with `--product duelmonsters-kaizo`):
 
 | File | Written by | Tracked? |
 |---|---|---|
