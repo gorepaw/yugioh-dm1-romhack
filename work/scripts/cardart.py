@@ -10,6 +10,9 @@ version:
     picture          1280 bytes of GB 2bpp = 80 tiles, LZSS-compressed
     tile order       8x16 vertical PAIRS, left to right, band by band
                      (tile 2t = top half of a column, 2t+1 = bottom half)
+    palette          BGP $1B - INVERTED: stored colour 0 shows as BLACK and 3
+                     as WHITE. Every PNG here is in screen colours, i.e. what
+                     the player sees; the conversion happens in this module.
 
 Commands
     python cardart.py extract [--product duelmonsters-kaizo] [--cards 1,2,10-20]
@@ -59,7 +62,17 @@ BANK_START = {b: 0x4002 for b in ART_BANKS}
 BANK_START[0x10] = PTR_TABLE_END + 2    # $4304 - the pointer table sits first
 BANK_END = 0x8000
 
+# Game Boy shades, indexed the way the hardware numbers them: 0 = white.
 SHADES = [(0xF8, 0xF8, 0xF8), (0xA8, 0xA8, 0xA8), (0x58, 0x58, 0x58), (0x08, 0x08, 0x08)]
+
+# DM1 runs BGP = $1B, which is INVERTED: stored colour 0 shows as BLACK and
+# colour 3 as WHITE. (Only the three boot logos use the normal $E4, and card art
+# is never on screen during those - see docs/SCREENS.md for the proof.) So a
+# picture's stored colour index is NOT its brightness, and everything that
+# crosses between "stored colour" and "what the player sees" goes through these.
+BGP = 0x1B
+PALETTE = [SHADES[(BGP >> (2 * i)) & 3] for i in range(4)]   # colour  -> RGB
+SHADE_TO_COLOUR = {(BGP >> (2 * i)) & 3: i for i in range(4)}   # 0=white -> colour
 
 
 # ---------------------------------------------------------------- ROM access
@@ -170,12 +183,13 @@ def apply_frame(g, frame):
 # ------------------------------------------------------------------- PNG io
 
 def to_image(g, scale=1):
+    """[80][64] of stored colour indices -> the picture as the player sees it."""
     from PIL import Image
     im = Image.new("RGB", (W, H))
     px = im.load()
     for y in range(H):
         for x in range(W):
-            px[x, y] = SHADES[g[y][x]]
+            px[x, y] = PALETTE[g[y][x]]
     return im if scale == 1 else im.resize((W * scale, H * scale), Image.NEAREST)
 
 
@@ -185,14 +199,18 @@ def save_png(g, path, scale=1):
 
 
 def load_png(path):
-    """A 64x80 image whose colours are the four GB shades -> [80][64] of 0..3."""
+    """A 64x80 picture in the four GB greys -> [80][64] of stored colour indices.
+
+    The PNG is what the player sees, so this undoes BGP on the way in - exactly
+    the inverse of `to_image`.
+    """
     from PIL import Image
     im = Image.open(path).convert("L")
     if im.size != (W, H):
         raise SystemExit(f"{path}: expected {W}x{H}, got {im.size[0]}x{im.size[1]}"
                          f" - run `cardart.py import` to produce it")
     px = im.load()
-    lums = [SHADES[i][0] for i in range(4)]
+    lums = [PALETTE[i][0] for i in range(4)]
     return [[min(range(4), key=lambda i: abs(lums[i] - px[x, y])) for x in range(W)]
             for y in range(H)]
 
@@ -263,17 +281,22 @@ def convert_image(path, fit="cover", dither="bayer4", contrast=1.0, gamma=1.0,
                                                threshold=2))
 
     src = [[im.load()[x, y] for x in range(bw)] for y in range(bh)]
-    art = _quantise(src, dither)
+    art = _quantise(src, dither)          # GB shades: 0 = lightest
 
-    g = [[0] * W for _ in range(H)]
+    # ...which is not the same thing as a stored colour index, because BGP is
+    # inverted. Without this the picture goes into the ROM as a negative.
+    g = [[SHADE_TO_COLOUR[0]] * W for _ in range(H)]
     for y in range(bh):
         for x in range(bw):
-            g[y0 + y][x0 + x] = art[y][x]
+            g[y0 + y][x0 + x] = SHADE_TO_COLOUR[art[y][x]]
     return g
 
 
 def _quantise(src, dither):
-    """[h][w] of 0..255 luminance -> [h][w] of 0..3 (0 = lightest)"""
+    """[h][w] of 0..255 luminance -> [h][w] of GB SHADES, 0 = lightest.
+
+    Shades, not stored colour indices - `convert_image` maps them through BGP.
+    """
     h, w = len(src), len(src[0])
     out = [[0] * w for _ in range(h)]
     if dither == "none":
@@ -557,7 +580,8 @@ def main(argv):
     elif cmd == "show":
         cmd_show(rom, [int(p) for p in pos], opts.get("out", "cards.png"))
     elif cmd == "frame":
-        save_png([[v if v is not None else 0 for v in row] for row in frame_template(rom)],
+        blank = SHADE_TO_COLOUR[0]      # show the art box as white, not as ink
+        save_png([[blank if v is None else v for v in row] for row in frame_template(rom)],
                  opts.get("out", "frame.png"), 4)
         print("wrote", opts.get("out", "frame.png"),
               f"  (art box is x {FRAME_INSET}..{W - FRAME_INSET - 1}, "

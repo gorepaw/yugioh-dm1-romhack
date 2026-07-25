@@ -16,7 +16,8 @@ notes; this file adds the workflow, the budget planning, and the traps.
 | | |
 |---|---|
 | Size | **64 × 80 pixels** |
-| Colours | 4 GB shades (0 = lightest … 3 = darkest) |
+| Colours | 4, stored as colour indices 0–3 |
+| Palette | **BGP `$1B` — inverted: colour 0 is BLACK, colour 3 is WHITE** (see §5a) |
 | Frame | **baked into the picture**, outer 6 px on all sides |
 | Usable art box | **x 6–57, y 6–73 → 52 × 68 px** |
 | Storage | 1280 bytes GB 2bpp (80 tiles), LZSS-compressed |
@@ -116,15 +117,39 @@ including all the plausible ones, scored ≥ 1.12. Whole-image gradient energy d
 
 ## 5. The frame
 
-All 365 pictures share a rounded frame in the outer 6 pixels:
+All 365 pictures share a rounded frame in the outer 6 pixels. Stored **colour
+index** on the left, what the player actually sees on the right:
 
-```
-col 0  = shade 2      col 63 = shade 1
-cols 1-3 = white      cols 60-62 = white
-col 4  = shade 1  (inner rounded line)      col 59 = shade 1
-col 5  = shade 2  (bevel)                   col 58 = shade 2
-```
-…and the same top and bottom (row 0 = shade 2, row 4 = inner line, row 79 = shade 1).
+| | stored | displayed (BGP `$1B`) |
+|---|---|---|
+| col 0 (col 63 = 1) | 2 | light grey |
+| cols 1–3 (60–62) | **0** | **black** |
+| col 4 (59) — inner rounded line | 1 | dark grey |
+| col 5 (58) — bevel | 2 | light grey |
+
+…and the same top and bottom (row 0 = colour 2, row 4 = inner line, row 79 =
+colour 1). So it reads on screen as a **black border ring with a grey bevel**
+around a white art box — which is the same black-on-white convention every menu
+frame in the game uses.
+
+### 5a. The palette is inverted — this bites when you author by hand
+
+DM1 runs **BGP = `$1B`**: stored colour **0 displays as BLACK** and **3 as
+WHITE**. Only the three boot logos use the normal `$E4`, and card art is never
+on screen during those. (Proof and the full palette table are in
+[SCREENS.md](SCREENS.md) §0.)
+
+`cardart.py` handles it: **every PNG it reads or writes is in screen colours —
+what the player sees.** `import` converts a source image so that bright stays
+bright, `extract` writes a picture that looks like the card, and `load_png`
+undoes it on the way back in. You only need to care about stored indices if you
+are reading raw bytes.
+
+> This was wrong until 2026-07-24: the tool assumed colour 0 was the lightest,
+> so extracts came out as negatives *and* `import` wrote inverted pictures into
+> the ROM. Fixed. No replacement art existed yet, so nothing needed migrating —
+> but any 64 × 80 PNG authored before that date is a negative and must be
+> inverted before use.
 
 `cardart.frame_template()` derives it by taking the **modal value across a sample
 of the roster**, so a single card whose art bleeds into the border cannot corrupt
@@ -239,8 +264,9 @@ after the digits is ignored, so `024-blue-eyes.png` works). Files starting with
 `_` are skipped. **Cards with no PNG keep their stock picture byte for byte.**
 
 You can hand-author these PNGs in any pixel editor instead of using `import` —
-the loader snaps each pixel to the nearest of the four shades, so exact RGB
-values don't matter.
+each pixel is snapped to the nearest of the four GB greys, so exact RGB values
+don't matter. **Draw what you want to see** (§5a): dark pixels come out dark in
+game. Start from an `extract` if you want the frame for free.
 
 ### In place vs repack
 
@@ -265,6 +291,9 @@ Bank assignment never changes — a card always stays in the bank it was born in
 
 - **Row-major tile order is wrong.** See section 4. This is the single biggest
   time sink in this investigation.
+- **Colour index is not brightness.** BGP is inverted; stored colour 0 is black.
+  See §5a. Anything that converts between an image and stored bytes has to go
+  through the palette, or it silently produces negatives.
 - **Bank `$20` is NOT free.** It holds 16 KB of data in exactly this art format —
   its first bytes decode to the same frame top-left as card #1 — yet the bank
   table never selects it. Something else may read it. `ART_BANKS` in `cardart.py`
@@ -283,18 +312,14 @@ Bank assignment never changes — a card always stays in the bank it was born in
 
 ## 9. Not done / open
 
-- **The second image set.** `$1A65` is the same loader for a different set:
-  bank table `0x001A9D` (18 entries, banks `$2E`/`$2F`/`$30`, 6 each), pointer
-  table `$7E84` in bank `$10` (the `d`=1 path), output length **`$0C00` = 3072 B
-  = 192 tiles**. The streams decompress cleanly — `gblzss` handles them — but no
-  tile arrangement scores well (best seam roughness 1.73 vs 0.90 for card art), so
-  these are almost certainly tiles + a separate tilemap rather than a plain grid.
-  18 images of that size smells like duelist portraits. Card art does not depend
-  on this, and neither does any tooling.
-- **What reads bank `$20`.** See above.
-- **Other graphics** (title screen, font, the uncompressed portraits Darrman's
-  translation edits at `0x30055` / `0x311A4` / `0x32353`) are untouched by this
-  work and use different, uncompressed formats.
+- ~~**The second image set.**~~ **SOLVED** — it is the 18 duelist portraits
+  behind the duel text window. The tiles resisted every arrangement because they
+  are a *tileset*, not a bitmap: a 20 × 11 tilemap in bank `$06` (`$4229`)
+  arranges them. Decoded and editable — see [SCREENS.md](SCREENS.md) §3.
+- **What reads bank `$20`.** See above. Still open.
+- ~~**Other graphics**~~ — the title screen, the boot splashes, the character
+  portraits, every menu tilemap and the font are all decoded and editable now:
+  [SCREENS.md](SCREENS.md), `work/scripts/screens.py`.
 
 ---
 

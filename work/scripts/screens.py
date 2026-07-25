@@ -392,6 +392,10 @@ HUD_TILES = to_file(0x06, 0x405E)        # 16 tiles -> VRAM $8BB0 = ids $BB-$CA
 HUD_FIRST_ID = 0xBB
 # ids $BB upward are overwritten by that blit, so a backdrop may only use $00-$BA
 ARENA_ART_TILES = HUD_FIRST_ID
+# Stock bank $30 (backdrops 12-17) has only ~700 bytes spare of 16382, and a
+# busy replacement runs ~300-500 bytes over a stock one, so that bank cannot
+# absorb even two. `budget` flags any bank with less headroom than this.
+TIGHT_BANK = 1024
 
 
 def arena_ptr(rom, i):
@@ -642,11 +646,19 @@ def cmd_budget(rom):
     by_bank = {}
     for i in range(ARENA_N):
         by_bank.setdefault(sl[i][0], []).append(i)
+    room = 0x8000 - 0x4002
+    spare = {}
     for bank in sorted(by_bank):
         used = sum(read_arena(rom, i)[1] for i in by_bank[bank])
-        room = 0x8000 - 0x4002
+        spare[bank] = room - used
+        flag = "  <-- TIGHT" if room - used < TIGHT_BANK else ""
         print(f"  bank ${bank:02X}  arenas {by_bank[bank][0]:2d}-{by_bank[bank][-1]:2d}"
-              f"  {used:6d}/{room}  ({room - used} spare)")
+              f"  {used:6d}/{room}  ({room - used} spare){flag}")
+    worst = min(spare, key=spare.get)
+    print(f"\nTightest is bank ${worst:02X} (backdrops "
+          f"{by_bank[worst][0]}-{by_bank[worst][-1]}) with only {spare[worst]} bytes")
+    print("spare. Spread replacements across the three banks rather than")
+    print("clustering them, and flatten anything you put in that one.")
 
 
 def cmd_extract(rom, names, product):

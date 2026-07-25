@@ -292,8 +292,15 @@ belongs to the engine, not to the backdrop). Budget:
 
 A backdrop that outgrows its slot repacks its whole bank and rewrites the six
 pointers, exactly like card art; overflow is a hard error that writes nothing.
-**Bank `$30` (backdrops 12–17) is the tight one** — spread replacements across
-banks rather than clustering them.
+
+> ⚠ **Bank `$30` — backdrops 12–17 — is the binding constraint.** It has
+> **701 bytes spare of 16,382**, and a busy replacement runs 300–500 bytes over
+> the stock stream it displaces, so that bank cannot absorb even two of them.
+> `$2E` has 1,847 spare and `$2F` has 2,600. **Spread replacements across the
+> three banks rather than clustering them**, and use `--dither none` on anything
+> destined for `$30`. `screens.py budget` prints the headroom and flags any bank
+> under 1 KB, so check it before you plan a batch — this is the one number that
+> decides whether a set of replacements is possible at all.
 
 > Curiosity, harmless but don't "fix" it: Konami's streams are each ~14–25 bytes
 > *shorter* than the game decodes, so every backdrop reads a few bytes of its
