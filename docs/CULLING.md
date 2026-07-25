@@ -66,6 +66,20 @@ Queen — no separate deck edit needed. Repeat across the roster.
 This folds the culling and slot-assignment into one pass, keeps every deck valid, and
 naturally retires exactly the weak filler we want gone.
 
+## Protection rule: high DEF is immune (owner)
+
+**Any card with 1500+ DEF is exempt from the big cut** — a 1200/2200 wall or an 800/2000
+blocker has real defensive value even at low ATK, so ATK alone shouldn't condemn it.
+
+Feasibility (verified): of 266 weak monsters (ATK ≤ 1500), **234 have DEF < 1500** and are
+cull-eligible — far more than the ~84 slots we need. The rule **protects 32 cards**,
+including Millennium Shield (0/3000), Faceless Mage (1200/2200), Metal Guardian
+(1150/2150), Mystical Elf (800/2000), Catapult Turtle (1000/2000), Aqua Madoor (1200/2000),
+Giant Rock Soldier (1300/2000), and Castle of Illusions (920/1930). Plenty of low-DEF
+filler remains to cut, so the protection costs us nothing.
+
+Cull-eligibility going forward: **weak (low ATK) AND DEF < 1500 AND not used in a design.**
+
 ## Next step
 
 Two ways to proceed:

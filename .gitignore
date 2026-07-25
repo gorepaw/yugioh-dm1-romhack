@@ -40,3 +40,6 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 .vscode/
+
+# Recalc output — bulk translated names, regenerable working file
+docs/RECALC.md
