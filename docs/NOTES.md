@@ -53,6 +53,45 @@ _(Fill in as we go.)_
   stays consistent. Handled by `work/scripts/cards.py`.
 - Discovery scripts: `work/scripts/card_scan*.py`.
 
+#### How a field is selected at runtime — TABLE INDEX, not a type recompute (CONFIRMED)
+Two **7-entry pointer tables** sit immediately before the arrays:
+
+| Table | Addr (file / CPU) | Contents |
+|---|---|---|
+| ATK table pointers | `0x24365` / `$4365` | `$4381 $4939 $4EF1 $54A9 $5A61 $6019 $65D1` |
+| DEF table pointers | `0x24373` / `$4373` | `$465D $4C15 $51CD $5785 $5D3D $62F5 $68AD` |
+
+The **terrain-aware stat loader @ `0x24312`** (CPU `$4312`, bank 9) takes the active
+**field index in `A` (0 = no field, 1–6 = the six terrains)**, does `sla` → indexes
+the ATK pointer table at `$4365`, dereferences to that field's table, then indexes by
+card id (`$CD0F/$CD10`) → ATK into `$CD13/$CD14`; repeats via `$4373` → DEF into
+`$CD15/$CD16`. **It never reads the type array `$409E`.** The base display loader
+`0x24068` likewise reads only the base table + the type byte (for its label).
+
+**Consequence (the important one for Project 2):** the terrain boost is *pre-baked
+data selected by field index*, not a runtime `base × f(type)`. There is no central
+"type→terrain" rule to edit — the association exists only in *which of the six tables
+carry a boosted value for each card*. So "a given card is pumped by a given land" is
+100% controllable from the compiler, and the **type byte is mechanically inert for
+stats** (it only drives the label and seal-by-type / Dragon Capture Jar). This is what
+makes repurposing the type byte as MTG **color** safe — see `docs/PROJECT2.md`.
+
+#### Physical terrain-slot order (recovered from stock data)
+Which ROM terrain table is which field, decoded by which types each one boosts:
+
+| Slot (ROM table) | Boosts (stock types) | Field | Project-2 land / color |
+|---|---|---|---|
+| 1 | Beast, Insect, Beast-Warrior, Plant | Forest | Forest / Green |
+| 2 | Zombie, Dinosaur, Rock | Wasteland | Wastes / Colorless |
+| 3 | Dragon, Winged Beast, Thunder | Mountain | Mountain / Red |
+| 4 | Warrior, Beast-Warrior | Meadow (Sogen) | Plains / White |
+| 5 | Aqua, Fish, Sea Serpent, Thunder | Sea (Umi) | Island / Blue |
+| 6 | Fiend, Spellcaster | Dark (Yami) | Swamp / Black |
+
+(Beast-Warrior and Thunder are boosted by two terrains each in stock — YGO allows a
+type to belong to multiple fields. The Project-2 color model uses a strict 1 color →
+1 land instead.)
+
 ### Card type / species array (Bank 9)
 - **1 byte per card at ROM `0x2409E`** (CPU `$409E`), indexed by card id.
 - Enum: `00` Dragon, `01` Spellcaster, `02` Zombie, `03` Warrior,
@@ -223,6 +262,63 @@ The earlier "assign card identities to fixed effect slots" workaround is unneces
 Any of the 65 cards from #301 up can be given any of the 53 verbs freely, in either
 table, independently of its name, art and lore. For Project 2 the real limits are the
 **53 available verbs** and the fact that new verbs need new assembly — not the binding.
+
+### Equip combine system (verbs `$15`–`$2E`) — FULLY DECODED
+The 26 "per-equip combine" verbs are **not** 26 hand-written effects — they are one
+**uniform ~54-byte template** cloned 26 times, differing only in two immediates. First
+routine at CPU `$7394` (file `0x0F394`, bank 3), stride `$36`. Each does three things:
+
+1. Read the equipped monster's card id from `$CECB/$CECC`.
+2. `farcall bank 9 idx 2` (`$6B89`) with the **equip index (0–25)** in `d` → an
+   **eligibility test** returning 1 if the monster qualifies.
+3. If eligible, `farcall bank 5 idx 16` (`$51DB`) applies the stat bonus.
+
+The two per-routine immediates: `ld d,$NN` at routine`+12` = the equip index (runs
+`$00`…`$19`); `ld bc,$01NN` at routine`+42` = the message/effect id handed to `$51DB`.
+
+**Eligibility data (bank 9):** `$6B89` indexes a **pointer table at `$6BC8`** (file
+`0x26BC8`, 26 × 16-bit CPU addr) by `index×2`, dereferences to that equip's list, then
+`$6B9F` linearly walks a **list of 16-bit monster indices (card number − 1) terminated by
+`$FFFF`**, returning 1 on a match. The comparator `$1D00` (bank 0) is a plain 16-bit
+equality (`bc` vs `de`). So an equip's "who can I attach to" is an **explicit index list —
+no runtime type/color wildcard**, the same shape as the fusion recipe table. (E.g. equip
+idx 0 / LegendarySword @ `$6BFC`: 50 entries `[11,14,25,26,28,32,37,…]` = cards
+#12,#15,#26,….)
+
+**Pool + tooling — `equips.py` (round-trips byte-identical):** the 26 lists are packed
+contiguously in equip-index order in a **fixed pool `$6BFC`–`$764E` = 2642 bytes**; a
+12-byte `$FF` gap then **graphics** follow (the classic mostly-`$FF` tile trap), so the
+pool **cannot grow in place** — it is a hard budget, repacked like the name/description
+pools. `work/scripts/equips.py` does `extract`/`show`/`verify`/`budget`; `build.py` applies
+`work/<product>/equips.json`. Project 2 generates that file from color via
+`p2colors.py equips` (see `docs/PROJECT2.md`).
+
+**Bonus amount:** equip cards store `$FFFF` for their own ATK/DEF (the amount is *not*
+the card's own stats), and all 26 equips share the one `$51DB` apply path — so the bonus
+is a **single uniform constant** (classic DM1 = +500/+500). `$51DB` sets message id
+`$CF47=$2B`, then `$2D01` stashes params to `$CFD9–$CFDB` and bank-switches; the actual
+`+N` math is a couple of banks past that and is **not yet pinned**.
+
+**Index → equip card** (table B verb, `spells.py list`): idx `i` (verb `$15+i`) belongs
+to the card whose table-B byte is `$15+i`; idx 0 = LegendarySword (#301), 1 = SwordOfRuin,
+… running up through the equip block.
+
+> **Design consequence.** Retuning an equip's *eligibility* is pure data (rewrite its
+> `$FFFF`-terminated id list) — a color-locked equip = the compiler expanding "color C"
+> into the id list of all color-C monsters. Variable amounts / DEF-only / debuffs, or a
+> compact color gate that replaces the id-list walk with a single color-byte compare at
+> `$409E`, are small in-place routine patches (same class as cards-per-win). What is
+> **not** representable: equips that grant abilities/keywords — there is no ability engine,
+> only stat + eligibility. See `docs/PROJECT2.md` for how Project 2 uses this.
+
+### Seal-by-type (Dragon Capture Jar, verb `$31`) — sealed type is ONE immediate
+The seal routine `$7926` loops over the board and calls `$5B21` per monster. `$5B21`
+loads the monster's type byte into `$CD17` (via bank 9 idx 0, the card loader) and does
+**`$5B41 cp $00`** — comparing against the hardcoded sealed type `$00` (**Dragon**). The
+sealed type is therefore a **single immediate at file `0x0DB42`**, retargetable to any
+type/color with a 1-byte edit (no per-card parameter, and the verb table is full 54/54, so
+only ONE sealed type exists game-wide). Project 2 sets it to the Colorless enum value →
+"seal all artifact creatures".
 
 ## Fusion system (bank 0x3B) — FULLY DECODED
 Tool: `work/scripts/fusions.py` (`extract` / `verify` / `list` / `find` / `stats`).

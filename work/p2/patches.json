@@ -1,0 +1,44 @@
+[
+ {
+  "offset": 21390,
+  "old": "0e36252b33320000",
+  "bytes": "212c2d3829000000",
+  "desc": "label 0 -> White"
+ },
+ {
+  "offset": 21398,
+  "old": "17252b2d272d2532",
+  "bytes": "0c30392900000000",
+  "desc": "label 1 -> Blue"
+ },
+ {
+  "offset": 21406,
+  "old": "243331262d290000",
+  "bytes": "0c3025272f000000",
+  "desc": "label 2 -> Black"
+ },
+ {
+  "offset": 21414,
+  "old": "212536362d333600",
+  "bytes": "1c29280000000000",
+  "desc": "label 3 -> Red"
+ },
+ {
+  "offset": 21422,
+  "old": "0c212536362d3336",
+  "bytes": "1136292932000000",
+  "desc": "label 4 -> Green"
+ },
+ {
+  "offset": 21430,
+  "old": "0c29253738000000",
+  "bytes": "0b36382d2a252738",
+  "desc": "label 5 -> Artifact"
+ },
+ {
+  "offset": 56130,
+  "old": "00",
+  "bytes": "05",
+  "desc": "seal type -> Colorless(5) = artifact-hate"
+ }
+]

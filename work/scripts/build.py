@@ -63,6 +63,25 @@ def main(argv=None):
         rom[off] = new
         print(f"  @0x{off:06X}: 0x{old:02X} -> 0x{new:02X}   {desc}")
 
+    # --- per-product raw byte patches (patches.json) ---
+    # A list of {offset, bytes(hex), old?(hex), desc}. Verifies `old` when given,
+    # then writes `bytes`. Used for label-table + effect-byte edits (e.g. the P2
+    # colour labels and the seal-by-colour retarget) that no card table covers.
+    patches_path = dpath("patches.json")
+    if os.path.exists(patches_path):
+        for p in json.load(open(patches_path)):
+            off = p["offset"]
+            new = bytes.fromhex(p["bytes"])
+            if "old" in p:
+                old = bytes.fromhex(p["old"])
+                cur = bytes(rom[off:off + len(old)])
+                if cur != old:
+                    print(f"ABORT patch @0x{off:06X}: expected {old.hex()}, "
+                          f"found {cur.hex()} - {p.get('desc','')}")
+                    return 1
+            rom[off:off + len(new)] = new
+            print(f"  patch @0x{off:06X}: {len(new)}B  {p.get('desc','')}")
+
     # --- the card compiler (cards.json): names, types, ATK/DEF, lore ---
     # When present this is the authority for the whole card model and is applied
     # FIRST, so the narrower editors below can still tweak individual cards on
@@ -89,6 +108,14 @@ def main(argv=None):
         if n:
             print(f"  spell verbs reassigned: {n}")
 
+    # --- equip eligibility lists (equips.json) ---
+    equips_json = dpath("equips.json")
+    if os.path.exists(equips_json):
+        import equips
+        n = equips.apply_config(rom, equips.load_db(equips_json))
+        if n:
+            print(f"  equip eligibility lists rewritten: {n}")
+
     # --- card stat edits (card_edits.json, applied via cards.py) ---
     card_edits_path = dpath("card_edits.json")
     card_edit_count = 0
@@ -109,6 +136,14 @@ def main(argv=None):
                                               e.get("line1", ""), e.get("line2", ""))
             print(f"  desc #{e['card']} {e.get('name', '')}: {summary}")
             desc_edit_count += 1
+
+    # --- opponent decks (deck_config.json, monsters only) ---
+    deck_config_path = dpath("deck_config.json")
+    if os.path.exists(deck_config_path):
+        import decks
+        n = decks.apply_config(rom, json.load(open(deck_config_path)))
+        if n:
+            print(f"  opponent decks written: {n}")
 
     # --- card drop-pool changes (drop_config.json) ---
     drop_config_path = dpath("drop_config.json")
