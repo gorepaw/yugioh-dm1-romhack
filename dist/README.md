@@ -6,8 +6,11 @@ ROM to play. No game data is distributed here.
 
 | Patch | Hack |
 |---|---|
-| `duelmonsters-kaizo-*.bps` | **Duel Monsters Kaizo** — the original game with 85 later-era Yu-Gi-Oh! cards worked into every opponent |
 | `duelmonsters-mtg-*.bps` | **Duel Monsters MTG** — a total conversion to *Magic: The Gathering*; card type becomes colour, so lands boost their own colour |
+| *(pending)* | **Duel Monsters Kaizo** — the original game with 85 later-era Yu-Gi-Oh! cards worked into every opponent. Card art is still in progress; its patch is cut once that work is committed. |
+
+A patch is only published when the tree that produced it is committed, so anyone
+can rebuild the same ROM from source. `patch.py` refuses to cut one otherwise.
 
 The hex suffix in each filename is the first 8 hex digits of the resulting
 ROM's MD5, so you can tell builds apart at a glance.

@@ -234,12 +234,12 @@ def main(argv=None):
           f"{desc_edit_count} desc edit(s)")
     print(f"  MD5:  {hashlib.md5(bytes(rom)).hexdigest()}")
 
-    # --- distributable patch ---
-    # Emitted here, not on demand, so dist/ can never describe an older ROM
-    # than build/. The .gb itself is ~99% Konami's game and stays local; the
-    # patch is the part we can actually publish.
-    import patch
-    patch.main(["--product", product])
+    # A patch is a *release* artifact, so it is NOT emitted here. Two agents
+    # build this tree constantly; auto-emitting meant every routine build
+    # rewrote dist/ and raced the other product's owner, and a patch cut from a
+    # tree with uncommitted work encodes something git cannot reproduce. Cut it
+    # deliberately, from a committed tree:  python patch.py --product <name>
+    print(f"  (release: python patch.py --product {product})")
     return 0
 
 

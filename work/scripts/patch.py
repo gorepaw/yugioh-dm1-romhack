@@ -148,6 +148,23 @@ def apply(source, patch):
     return bytes(out)
 
 
+def uncommitted(product):
+    """Paths under work/<product>/ that git doesn't have, or [] if git can't say.
+
+    A patch built from uncommitted work encodes bytes nobody can reproduce from
+    the repo, which defeats the point of shipping sources plus a diff.
+    """
+    import subprocess
+    try:
+        r = subprocess.run(["git", "-C", ROOT, "status", "--porcelain", "--",
+                            f"work/{product}"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return []
+    if r.returncode != 0:
+        return []
+    return [ln[3:] for ln in r.stdout.splitlines() if ln.strip()]
+
+
 def paths(product):
     built = products.build_path(product)
     dist = os.path.join(ROOT, "dist")
@@ -181,12 +198,28 @@ def main(argv):
               f"{'round-trips to the built ROM' if ok else 'MISMATCH'}")
         return 0 if ok else 1
 
+    dirty = uncommitted(product)
+    if dirty and "--force" not in argv:
+        print(f"refusing to cut a release patch: work/{product}/ has uncommitted "
+              f"changes, so this ROM cannot be rebuilt from git:")
+        for f in dirty[:10]:
+            print(f"    {f}")
+        if len(dirty) > 10:
+            print(f"    ... and {len(dirty) - 10} more")
+        raise SystemExit("commit them first, or pass --force for a throwaway patch")
+
     patch = encode(source, target)
     check = apply(source, patch)        # never write a patch we can't re-apply
     if hashlib.md5(check).hexdigest() != tgt_md5:
         raise SystemExit("internal error: patch does not round-trip")
 
     os.makedirs(dist, exist_ok=True)
+    # One patch per product: a second .bps for the same hack is an invitation to
+    # ship the stale one. Git keeps the history if an old release is ever needed.
+    for f in os.listdir(dist):
+        if f.startswith(product + "-") and f.endswith(".bps") and f != os.path.basename(out):
+            os.remove(os.path.join(dist, f))
+            print(f"  superseded {f}")
     open(out, "wb").write(patch)
     with open(os.path.join(dist, f"{product}.md5"), "w") as f:
         f.write(f"base   dm1-english.gb  {hashlib.md5(source).hexdigest()}\n")
