@@ -30,6 +30,7 @@ import os
 import sys
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -37,19 +38,51 @@ import products  # noqa: E402
 
 PRODUCT = "duelmonsters-mtg"
 UA = "dm1-romhack-cardart/1.0 (personal romhack; contact via github.com/gorepaw)"
-DELAY = 0.12          # Scryfall asks for 50-100 ms; be a good citizen
+DELAY = 0.25          # Scryfall asks 50-100 ms; go slower, we are not in a hurry
+SCRYFALL = "https://api.scryfall.com"
 NCREATURE = 300
 
 
-def roster():
-    """[(card_id, scryfall_name, set_code)] for the 300 creature slots."""
+# DM1's name budget forces abbreviations that Scryfall has never heard of, and a
+# few slots are invented filler. Map them back to a real card to illustrate.
+NAME_OVERRIDES = {
+    "DivineTransform": "Divine Transformation",
+    "InfinitAuthority": "Infinite Authority",
+    "Tawnos Weaponry": "Tawnos's Weaponry",
+    "DarkHeartOfWood": "Dark Heart of the Wood",
+    "Balm Restoration": "Ivory Cup",          # invented heal card; reuse the cup
+    "Wastes": "Wasteland",                    # our colourless "land" slot
+    # The 15 filler tokens are invented names; illustrate each with a real
+    # creature of that kind from our own era so they don't keep Konami's art.
+    "Rat": "Sewer Rats", "Bat": "Sengir Bats", "Elf": "Llanowar Elves",
+    "Orc": "Orcish Artillery", "Imp": "Wall of Wonder", "Ape": "Kird Ape",
+    "Eel": "Giant Slug", "Cat": "Savannah Lions", "Bee": "Killer Bees",
+    "Fox": "Scavenging Ghoul", "Goo": "Blight", "Elk": "Grizzly Bears",
+    "Owl": "Birds of Paradise", "Ram": "Wall of Stone", "Hen": "Thicket Basilisk",
+}
+
+
+def roster(include_spells=True):
+    """[(card_id, scryfall_name, set_code)] over every slot we can illustrate."""
     pool = json.load(open(products.data_path("creatures.json", PRODUCT), encoding="utf-8"))
     cutp = products.data_path("_cuts.json", PRODUCT)
     if os.path.exists(cutp):
         cut = set(json.load(open(cutp, encoding="utf-8")))
         pool = [c for c in pool if c.get("shortname", c["name"]) not in cut]
-    return [(i + 1, c["name"], c.get("set", "").lower())
-            for i, c in enumerate(pool[:NCREATURE])]
+    out = [(i + 1, c["name"], c.get("set", "").lower())
+           for i, c in enumerate(pool[:NCREATURE])]
+    if include_spells:
+        # Read the slot tables from the assembler rather than restating them,
+        # so adding a spell there cannot silently leave it without a picture.
+        import mtg_assemble as A
+        for slot, (nm, _col) in zip(A.EQUIP_SLOTS, A.EQUIPS):
+            out.append((slot, NAME_OVERRIDES.get(nm, nm), ""))
+        for slot, (nm, _col) in A.FIXED.items():
+            out.append((slot, NAME_OVERRIDES.get(nm, nm), ""))
+        for k, cid in enumerate(range(351, 366)):
+            nm = A.FILLER[k]
+            out.append((cid, NAME_OVERRIDES.get(nm, nm), ""))
+    return sorted(out)
 
 
 def parse_cards(spec):
@@ -64,12 +97,85 @@ def parse_cards(spec):
     return out
 
 
-def get(url, accept="application/json"):
-    # Scryfall rejects any request lacking BOTH User-Agent and Accept with a 400
-    # whose body explains it -- worth reading rather than assuming a bad query.
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+def get(url, accept="application/json", data=None, tries=5):
+    """GET/POST with 429 backoff.
+
+    Scryfall rejects any request lacking BOTH User-Agent and Accept with a 400
+    whose body explains it -- worth reading rather than assuming a bad query.
+    Hammering it earns a 429 instead, so back off and honour Retry-After.
+    """
+    hdr = {"User-Agent": UA, "Accept": accept}
+    if data is not None:
+        hdr["Content-Type"] = "application/json"
+    delay = 1.0
+    for attempt in range(tries):
+        req = urllib.request.Request(url, headers=hdr, data=data)
+        try:
+            with urllib.request.urlopen(req, timeout=45) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == tries - 1:
+                raise
+            wait = float(e.headers.get("Retry-After") or delay)
+            time.sleep(wait)
+            delay *= 2
+
+
+def lookup(entries):
+    """[(cid, name, set)] -> {cid: (art_crop_url, artist, scryfall_id)}.
+
+    Uses /cards/collection, which takes 75 identifiers per request: 350 cards
+    become 5 calls instead of 350, which is the difference between being a good
+    API citizen and being throttled.
+    """
+    found, pending = {}, list(entries)
+    for use_set in (True, False):        # second pass drops the set constraint
+        misses = []
+        for i in range(0, len(pending), 75):
+            chunk = pending[i:i + 75]
+            ids = [({"name": n, "set": s} if use_set and s else {"name": n})
+                   for _, n, s in chunk]
+            body = json.dumps({"identifiers": ids}).encode()
+            res = json.loads(get(SCRYFALL + "/cards/collection", data=body))
+            by_name = {}
+            for card in res.get("data", []):
+                by_name.setdefault(card["name"].lower(), card)
+            for cid, name, setcode in chunk:
+                card = by_name.get(name.lower())
+                uris = (card or {}).get("image_uris") or {}
+                if not uris and card and card.get("card_faces"):
+                    uris = card["card_faces"][0].get("image_uris") or {}
+                if "art_crop" in uris:
+                    found[cid] = (uris["art_crop"], card.get("artist", "?"),
+                                  card.get("id", ""))
+                else:
+                    misses.append((cid, name, setcode))
+            time.sleep(DELAY)
+        pending = misses
+        if not pending:
+            break
+
+    # Last resort: fuzzy match, one request each. Arabian Nights names carry
+    # diacritics our ASCII card data drops -- "Juzam Djinn" is really
+    # "Juzam Djinn" with an accented a -- and exact lookup cannot see through that.
+    still = []
+    for cid, name, setcode in pending:
+        try:
+            card = json.loads(get(SCRYFALL + "/cards/named?fuzzy="
+                                  + urllib.parse.quote(name)))
+            uris = card.get("image_uris") or {}
+            if not uris and card.get("card_faces"):
+                uris = card["card_faces"][0].get("image_uris") or {}
+            if "art_crop" in uris:
+                found[cid] = (uris["art_crop"], card.get("artist", "?"),
+                              card.get("id", ""))
+                print(f"  fuzzy: {name!r} -> {card['name']!r}")
+            else:
+                still.append((cid, name, setcode))
+        except Exception:
+            still.append((cid, name, setcode))
+        time.sleep(DELAY)
+    return found, still
 
 
 def fetch_one(name, setcode):
@@ -120,20 +226,24 @@ def main(argv):
         return 0
 
     print(f"fetching {len(todo)} (have {have})")
+    urls, missing = lookup(todo)
+    print(f"resolved {len(urls)}/{len(todo)} via /cards/collection")
+    names = {cid: (n, s) for cid, n, s in todo}
+
     ok = 0
-    fails = []
-    for cid, name, setcode in todo:
+    fails = [(cid, n, "not on Scryfall") for cid, n, _ in missing]
+    for cid, (url, artist, sid) in sorted(urls.items()):
         try:
-            data, artist, sid = fetch_one(name, setcode)
+            data = get(url, accept="image/*")
         except Exception as e:
-            fails.append((cid, name, f"{type(e).__name__}: {e}"))
-            print(f"  #{cid:3d} {name:26s} FAILED {e}")
+            fails.append((cid, names[cid][0], f"{type(e).__name__}: {e}"))
             continue
         open(os.path.join(dest, f"{cid:03d}.jpg"), "wb").write(data)
-        creds[str(cid)] = {"card": name, "set": setcode.upper(),
+        creds[str(cid)] = {"card": names[cid][0], "set": names[cid][1].upper(),
                            "artist": artist, "scryfall_id": sid}
         ok += 1
-        print(f"  #{cid:3d} {name:26s} {len(data):7,d} B   art by {artist}")
+        if ok % 25 == 0:
+            print(f"  downloaded {ok}/{len(urls)}")
         time.sleep(DELAY)
 
     json.dump(creds, open(credpath, "w", encoding="utf-8"), indent=1, ensure_ascii=False)

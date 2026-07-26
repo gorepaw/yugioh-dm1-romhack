@@ -323,6 +323,56 @@ Bank assignment never changes — a card always stays in the bank it was born in
 
 ---
 
+## 12. Source art style changes the settings (Duel Monsters MTG)
+
+Kaizo's `--fit cover --dither bayer8` is tuned for Yu-Gi-Oh! art: clean, high
+contrast line work that survives four shades. **Magic art from 1993 does not.**
+It is painterly, dark and busy, and the same settings produced grey soup on
+about half the first batch — one card came out a featureless rectangle.
+
+What the measurements said, converting 365 pictures:
+
+| Lever | Verdict |
+|---|---|
+| `--dither fs` | **The big win.** Dragon Whelp went from a flat grey slab to a legible dragon. fs compresses worst, but there was 63 KB of bank headroom, and after replacing all 365 pictures *every bank still fits* — detail was the right thing to spend it on. |
+| `--contrast 1.4 --gamma 1.15 --sharpen 0.9` | Consistent improvement on painted sources. |
+| `--zoom` (added for this) | **Do not automate it.** See below. |
+| `--dither none` | The rescue for genuinely dark art — posterising beats dithering when the tonal range is too narrow to dither. |
+
+### The zoom trap
+
+`--zoom` crops in on the subject before fitting, and by eye it rescues busy
+illustrations. The obvious next step — score each crop and keep the best — is
+wrong, and measurably so.
+
+Any structure metric rises as you crop, because you are magnifying local
+contrast. So "pick the highest-scoring crop" always picks the tightest one.
+Calibrated against thirteen hand-judged cards, the score gain from zooming had
+**no relationship** to whether the picture looked better: the two best-composed
+cards in the batch both "improved" 10–13% while losing their subject — figures
+cropped off at the neck. Zoom is a per-card rescue a human chooses, not an
+objective to maximise.
+
+The same metric *is* a good **detector**, though, which is how it is used now:
+standard deviation after 2×2 block-averaging (average first, or Floyd–Steinberg
+noise reads as detail and scores mush as excellent). Genuine mush scored 21
+against a floor of 40 across every legible card, so anything under 34 is
+reported for hand work instead of shipped silently.
+
+### Per-card overrides
+
+`work/duelmonsters-mtg/art_tuning.json`, keyed by card number, each with the
+reason recorded. Keys beginning `_` are notes, not settings:
+
+```json
+{"8": {"_card": "Demonic Hordes", "_why": "dark, formless; fs spread a narrow
+        tonal range into noise", "contrast": 2.5, "gamma": 0.7, "dither": "none"}}
+```
+
+One card out of 365 needed this. `mtg_art_convert.py` also steps a bank's
+biggest pictures down (`fs → bayer8 → bayer4 → none`) if the bank overflows, so
+one busy picture is flattened rather than thirteen — it did not have to fire.
+
 ## 10. File map
 
 | File | What it is |

@@ -1,0 +1,11 @@
+{
+ "_comment": "Per-card overrides for mtg_art_convert.py. The automatic settings (fs dither, contrast 1.4, gamma 1.15, no crop) handle 364 of 365; these are the ones a human had to look at. Keys are card numbers.",
+
+ "8": {
+  "_card": "Demonic Hordes",
+  "_why": "Dark, formless painting: the automatic pass scored it 21 against a floor of 40 and shipped a featureless grey slab. Dithering was the problem, not the fix - fs spreads a narrow tonal range into noise. Posterising hard with the contrast way up resolves the horde into black silhouettes with raised arms.",
+  "contrast": 2.5,
+  "gamma": 0.7,
+  "dither": "none"
+ }
+}

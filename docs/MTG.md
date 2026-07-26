@@ -31,6 +31,22 @@ memory); bare `python` is a broken WindowsApps shim.
 | Fusions | 2159 rows, same-colour ladder, all 6 capstones reachable, 0 downgrades |
 | Starter | 100 cards (90 creatures capped at ATK≤800 and ATK+DEF≤1600, plus 6 lands + 4 spells) |
 | Text | duel messages, duelist names, 17 intros, 48 battle lines — **no stock character reference remains** |
+| Stats | 400:1 conversion, then `mtg_liberties.py` restates the numbers to stock DM1's own texture (27.4% multiples of 400 vs stock's 27.5%) — see the module docstring |
+| Card art | **all 365 pictures replaced** from Scryfall `art_crop`; 23 banks repacked, every bank fits, no stock Konami art remains |
+
+### Card art
+
+```
+python mtg_art_fetch.py       # -> work/duelmonsters-mtg/art_in/NNN.jpg (gitignored)
+python mtg_art_convert.py     # -> work/duelmonsters-mtg/art/NNN.png    (committed)
+python build.py --product duelmonsters-mtg
+```
+
+Kaizo's `cover/bayer8` settings do **not** transfer — 1993 Magic art is painterly
+and dark where Yu-Gi-Oh! art is clean line work. The settled defaults are
+`fs / contrast 1.4 / gamma 1.15 / sharpen 0.9`, no crop. Per-card exceptions live
+in `work/duelmonsters-mtg/art_tuning.json` with the reason recorded. Full
+rationale and the traps: [CARDART.md](CARDART.md) §12.
 
 ## Open / next
 - **Playtesting** is the only real unknown left (does the 400:1 scale feel right).
