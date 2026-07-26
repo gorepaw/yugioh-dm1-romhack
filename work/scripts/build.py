@@ -230,6 +230,12 @@ def main(argv=None):
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, "wb").write(rom)
     print(f"wrote: {out}")
+    # also emit a short alias (duelmonsters-kaizo -> dmkaizo.gb, ...-mtg -> dmmtg.gb),
+    # kept byte-identical to the long name -- handy for the Miyoo's game list.
+    short = os.path.join(os.path.dirname(out), product.replace("duelmonsters-", "dm") + ".gb")
+    if short != out:
+        open(short, "wb").write(rom)
+        print(f"  alias: {os.path.basename(short)}")
     print(f"  applied {len(EDITS)} byte + {card_edit_count} card + "
           f"{desc_edit_count} desc edit(s)")
     print(f"  MD5:  {hashlib.md5(bytes(rom)).hexdigest()}")
