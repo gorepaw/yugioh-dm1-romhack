@@ -237,8 +237,15 @@ for _y in range(8):
 
 def convert_image(path, fit="cover", dither="bayer4", contrast=1.0, gamma=1.0,
                   brightness=0.0, invert=False, autolevels=True, sharpen=0.6,
-                  box=None):
-    """Any image -> [80][64] of GB shade indices, art placed inside the frame box."""
+                  box=None, zoom=1.0, focus=0.40):
+    """Any image -> [80][64] of GB shade indices, art placed inside the frame box.
+
+    `zoom` < 1 keeps only that fraction of the source, centred horizontally and
+    at `focus` vertically (0.40 favours the upper body, where faces live). At
+    52x68 in four shades a busy illustration turns to noise; cropping in on the
+    subject trades away background nobody can resolve anyway. It does not
+    rescue a genuinely dark, formless painting -- nothing does.
+    """
     from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 
     x0, y0, x1, y1 = box or (FRAME_INSET, FRAME_INSET, W - FRAME_INSET, H - FRAME_INSET)
@@ -251,6 +258,14 @@ def convert_image(path, fit="cover", dither="bayer4", contrast=1.0, gamma=1.0,
         flat.alpha_composite(im)
         im = flat
     im = im.convert("L")
+
+    if zoom and zoom != 1.0:
+        if not 0 < zoom <= 1.0:
+            raise SystemExit(f"--zoom must be in (0, 1], got {zoom}")
+        w, h = im.size
+        cw, ch = int(w * zoom), int(h * zoom)
+        ox, oy = (w - cw) // 2, int((h - ch) * focus)
+        im = im.crop((ox, oy, ox + cw, oy + ch))
 
     if autolevels:
         im = ImageOps.autocontrast(im, cutoff=1)
@@ -514,7 +529,9 @@ def cmd_import(rom, card, src, opts, product):
                       brightness=float(opts.get("brightness", 0.0)),
                       invert="invert" in opts,
                       autolevels="nolevels" not in opts,
-                      sharpen=float(opts.get("sharpen", 0.6)))
+                      sharpen=float(opts.get("sharpen", 0.6)),
+                      zoom=float(opts.get("zoom", 1.0)),
+                      focus=float(opts.get("focus", 0.40)))
     if frame:
         apply_frame(g, frame)
     d = art_dir(product)
