@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cards as cardlib      # noqa: E402
 import mtg_colors             # noqa: E402
 import mtg_desc               # noqa: E402
+import mtg_liberties          # noqa: E402
 import products             # noqa: E402
 
 COLOR_BYTE = {"White": 0, "Blue": 1, "Black": 2, "Red": 3, "Green": 4, "Colorless": 5}
@@ -75,9 +76,13 @@ FILLER = ["Rat", "Bat", "Elf", "Orc", "Imp", "Ape", "Eel", "Cat", "Bee",
 
 def creature_card(cid, cr):
     color = cr["color"]
-    fa, fd = mtg_colors.derive_fields(color, cr["atk"], cr["def"])
+    # creatures.json keeps the faithful 400:1 conversion; the liberties that
+    # stop every stat being a multiple of 400 are applied here, so the source
+    # data stays auditable against the real card's power/toughness.
+    atk, dfn = mtg_liberties.apply(cr)
+    fa, fd = mtg_colors.derive_fields(color, atk, dfn)
     return {"id": cid, "name": cr.get("shortname", cr["name"]), "color": color,
-            "type": str(COLOR_BYTE[color]), "atk": cr["atk"], "def": cr["def"],
+            "type": str(COLOR_BYTE[color]), "atk": atk, "def": dfn,
             "field_atk": fa, "field_def": fd,
             "desc": mtg_desc.for_creature(cr["name"], color)}
 
