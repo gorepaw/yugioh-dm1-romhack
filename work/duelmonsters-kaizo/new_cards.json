@@ -933,5 +933,27 @@
   "l2": "who strike as one.",
   "zone": "",
   "id": 29
+ },
+ {
+  "owner": "Keith",
+  "name": "Cyber Dragon",
+  "atk": 2100,
+  "def": 1600,
+  "type": "Machine",
+  "l1": "A dragon forged",
+  "l2": "of living steel.",
+  "zone": "",
+  "id": 353
+ },
+ {
+  "owner": "Keith",
+  "name": "Ancient Golem",
+  "atk": 3000,
+  "def": 3000,
+  "type": "Machine",
+  "l1": "A colossus of",
+  "l2": "ancient gears.",
+  "zone": "",
+  "id": 289
  }
 ]
