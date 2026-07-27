@@ -66,3 +66,6 @@ docs/RECALC.md
 
 # Slot assignment view — bulk names, regenerable
 docs/ASSIGNMENT.md
+
+# Portrait/screen source images (Scryfall art, same category as art_in/)
+work/*/screens_in/
