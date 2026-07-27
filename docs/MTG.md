@@ -33,6 +33,23 @@ memory); bare `python` is a broken WindowsApps shim.
 | Text | duel messages, duelist names, 17 intros, 48 battle lines — **no stock character reference remains** |
 | Stats | 400:1 conversion, then `mtg_liberties.py` restates the numbers to stock DM1's own texture (27.4% multiples of 400 vs stock's 27.5%) — see the module docstring |
 | Card art | **all 365 pictures replaced** from Scryfall `art_crop`; 23 banks repacked, every bank fits, no stock Konami art remains |
+| Portraits | **all 18 duel backdrops** are Magic characters; duelist→backdrop read from the ROM (`$7724`/`0xB734`), so Yawgmoth/Urza/Mishra land on the three boss slots |
+| Screens | title, `ruins`, `cast` and the three boss cards (→ Mishra, Urza, Yawgmoth) replaced. Menu labels + the 1998 Konami line are preserved; the boot splashes are deliberately untouched |
+
+### Screens and portraits
+
+```
+python mtg_portraits.py fetch && python mtg_portraits.py convert   # 18 backdrops
+python mtg_static.py    fetch && python mtg_static.py    convert   # 6 picture screens
+python build.py --product duelmonsters-mtg
+```
+
+The binding limit is **distinct tiles**, not bytes: 187 per backdrop across 220
+cells, 256 per static screen across 360. Photographic art is ~all-unique and
+cannot be stored, so `mtg_portraits.reduce_tiles` merges only the most similar
+tile pairs (union-find over sorted distances) instead of flattening the whole
+picture. Dithering is off everywhere — it makes every 8×8 block unique, which
+breaks the tile limit *and* compression at once.
 
 ### Card art
 
