@@ -50,8 +50,13 @@ def read_thresholds(rom):
 
 
 def reward_list(rom, pool):
+    """-> card NUMBERS (1..365). The ROM stores 0-based card INDICES.
+
+    Proven off the stock data: read as indices, pool 4's ladder climbs
+    1300 -> 1400 -> ... -> Exodia the Forbidden One. Read as card numbers it
+    ends on a mere Left Arm and puts a 200-ATK card mid-ladder."""
     base = rd16(rom, PTRS + 2 * pool) + 0x30000
-    return [rd16(rom, base + 2 * i) for i in range(NSTEP)]
+    return [rd16(rom, base + 2 * i) + 1 for i in range(NSTEP)]
 
 
 def apply_config(rom, cfg):
@@ -64,7 +69,7 @@ def apply_config(rom, cfg):
     for pool, ids in (cfg.get("rewards") or {}).items():
         base = rd16(rom, PTRS + 2 * int(pool)) + 0x30000
         for i, cid in enumerate(ids[:NSTEP]):
-            wr16(rom, base + 2 * i, cid)
+            wr16(rom, base + 2 * i, cid - 1)     # 0-based index, see reward_list
         changed += len(ids[:NSTEP])
     return changed
 

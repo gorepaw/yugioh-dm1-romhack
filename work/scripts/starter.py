@@ -25,7 +25,9 @@ NCARDS = 100
 
 
 def read_pool(rom):
-    return [rom[TABLE + 2 * i] | (rom[TABLE + 2 * i + 1] << 8) for i in range(NCARDS)]
+    """-> card NUMBERS (1..365). The ROM stores 0-based indices; see apply_config."""
+    return [(rom[TABLE + 2 * i] | (rom[TABLE + 2 * i + 1] << 8)) + 1
+            for i in range(NCARDS)]
 
 
 def apply_config(rom, cfg):
@@ -36,8 +38,9 @@ def apply_config(rom, cfg):
     if bad:
         raise ValueError(f"invalid card ids in starter pool: {bad[:8]}")
     for i, cid in enumerate(ids):
-        rom[TABLE + 2 * i] = cid & 0xFF
-        rom[TABLE + 2 * i + 1] = (cid >> 8) & 0xFF
+        v = cid - 1                       # the table stores 0-based card INDICES
+        rom[TABLE + 2 * i] = v & 0xFF
+        rom[TABLE + 2 * i + 1] = (v >> 8) & 0xFF
     return len(ids)
 
 
