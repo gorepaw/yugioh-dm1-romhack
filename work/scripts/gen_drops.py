@@ -7,7 +7,8 @@ Goals:
   - all 50 MAGIC cards droppable from the early opponents (Stage 1 friends) at a very
     low rate -- Raigeki/Dark Hole included (owner request)
   - stock drops kept as the base, with references to retired slots removed
-  - Pegasus stays the universal farm (every non-God card)
+  - Pegasus stays the universal farm (every non-God card, except Exodia pieces --
+    those stay Simon's exclusive 100-win reward and never drop)
   - Kaiba: Blue-Eyes farmable (feeds the fusion speedrun), apex at the floor
 
 Rates are a sensible first pass -- easily retuned. Run after apply_new_cards.py.
@@ -35,6 +36,7 @@ for c in ledger:
 
 MAGIC = list(range(300, 350))          # card indices 300..349 = #301..#350
 GODS = {c["id"] - 1 for c in ledger if c["atk"] == 4000 and c["def"] == 4000}
+EXODIA = set(range(16, 21))             # #17-21: Simon's 100-win reward ONLY, never a drop
 
 OWNER_POOL = {"Weevil": 0, "Mai": 1, "Rex": 2, "Mako": 3, "Kaiba": 8, "Mokuba": 9,
               "Puppeteer": 12, "PaniK": 13, "Keith": 14, "Yugi": 5, "Tristan": 10,
@@ -67,7 +69,7 @@ def main():
     # Pegasus (pool 15): universal farm -- every non-God card gets a floor, toons boosted
     peg = [0] * 365
     for i in range(365):
-        if i in GODS:
+        if i in GODS or i in EXODIA:
             continue
         peg[i] = 5
     for c in by_owner["Pegasus"]:
@@ -81,6 +83,11 @@ def main():
     for pool in FRIEND_POOLS:
         for m in MAGIC:
             pools[pool][m] = max(pools[pool][m], 3)
+
+    # Exodia is Simon's 100-win reward and nothing else -- never let it drop anywhere
+    for w in pools.values():
+        for e in EXODIA:
+            w[e] = 0
 
     # emit explicit pools (drops.py normalizes to 2048)
     cfg = {"pools": {}}
