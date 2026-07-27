@@ -18,6 +18,7 @@ fusion recipes are unplaytested first-pass numbers.
 |---|---|
 | `work/duelmonsters-kaizo/new_cards.json` | the 85 new cards: name, ATK, DEF, type, 2-line flavour, and `id` (assigned slot). **The master ledger.** |
 | `work/duelmonsters-kaizo/starter_config.json` | the 100-card starter monster pool (33 drawn at random per new game); keeps new cards/gods out of the opening and points ex-toon slots at their real DM1 counterparts. Applied by `starter.py`. |
+| `work/duelmonsters-kaizo/patches.json` | 2 byte patches: boot stub that zeroes WRAM `$C000-$DFFF` at the entry point. Fixes **phantom trunk cards** — stock DM1 never initializes the `$CAE4` collection array before use, so cores that power on with garbage WRAM (real DMG, the Miyoo) show random cards as owned (all-new-card slots looked "obtained" on fresh files). Zeroing at entry reproduces the proven-good conditions; SRAM loads afterwards, so valid saves are untouched. |
 | `work/duelmonsters-kaizo/deck_config.json` | 16 opponent decks — `{card_id: weight}` per pool |
 | `work/duelmonsters-kaizo/reward_config.json` | 16 reward lists — `{pool: [10 card_ids]}` |
 | `work/duelmonsters-kaizo/drop_config.json` | 17 drop pools — explicit `{card_id: weight}` |

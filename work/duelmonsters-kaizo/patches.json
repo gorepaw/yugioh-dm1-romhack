@@ -1,0 +1,14 @@
+[
+ {
+  "offset": 258,
+  "bytes": "8d2e",
+  "old": "5001",
+  "desc": "entry point: jp $0150 -> jp $2E8D (WRAM-clear stub, then continue to $0150)"
+ },
+ {
+  "offset": 11917,
+  "bytes": "5f2100c0af227cfee020f97bc35001",
+  "old": "ffffffffffffffffffffffffffffff",
+  "desc": "boot stub in bank0 padding: save A, zero WRAM $C000-$DFFF, restore A, jp $0150. Fixes phantom trunk cards: the game never initializes the $CAE4 collection array before use, so cores that power on with garbage WRAM (real DMG, Miyoo) show ~random cards as owned. Zeroed WRAM at entry reproduces the known-good conditions; SRAM loads afterwards, so valid saves are untouched."
+ }
+]
